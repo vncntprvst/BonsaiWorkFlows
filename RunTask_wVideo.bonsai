@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.1.2">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Source">
         <PropertyMappings />
@@ -10,7 +10,7 @@
       </Expression>
       <Expression xsi:type="q1:CsvWriter">
         <q1:PropertyMappings />
-        <q1:FileName>C:\Data\Behav\TexturePart9.csv</q1:FileName>
+        <q1:FileName>C:\Data\Behav\PrV56_Tex9_.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>Timestamp</q1:Suffix>
@@ -20,6 +20,20 @@
       <Expression xsi:type="Combinator">
         <PropertyMappings />
         <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:RoiActivityDetected">
+          <q4:Index>0</q4:Index>
+          <q4:Threshold>40000</q4:Threshold>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:RoiActivityDetected">
+          <q4:Index xsi:nil="true" />
+          <q4:Threshold>0</q4:Threshold>
+        </Combinator>
       </Expression>
       <Expression xsi:type="Equal">
         <Operand xsi:type="WorkflowPropertyOfKeys">
@@ -103,16 +117,98 @@ def process(value):
           <Value>&lt;0</Value>
         </Generator>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:RoiActivity" />
+      </Expression>
       <Expression xsi:type="Source">
         <PropertyMappings />
         <Generator xsi:type="StringProperty">
           <Value>1</Value>
         </Generator>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:RoiActivityDetected">
+          <q4:Index xsi:nil="true" />
+          <q4:Threshold>0</q4:Threshold>
+        </Combinator>
+      </Expression>
       <Expression xsi:type="Source">
         <PropertyMappings />
         <Generator xsi:type="StringProperty">
           <Value>&gt;</Value>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:RoiActivity" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:RoiActivity" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:Laplace">
+          <q4:ApertureSize>3</q4:ApertureSize>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:Laplace">
+          <q4:ApertureSize>3</q4:ApertureSize>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:Laplace">
+          <q4:ApertureSize>3</q4:ApertureSize>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:Crop">
+          <q4:RegionOfInterest>
+            <q4:X>8</q4:X>
+            <q4:Y>124</q4:Y>
+            <q4:Width>92</q4:Width>
+            <q4:Height>106</q4:Height>
+          </q4:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:Crop">
+          <q4:RegionOfInterest>
+            <q4:X>434</q4:X>
+            <q4:Y>94</q4:Y>
+            <q4:Width>98</q4:Width>
+            <q4:Height>146</q4:Height>
+          </q4:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:Crop">
+          <q4:RegionOfInterest>
+            <q4:X>172</q4:X>
+            <q4:Y>16</q4:Y>
+            <q4:Width>156</q4:Width>
+            <q4:Height>96</q4:Height>
+          </q4:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:Flip">
+          <q4:Mode>Vertical</q4:Mode>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q5:VideoCaptureDevice">
+          <q5:Index>0</q5:Index>
         </Generator>
       </Expression>
     </Nodes>
@@ -128,74 +224,139 @@ def process(value):
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>3</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>6</To>
-        <Label>Source4</Label>
-      </Edge>
-      <Edge>
         <From>5</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
         <To>10</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
+        <From>6</From>
+        <To>8</To>
+        <Label>Source4</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
         <From>9</From>
-        <To>6</To>
-        <Label>Source2</Label>
+        <To>8</To>
+        <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>10</From>
-        <To>6</To>
-        <Label>Source3</Label>
-      </Edge>
-      <Edge>
-        <From>13</From>
         <To>12</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>14</From>
-        <To>15</To>
-        <Label>Source1</Label>
+        <From>11</From>
+        <To>8</To>
+        <Label>Source2</Label>
       </Edge>
       <Edge>
-        <From>15</From>
-        <To>13</To>
+        <From>12</From>
+        <To>8</To>
         <Label>Source3</Label>
       </Edge>
       <Edge>
+        <From>15</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
         <From>16</From>
-        <To>13</To>
+        <To>17</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>17</From>
-        <To>13</To>
-        <Label>Source2</Label>
+        <To>15</To>
+        <Label>Source3</Label>
       </Edge>
       <Edge>
         <From>18</From>
-        <To>13</To>
+        <To>15</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>19</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>20</From>
+        <To>15</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>22</From>
+        <To>15</To>
         <Label>Source4</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>24</From>
+        <To>21</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>25</From>
+        <To>19</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>26</From>
+        <To>23</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>27</From>
+        <To>24</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>28</From>
+        <To>25</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>29</From>
+        <To>26</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>30</From>
+        <To>27</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>31</From>
+        <To>28</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>31</From>
+        <To>29</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>31</From>
+        <To>30</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>32</From>
+        <To>31</To>
+        <Label>Source1</Label>
       </Edge>
     </Edges>
   </Workflow>
@@ -203,6 +364,7 @@ def process(value):
     <Type>Bonsai.IO.SerialStringRead, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.RoiActivityDetected, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.EqualBuilder, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.WorkflowProperty`1[[System.Windows.Forms.Keys, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
@@ -212,5 +374,10 @@ def process(value):
     <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.SerialStringWrite, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.RoiActivity, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Laplace, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Flip, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
