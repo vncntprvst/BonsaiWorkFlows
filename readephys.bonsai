@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.1.2">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q1:MatrixReader">
+          <q1:FileName>C:\Users\Gonçalo\Downloads\amplifier2014-11-25T22_09_28.bin</q1:FileName>
+          <q1:Offset>0</q1:Offset>
+          <q1:Frequency>30000</q1:Frequency>
+          <q1:ChannelCount>32</q1:ChannelCount>
+          <q1:BufferLength>60</q1:BufferLength>
+          <q1:Depth>U16</q1:Depth>
+          <q1:Layout>ColumnMajor</q1:Layout>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q1:DetectSpikes">
+          <q1:Delay>10</q1:Delay>
+          <q1:Length>30</q1:Length>
+          <q1:Threshold>
+            <q1:double>-43.84573207543847</q1:double>
+            <q1:double>-31.315746352885185</q1:double>
+            <q1:double>-29.399102383651051</q1:double>
+            <q1:double>-24.206334415715133</q1:double>
+            <q1:double>-25.486415988019825</q1:double>
+            <q1:double>-26.382091490049525</q1:double>
+            <q1:double>-24.242059351337375</q1:double>
+            <q1:double>-35.208453351080983</q1:double>
+            <q1:double>-25.1328443778346</q1:double>
+            <q1:double>-24.438603697000215</q1:double>
+            <q1:double>-29.049649596751021</q1:double>
+            <q1:double>-27.253329730890382</q1:double>
+            <q1:double>-28.450663242435681</q1:double>
+            <q1:double>-26.996855399976564</q1:double>
+            <q1:double>-25.96418572697532</q1:double>
+            <q1:double>-24.366415597075807</q1:double>
+            <q1:double>-26.291910220965757</q1:double>
+            <q1:double>-25.22130244451602</q1:double>
+            <q1:double>-30.152688076998214</q1:double>
+            <q1:double>-25.468707134496551</q1:double>
+            <q1:double>-25.832000608878118</q1:double>
+            <q1:double>-24.714356226563446</q1:double>
+            <q1:double>-28.892277082052768</q1:double>
+            <q1:double>-23.504655040055788</q1:double>
+            <q1:double>-22.74539740146691</q1:double>
+            <q1:double>-26.622609203784695</q1:double>
+            <q1:double>-28.113216122447284</q1:double>
+            <q1:double>-29.674182415718942</q1:double>
+            <q1:double>-28.202242905077242</q1:double>
+            <q1:double>-29.47627082874801</q1:double>
+            <q1:double>-23.816577285171892</q1:double>
+            <q1:double>-35.063351633347104</q1:double>
+          </q1:Threshold>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:AdcScale">
+          <q2:AdcType>Electrode</q2:AdcType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q1:FrequencyFilter">
+          <q1:SamplingFrequency>30000</q1:SamplingFrequency>
+          <q1:Cutoff1>300</q1:Cutoff1>
+          <q1:Cutoff2>6000</q1:Cutoff2>
+          <q1:KernelLength>60</q1:KernelLength>
+          <q1:FilterType>BandPass</q1:FilterType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q1:ReferenceChannels" />
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Dsp.MatrixReader, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.DetectSpikes, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Ephys.AdcScale, Bonsai.Ephys, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.ReferenceChannels, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

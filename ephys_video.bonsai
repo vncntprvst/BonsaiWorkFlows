@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.1.2">
+  <Workflow xmlns:q8="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q7="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q6="clr-namespace:Bonsai.PointGrey;assembly=Bonsai.PointGrey" xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Image</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Metadata.embeddedFrameCounter</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:VideoWriter">
+          <q4:FileName>video.avi</q4:FileName>
+          <q4:Suffix>None</q4:Suffix>
+          <q4:Buffered>true</q4:Buffered>
+          <q4:Overwrite>false</q4:Overwrite>
+          <q4:FourCC>FMP4</q4:FourCC>
+          <q4:FrameRate>120</q4:FrameRate>
+          <q4:FrameSize>
+            <q4:Width>0</q4:Width>
+            <q4:Height>0</q4:Height>
+          </q4:FrameSize>
+          <q4:ResizeInterpolation>NearestNeighbor</q4:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Metadata</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q6:GpioPinState" />
+      </Expression>
+      <Expression xsi:type="q7:CsvWriter">
+        <q7:PropertyMappings />
+        <q7:FileName>video.csv</q7:FileName>
+        <q7:Append>false</q7:Append>
+        <q7:Overwrite>false</q7:Overwrite>
+        <q7:Suffix>None</q7:Suffix>
+        <q7:IncludeHeader>false</q7:IncludeHeader>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q4:Threshold">
+          <q4:ThresholdValue>128</q4:ThresholdValue>
+          <q4:MaxValue>255</q4:MaxValue>
+          <q4:ThresholdType>Binary</q4:ThresholdType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>LargestObject</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q4:LargestBinaryRegion" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q4:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q4:FindContours">
+                <q4:Mode>External</q4:Mode>
+                <q4:Method>ChainApproxNone</q4:Method>
+                <q4:Offset>
+                  <q4:X>0</q4:X>
+                  <q4:Y>0</q4:Y>
+                </q4:Offset>
+                <q4:MinArea xsi:nil="true" />
+                <q4:MaxArea xsi:nil="true" />
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <PropertyMappings />
+      </Expression>
+      <Expression xsi:type="q7:CsvWriter">
+        <q7:PropertyMappings />
+        <q7:FileName>tracking.csv</q7:FileName>
+        <q7:Append>false</q7:Append>
+        <q7:Overwrite>false</q7:Overwrite>
+        <q7:Suffix>None</q7:Suffix>
+        <q7:IncludeHeader>true</q7:IncludeHeader>
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q8:VideoCaptureDevice">
+          <q8:Index>0</q8:Index>
+        </Generator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>4</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.PointGrey.GpioPinState, Bonsai.PointGrey, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

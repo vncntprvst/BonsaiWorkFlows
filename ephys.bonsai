@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.0.3">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Source">
+        <PropertyMappings>
+          <PropertyMapping name="BitFileName" selector="Source1" />
+        </PropertyMappings>
+        <Generator xsi:type="q1:Rhd2000EvalBoard">
+          <q1:BitFileName>C:\Users\Vincent\AppData\Local\Bonsai\Packages\Bonsai.Ephys.2.0.0\rhd2000_with_leds.bit</q1:BitFileName>
+          <q1:SampleRate>SampleRate20000Hz</q1:SampleRate>
+          <q1:FastSettle>false</q1:FastSettle>
+          <q1:LowerBandwidth>0.1</q1:LowerBandwidth>
+          <q1:UpperBandwidth>7500</q1:UpperBandwidth>
+          <q1:DspCutoffFrequency>1</q1:DspCutoffFrequency>
+          <q1:DspEnabled>true</q1:DspEnabled>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringRhd2000EvalBoard">
+        <MemberName>BitFileName</MemberName>
+        <Name>OE</Name>
+        <Value>C:\Users\Vincent\AppData\Local\Bonsai\Packages\Bonsai.Ephys.2.0.0\rhd2000_with_leds.bit</Value>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>1</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

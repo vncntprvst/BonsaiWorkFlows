@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.1.2">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q1:Rhd2000EvalBoard">
+          <q1:BitFileName>C:\Code\OpenEphysGUI\Resources\Bitfiles\rhd2000.bit</q1:BitFileName>
+          <q1:SampleRate>SampleRate30000Hz</q1:SampleRate>
+          <q1:FastSettle>false</q1:FastSettle>
+          <q1:LowerBandwidth>0.1</q1:LowerBandwidth>
+          <q1:UpperBandwidth>7500</q1:UpperBandwidth>
+          <q1:DspCutoffFrequency>1</q1:DspCutoffFrequency>
+          <q1:DspEnabled>true</q1:DspEnabled>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.AmplifierData</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.BoardAdcData</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.TtlIn</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:MatrixWriter">
+          <q2:Path>C:\Data\Bonsai_Ephys\amplifier.bin</q2:Path>
+          <q2:Suffix>None</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:Layout>ColumnMajor</q2:Layout>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:MatrixWriter">
+          <q2:Path>C:\Data\Bonsai_Ephys\adc.bin</q2:Path>
+          <q2:Suffix>None</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:Layout>ColumnMajor</q2:Layout>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:MatrixWriter">
+          <q2:Path>C:\Data\Bonsai_Ephys\sync.bin</q2:Path>
+          <q2:Suffix>None</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:Layout>ColumnMajor</q2:Layout>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>LfpView</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings>
+                <PropertyMapping name="Channels" selector="Source2" />
+              </PropertyMappings>
+              <Combinator xsi:type="q2:SelectChannels">
+                <q2:Channels>
+                  <q2:int>5</q2:int>
+                </q2:Channels>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="ExternalizedPropertyOfArrayOfInt32SelectChannels">
+              <MemberName>Channels</MemberName>
+              <Name>Channels</Name>
+              <Value>
+                <int>5</int>
+              </Value>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>0</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <PropertyMappings />
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>SpikeView</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:TriggeredBuffer">
+                <q2:Count>60</q2:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:Delay">
+                <q2:Count>20</q2:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings>
+                <PropertyMapping name="Cutoff1" selector="Source2" />
+              </PropertyMappings>
+              <Combinator xsi:type="q2:FrequencyFilter">
+                <q2:SamplingFrequency>30000</q2:SamplingFrequency>
+                <q2:Cutoff1>300</q2:Cutoff1>
+                <q2:Cutoff2>0</q2:Cutoff2>
+                <q2:KernelLength>400</q2:KernelLength>
+                <q2:FilterType>HighPass</q2:FilterType>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings>
+                <PropertyMapping name="ThresholdValue" selector="Source2" />
+              </PropertyMappings>
+              <Combinator xsi:type="q2:Threshold">
+                <q2:ThresholdValue>-70</q2:ThresholdValue>
+                <q2:MaxValue>1</q2:MaxValue>
+                <q2:ThresholdType>BinaryInv</q2:ThresholdType>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="ExternalizedPropertyOfDoubleFrequencyFilter">
+              <MemberName>Cutoff1</MemberName>
+              <Name>Cutoff1</Name>
+              <Value>300</Value>
+            </Expression>
+            <Expression xsi:type="ExternalizedPropertyOfDoubleThreshold">
+              <MemberName>ThresholdValue</MemberName>
+              <Name>ThresholdValue</Name>
+              <Value>-70</Value>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings>
+                <PropertyMapping name="Channels" selector="Source2" />
+              </PropertyMappings>
+              <Combinator xsi:type="q2:SelectChannels">
+                <q2:Channels>
+                  <q2:int>10</q2:int>
+                </q2:Channels>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedPropertyOfArrayOfInt32SelectChannels">
+              <MemberName>Channels</MemberName>
+              <Name>Channels</Name>
+              <Value>
+                <int>10</int>
+              </Value>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>1</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>3</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>4</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>9</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>10</From>
+              <To>9</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <PropertyMappings />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q1:AdcScale">
+          <q1:AdcType>Electrode</q1:AdcType>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.MatrixWriter, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Int32[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.TriggeredBuffer, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Delay, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Threshold, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Dsp.Threshold, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Ephys.AdcScale, Bonsai.Ephys, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
