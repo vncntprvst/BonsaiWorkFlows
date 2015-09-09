@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.1.2">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q6="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q6="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="q1:CsvWriter">
         <q1:PropertyMappings />
-        <q1:FileName>C:\Data\Behav\Name_sessiontype_.csv</q1:FileName>
+        <q1:FileName>C:\Data\Behav\PrV56_11_train_.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>Timestamp</q1:Suffix>
@@ -17,9 +17,9 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:RoiActivityDetected">
-          <q2:Index xsi:nil="true" />
-          <q2:Threshold>0</q2:Threshold>
+        <Combinator xsi:type="q4:RoiActivityDetected">
+          <q4:Index xsi:nil="true" />
+          <q4:Threshold>0</q4:Threshold>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
@@ -129,8 +129,8 @@ def process(value):
       </Expression>
       <Expression xsi:type="Source">
         <PropertyMappings />
-        <Generator xsi:type="q4:KeyDown">
-          <q4:Filter>S</q4:Filter>
+        <Generator xsi:type="q5:KeyDown">
+          <q5:Filter>S</q5:Filter>
         </Generator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
@@ -262,46 +262,46 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <PropertyMappings />
-              <Combinator xsi:type="q2:LargestBinaryRegion" />
+              <Combinator xsi:type="q4:LargestBinaryRegion" />
             </Expression>
             <Expression xsi:type="Combinator">
               <PropertyMappings />
-              <Combinator xsi:type="q2:BinaryRegionAnalysis" />
+              <Combinator xsi:type="q4:BinaryRegionAnalysis" />
             </Expression>
             <Expression xsi:type="Combinator">
               <PropertyMappings />
-              <Combinator xsi:type="q2:FindContours">
-                <q2:Mode>External</q2:Mode>
-                <q2:Method>ChainApproxNone</q2:Method>
-                <q2:Offset>
-                  <q2:X>0</q2:X>
-                  <q2:Y>0</q2:Y>
-                </q2:Offset>
-                <q2:MinArea>50</q2:MinArea>
-                <q2:MaxArea>500</q2:MaxArea>
+              <Combinator xsi:type="q4:FindContours">
+                <q4:Mode>External</q4:Mode>
+                <q4:Method>ChainApproxNone</q4:Method>
+                <q4:Offset>
+                  <q4:X>0</q4:X>
+                  <q4:Y>0</q4:Y>
+                </q4:Offset>
+                <q4:MinArea>50</q4:MinArea>
+                <q4:MaxArea>500</q4:MaxArea>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <PropertyMappings />
-              <Combinator xsi:type="q2:HsvThreshold">
-                <q2:Lower>
-                  <q2:Val0>99</q2:Val0>
-                  <q2:Val1>95</q2:Val1>
-                  <q2:Val2>44</q2:Val2>
-                  <q2:Val3>0</q2:Val3>
-                </q2:Lower>
-                <q2:Upper>
-                  <q2:Val0>165</q2:Val0>
-                  <q2:Val1>255</q2:Val1>
-                  <q2:Val2>129</q2:Val2>
-                  <q2:Val3>255</q2:Val3>
-                </q2:Upper>
+              <Combinator xsi:type="q4:HsvThreshold">
+                <q4:Lower>
+                  <q4:Val0>99</q4:Val0>
+                  <q4:Val1>95</q4:Val1>
+                  <q4:Val2>44</q4:Val2>
+                  <q4:Val3>0</q4:Val3>
+                </q4:Lower>
+                <q4:Upper>
+                  <q4:Val0>165</q4:Val0>
+                  <q4:Val1>255</q4:Val1>
+                  <q4:Val2>129</q4:Val2>
+                  <q4:Val3>255</q4:Val3>
+                </q4:Upper>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <PropertyMappings />
-              <Combinator xsi:type="q2:ConvertColor">
-                <q2:Conversion>Bgr2Hsv</q2:Conversion>
+              <Combinator xsi:type="q4:ConvertColor">
+                <q4:Conversion>Bgr2Hsv</q4:Conversion>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowInput">
@@ -376,80 +376,80 @@ def process(value):
       </Expression>
       <Expression xsi:type="Source">
         <PropertyMappings />
-        <Generator xsi:type="q4:KeyDown">
-          <q4:Filter>End</q4:Filter>
+        <Generator xsi:type="q5:KeyDown">
+          <q5:Filter>End</q5:Filter>
         </Generator>
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:RoiActivityDetected">
-          <q2:Index xsi:nil="true" />
-          <q2:Threshold>0</q2:Threshold>
+        <Combinator xsi:type="q4:RoiActivityDetected">
+          <q4:Index xsi:nil="true" />
+          <q4:Threshold>0</q4:Threshold>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:RoiActivity" />
+        <Combinator xsi:type="q4:RoiActivity" />
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:RoiActivity" />
+        <Combinator xsi:type="q4:RoiActivity" />
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:Laplace">
-          <q2:ApertureSize>3</q2:ApertureSize>
+        <Combinator xsi:type="q4:Laplace">
+          <q4:ApertureSize>3</q4:ApertureSize>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:Laplace">
-          <q2:ApertureSize>3</q2:ApertureSize>
+        <Combinator xsi:type="q4:Laplace">
+          <q4:ApertureSize>3</q4:ApertureSize>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:Crop">
-          <q2:RegionOfInterest>
-            <q2:X>298</q2:X>
-            <q2:Y>258</q2:Y>
-            <q2:Width>100</q2:Width>
-            <q2:Height>150</q2:Height>
-          </q2:RegionOfInterest>
+        <Combinator xsi:type="q4:Crop">
+          <q4:RegionOfInterest>
+            <q4:X>298</q4:X>
+            <q4:Y>258</q4:Y>
+            <q4:Width>100</q4:Width>
+            <q4:Height>150</q4:Height>
+          </q4:RegionOfInterest>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:Crop">
-          <q2:RegionOfInterest>
-            <q2:X>434</q2:X>
-            <q2:Y>94</q2:Y>
-            <q2:Width>100</q2:Width>
-            <q2:Height>150</q2:Height>
-          </q2:RegionOfInterest>
+        <Combinator xsi:type="q4:Crop">
+          <q4:RegionOfInterest>
+            <q4:X>434</q4:X>
+            <q4:Y>94</q4:Y>
+            <q4:Width>100</q4:Width>
+            <q4:Height>150</q4:Height>
+          </q4:RegionOfInterest>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:Crop">
-          <q2:RegionOfInterest>
-            <q2:X>172</q2:X>
-            <q2:Y>16</q2:Y>
-            <q2:Width>100</q2:Width>
-            <q2:Height>150</q2:Height>
-          </q2:RegionOfInterest>
+        <Combinator xsi:type="q4:Crop">
+          <q4:RegionOfInterest>
+            <q4:X>172</q4:X>
+            <q4:Y>16</q4:Y>
+            <q4:Width>100</q4:Width>
+            <q4:Height>150</q4:Height>
+          </q4:RegionOfInterest>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:Flip">
-          <q2:Mode>Vertical</q2:Mode>
+        <Combinator xsi:type="q4:Flip">
+          <q4:Mode>Vertical</q4:Mode>
         </Combinator>
       </Expression>
       <Expression xsi:type="Source">
         <PropertyMappings />
-        <Generator xsi:type="q5:VideoCaptureDevice">
-          <q5:Index>0</q5:Index>
+        <Generator xsi:type="q6:VideoCaptureDevice">
+          <q6:Index>0</q6:Index>
         </Generator>
       </Expression>
       <Expression xsi:type="Multiply">
@@ -549,14 +549,14 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q6:Concat">
-          <q6:Axis>0</q6:Axis>
+        <Combinator xsi:type="q2:Concat">
+          <q2:Axis>0</q2:Axis>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <PropertyMappings />
-        <Combinator xsi:type="q2:Flip">
-          <q2:Mode>Horizontal</q2:Mode>
+        <Combinator xsi:type="q4:Flip">
+          <q4:Mode>Horizontal</q4:Mode>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
@@ -601,9 +601,9 @@ def generate():
             </Expression>
             <Expression xsi:type="Combinator">
               <PropertyMappings />
-              <Combinator xsi:type="q6:Tile">
-                <q6:RowTiles>2</q6:RowTiles>
-                <q6:ColumnTiles>1</q6:ColumnTiles>
+              <Combinator xsi:type="q2:Tile">
+                <q2:RowTiles>2</q2:RowTiles>
+                <q2:ColumnTiles>1</q2:ColumnTiles>
               </Combinator>
             </Expression>
             <Expression xsi:type="q3:PythonTransform">
@@ -617,16 +617,16 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <PropertyMappings />
-              <Combinator xsi:type="q6:Tile">
-                <q6:RowTiles>1</q6:RowTiles>
-                <q6:ColumnTiles>10</q6:ColumnTiles>
+              <Combinator xsi:type="q2:Tile">
+                <q2:RowTiles>1</q2:RowTiles>
+                <q2:ColumnTiles>10</q2:ColumnTiles>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <PropertyMappings />
-              <Combinator xsi:type="q6:Buffer">
-                <q6:Count>1</q6:Count>
-                <q6:Skip xsi:nil="true" />
+              <Combinator xsi:type="q2:Buffer">
+                <q2:Count>1</q2:Count>
+                <q2:Skip xsi:nil="true" />
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
