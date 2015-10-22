@@ -1,0 +1,690 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.1.2">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q6="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:RoiActivityDetected">
+          <q2:Index xsi:nil="true" />
+          <q2:Threshold>0</q2:Threshold>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>RandomStart</Name>
+        <Description>RandomStart</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Source">
+              <PropertyMappings />
+              <Generator xsi:type="StringProperty">
+                <Value>&lt;1</Value>
+              </Generator>
+            </Expression>
+            <Expression xsi:type="Source">
+              <PropertyMappings />
+              <Generator xsi:type="StringProperty">
+                <Value>0</Value>
+              </Generator>
+            </Expression>
+            <Expression xsi:type="q3:ExpressionTransform">
+              <q3:Expression>it ? 1 : 0</q3:Expression>
+            </Expression>
+            <Expression xsi:type="Source">
+              <PropertyMappings />
+              <Generator xsi:type="StringProperty">
+                <Value>&gt;</Value>
+              </Generator>
+            </Expression>
+            <Expression xsi:type="GreaterThan">
+              <Operand xsi:type="DoubleProperty">
+                <Value>0.5</Value>
+              </Operand>
+              <PropertyMappings />
+            </Expression>
+            <Expression xsi:type="q3:PythonTransform">
+              <q3:Script>from System import Random
+generator = Random()
+
+@returns(float)
+def process(value):
+  return generator.NextDouble()</q3:Script>
+            </Expression>
+            <Expression xsi:type="Equal">
+              <Operand xsi:type="WorkflowPropertyOfKeys">
+                <Value>S</Value>
+              </Operand>
+              <PropertyMappings />
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>0</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>0</To>
+              <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>0</To>
+              <Label>Source4</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <PropertyMappings />
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q4:KeyDown">
+          <q4:Filter>S</q4:Filter>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings>
+          <PropertyMapping name="PortName" selector="Source1" />
+        </PropertyMappings>
+        <Generator xsi:type="q1:SerialStringRead">
+          <q1:PortName>COM4</q1:PortName>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>NoseDetector</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Condition">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Source.Area</Selector>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="GreaterThan">
+                    <Operand xsi:type="DoubleProperty">
+                      <Value>0</Value>
+                    </Operand>
+                    <PropertyMappings />
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+              <PropertyMappings />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:LargestBinaryRegion" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:FindContours">
+                <q2:Mode>External</q2:Mode>
+                <q2:Method>ChainApproxNone</q2:Method>
+                <q2:Offset>
+                  <q2:X>0</q2:X>
+                  <q2:Y>0</q2:Y>
+                </q2:Offset>
+                <q2:MinArea>50</q2:MinArea>
+                <q2:MaxArea>500</q2:MaxArea>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:HsvThreshold">
+                <q2:Lower>
+                  <q2:Val0>99</q2:Val0>
+                  <q2:Val1>95</q2:Val1>
+                  <q2:Val2>44</q2:Val2>
+                  <q2:Val3>0</q2:Val3>
+                </q2:Lower>
+                <q2:Upper>
+                  <q2:Val0>165</q2:Val0>
+                  <q2:Val1>255</q2:Val1>
+                  <q2:Val2>129</q2:Val2>
+                  <q2:Val3>255</q2:Val3>
+                </q2:Upper>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:ConvertColor">
+                <q2:Conversion>Bgr2Hsv</q2:Conversion>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="DistinctUntilChanged" />
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>8</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <PropertyMappings />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings>
+          <PropertyMapping name="PortName" selector="Source2" />
+        </PropertyMappings>
+        <Combinator xsi:type="q1:SerialStringWrite">
+          <q1:PortName>COM4</q1:PortName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings>
+          <PropertyMapping name="PortName" selector="Source2" />
+        </PropertyMappings>
+        <Combinator xsi:type="q1:SerialStringWrite">
+          <q1:PortName>COM4</q1:PortName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q4:KeyDown">
+          <q4:Filter>End</q4:Filter>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:RoiActivityDetected">
+          <q2:Index xsi:nil="true" />
+          <q2:Threshold>0</q2:Threshold>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:RoiActivity" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:RoiActivity" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:Laplace">
+          <q2:ApertureSize>3</q2:ApertureSize>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:Laplace">
+          <q2:ApertureSize>3</q2:ApertureSize>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:Crop">
+          <q2:RegionOfInterest>
+            <q2:X>298</q2:X>
+            <q2:Y>258</q2:Y>
+            <q2:Width>100</q2:Width>
+            <q2:Height>150</q2:Height>
+          </q2:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:Crop">
+          <q2:RegionOfInterest>
+            <q2:X>434</q2:X>
+            <q2:Y>94</q2:Y>
+            <q2:Width>100</q2:Width>
+            <q2:Height>150</q2:Height>
+          </q2:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:Crop">
+          <q2:RegionOfInterest>
+            <q2:X>172</q2:X>
+            <q2:Y>16</q2:Y>
+            <q2:Width>100</q2:Width>
+            <q2:Height>150</q2:Height>
+          </q2:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:Flip">
+          <q2:Mode>Vertical</q2:Mode>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q5:VideoCaptureDevice">
+          <q5:Index>0</q5:Index>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>End signal</Name>
+        <Description>End signal</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Source">
+              <PropertyMappings />
+              <Generator xsi:type="StringProperty">
+                <Value>&lt;0</Value>
+              </Generator>
+            </Expression>
+            <Expression xsi:type="Source">
+              <PropertyMappings />
+              <Generator xsi:type="StringProperty">
+                <Value>1</Value>
+              </Generator>
+            </Expression>
+            <Expression xsi:type="q3:ExpressionTransform">
+              <q3:Expression>it ? 1 : 0</q3:Expression>
+            </Expression>
+            <Expression xsi:type="Source">
+              <PropertyMappings />
+              <Generator xsi:type="StringProperty">
+                <Value>&gt;</Value>
+              </Generator>
+            </Expression>
+            <Expression xsi:type="Equal">
+              <Operand xsi:type="WorkflowPropertyOfKeys">
+                <Value>End</Value>
+              </Operand>
+              <PropertyMappings />
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>0</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>0</To>
+              <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>0</To>
+              <Label>Source4</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <PropertyMappings />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="TriggeredWindow" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q6:Concat">
+          <q6:Axis>0</q6:Axis>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:Flip">
+          <q2:Mode>Horizontal</q2:Mode>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="StringProperty">
+          <Value>Trial number, Trial type, Succes count, Time</Value>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringSerialStringWrite">
+        <MemberName>PortName</MemberName>
+        <Name>SerialWrite2</Name>
+        <Value />
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringSerialStringRead">
+        <MemberName>PortName</MemberName>
+        <Name>SerialRead</Name>
+        <Value />
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="StringProperty">
+          <Value>COM4</Value>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="Merge" />
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringSerialStringWrite">
+        <MemberName>PortName</MemberName>
+        <Name>SerialWrite1</Name>
+        <Value />
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>2</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>28</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>20</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>19</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>20</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>21</To>
+        <Label>Source3</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>21</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>16</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>16</From>
+        <To>21</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>17</From>
+        <To>23</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>18</From>
+        <To>17</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>19</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>22</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>15</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>16</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>24</From>
+        <To>28</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>25</From>
+        <To>7</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>26</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>27</From>
+        <To>29</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>27</From>
+        <To>25</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>27</From>
+        <To>26</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>28</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>29</From>
+        <To>6</To>
+        <Label>Source2</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.RoiActivityDetected, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.EqualBuilder, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.WorkflowProperty`1[[System.Windows.Forms.Keys, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.SerialStringRead, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.HsvThreshold, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.ConvertColor, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.DistinctUntilChanged, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.SerialStringWrite, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.RoiActivity, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Laplace, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Flip, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.TriggeredWindow, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Concat, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.SerialStringWrite, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.SerialStringRead, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Merge, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
