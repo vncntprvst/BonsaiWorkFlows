@@ -5,8 +5,8 @@
       <Expression xsi:type="Combinator">
         <PropertyMappings />
         <Combinator xsi:type="q1:DigitalOutput">
-          <q1:PortName>COM3</q1:PortName>
-          <q1:Pin>12</q1:Pin>
+          <q1:PortName>COM8</q1:PortName>
+          <q1:Pin>8</q1:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Source">
@@ -19,7 +19,7 @@
       <Expression xsi:type="Combinator">
         <PropertyMappings />
         <Combinator xsi:type="q2:ConvertColor">
-          <q2:Conversion>Bgr2Hsv</q2:Conversion>
+          <q2:Conversion>Bgr2HlsFull</q2:Conversion>
         </Combinator>
       </Expression>
       <Expression xsi:type="Source">
@@ -105,10 +105,10 @@
               <PropertyMappings />
               <Combinator xsi:type="q2:Crop">
                 <q2:RegionOfInterest>
-                  <q2:X>362</q2:X>
-                  <q2:Y>262</q2:Y>
+                  <q2:X>268</q2:X>
+                  <q2:Y>132</q2:Y>
                   <q2:Width>48</q2:Width>
-                  <q2:Height>47</q2:Height>
+                  <q2:Height>46</q2:Height>
                 </q2:RegionOfInterest>
               </Combinator>
             </Expression>

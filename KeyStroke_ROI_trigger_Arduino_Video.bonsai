@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.1.2">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q1="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q4="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q1:DigitalOutput">
+          <q1:PortName>COM8</q1:PortName>
+          <q1:Pin>8</q1:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q2:CameraCapture">
+          <q2:Index>0</q2:Index>
+          <q2:CaptureProperties />
+        </Generator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="q2:ConvertColor">
+          <q2:Conversion>Bgr2HlsFull</q2:Conversion>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Source">
+        <PropertyMappings />
+        <Generator xsi:type="q3:KeyDown">
+          <q3:Filter>None</q3:Filter>
+        </Generator>
+      </Expression>
+      <Expression xsi:type="Equal">
+        <Operand xsi:type="WorkflowPropertyOfKeys">
+          <Value>Down</Value>
+        </Operand>
+        <PropertyMappings />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="Sample" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <PropertyMappings />
+        <Combinator xsi:type="TriggeredWindow" />
+      </Expression>
+      <Expression xsi:type="SelectMany">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:VideoWriter">
+                <q2:FileName>testvideo3.avi</q2:FileName>
+                <q2:Suffix>FileCount</q2:Suffix>
+                <q2:Buffered>true</q2:Buffered>
+                <q2:Overwrite>false</q2:Overwrite>
+                <q2:FourCC>FMP4</q2:FourCC>
+                <q2:FrameRate>30</q2:FrameRate>
+                <q2:FrameSize>
+                  <q2:Width>0</q2:Width>
+                  <q2:Height>0</q2:Height>
+                </q2:FrameSize>
+                <q2:ResizeInterpolation>NearestNeighbor</q2:ResizeInterpolation>
+              </Combinator>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <PropertyMappings />
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="GreaterThan">
+              <Operand xsi:type="DoubleProperty">
+                <Value>100000</Value>
+              </Operand>
+              <PropertyMappings />
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Val0</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q4:Sum" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:Crop">
+                <q2:RegionOfInterest>
+                  <q2:X>268</q2:X>
+                  <q2:Y>132</q2:Y>
+                  <q2:Width>48</q2:Width>
+                  <q2:Height>46</q2:Height>
+                </q2:RegionOfInterest>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="q2:HsvThreshold">
+                <q2:Lower>
+                  <q2:Val0>80</q2:Val0>
+                  <q2:Val1>78</q2:Val1>
+                  <q2:Val2>250</q2:Val2>
+                  <q2:Val3>0</q2:Val3>
+                </q2:Lower>
+                <q2:Upper>
+                  <q2:Val0>170</q2:Val0>
+                  <q2:Val1>255</q2:Val1>
+                  <q2:Val2>255</q2:Val2>
+                  <q2:Val3>255</q2:Val3>
+                </q2:Upper>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <PropertyMappings />
+              <Combinator xsi:type="DistinctUntilChanged" />
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <PropertyMappings />
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>6</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>5</To>
+        <Label>Source2</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Arduino.DigitalOutput, Bonsai.Arduino, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.CameraCapture, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.ConvertColor, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.EqualBuilder, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.WorkflowProperty`1[[System.Windows.Forms.Keys, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Sample, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.TriggeredWindow, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Sum, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.HsvThreshold, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.DistinctUntilChanged, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
