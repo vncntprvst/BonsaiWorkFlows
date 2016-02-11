@@ -1,79 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.1.2">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q2="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:q1="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.2.0">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q1="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns="https://horizongir.org/bonsai">
     <Nodes>
-      <Expression xsi:type="Source">
-        <PropertyMappings />
-        <Generator xsi:type="q1:FunctionGenerator">
-          <q1:BufferLength>100</q1:BufferLength>
-          <q1:Frequency>10</q1:Frequency>
-          <q1:Waveform>Square</q1:Waveform>
-          <q1:PlaybackRate>100</q1:PlaybackRate>
-        </Generator>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timer">
+          <DueTime>PT0S</DueTime>
+          <Period>PT1S</Period>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="GreaterThanOrEqual">
+        <Operand xsi:type="WorkflowPropertyOfInt64">
+          <Value>0</Value>
+        </Operand>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:Threshold">
-          <q1:ThresholdValue>5</q1:ThresholdValue>
-          <q1:MaxValue>1</q1:MaxValue>
-          <q1:ThresholdType>Binary</q1:ThresholdType>
+        <Combinator xsi:type="q1:DigitalOutput">
+          <q1:PortName>COM8</q1:PortName>
+          <q1:Pin>8</q1:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:ConvertScale">
-          <q1:Depth>S16</q1:Depth>
-          <q1:Scale>10</q1:Scale>
-          <q1:Shift>0</q1:Shift>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="WorkflowOutput" />
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Take">
-          <Count>1</Count>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
         <Combinator xsi:type="Delay">
-          <DueTime>PT2S</DueTime>
+          <DueTime>PT0.1S</DueTime>
         </Combinator>
       </Expression>
+      <Expression xsi:type="BitwiseNot" />
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Repeat" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Timestamp" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:DigitalOutput">
-          <q2:PortName>COM8</q2:PortName>
-          <q2:Pin>8</q2:Pin>
+        <Combinator xsi:type="q1:DigitalOutput">
+          <q1:PortName>COM8</q1:PortName>
+          <q1:Pin>8</q1:Pin>
         </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Timestamp" />
       </Expression>
     </Nodes>
     <Edges>
       <Edge>
         <From>0</From>
-        <To>2</To>
+        <To>1</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>1</From>
-        <To>3</To>
+        <To>2</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>2</From>
-        <To>1</To>
+        <To>3</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
@@ -82,40 +54,18 @@
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>3</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
         <From>4</From>
         <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>7</To>
         <Label>Source1</Label>
       </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
-    <Type>Bonsai.Dsp.FunctionGenerator, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Threshold, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.ConvertScale, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Arduino.DigitalOutput, Bonsai.Arduino, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.GreaterThanOrEqualBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.WorkflowProperty`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Arduino.DigitalOutput, Bonsai.Arduino, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.BitwiseNotBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
