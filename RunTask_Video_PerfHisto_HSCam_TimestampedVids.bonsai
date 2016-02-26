@@ -373,8 +373,8 @@ def process(value):
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:Crop">
           <q2:RegionOfInterest>
-            <q2:X>278</q2:X>
-            <q2:Y>242</q2:Y>
+            <q2:X>206</q2:X>
+            <q2:Y>182</q2:Y>
             <q2:Width>100</q2:Width>
             <q2:Height>150</q2:Height>
           </q2:RegionOfInterest>
@@ -383,8 +383,8 @@ def process(value):
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:Crop">
           <q2:RegionOfInterest>
-            <q2:X>184</q2:X>
-            <q2:Y>224</q2:Y>
+            <q2:X>94</q2:X>
+            <q2:Y>144</q2:Y>
             <q2:Width>100</q2:Width>
             <q2:Height>150</q2:Height>
           </q2:RegionOfInterest>
@@ -393,8 +393,8 @@ def process(value):
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:Crop">
           <q2:RegionOfInterest>
-            <q2:X>378</q2:X>
-            <q2:Y>196</q2:Y>
+            <q2:X>308</q2:X>
+            <q2:Y>138</q2:Y>
             <q2:Width>100</q2:Width>
             <q2:Height>150</q2:Height>
           </q2:RegionOfInterest>

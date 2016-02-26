@@ -54,7 +54,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:CameraCapture">
-          <q1:Index>0</q1:Index>
+          <q1:Index>1</q1:Index>
           <q1:CaptureProperties>
             <q1:CapturePropertyAssignment>
               <q1:Property>Fps</q1:Property>
