@@ -3,7 +3,7 @@
   <Workflow xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>C:\Data\Behav\LY9_45_.csv</q1:FileName>
+        <q1:FileName>C:\Data\Behav\LY5_54_.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>Timestamp</q1:Suffix>
@@ -741,7 +741,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q4:VideoWriter">
-          <q4:FileName>C:\Data\Video\LY9_45_.avi</q4:FileName>
+          <q4:FileName>C:\Data\Video\LY5_54_.avi</q4:FileName>
           <q4:Suffix>Timestamp</q4:Suffix>
           <q4:Buffered>true</q4:Buffered>
           <q4:Overwrite>false</q4:Overwrite>

@@ -3,7 +3,7 @@
   <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q6="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>C:\Data\Behav\clocktest_.csv</q1:FileName>
+        <q1:FileName>C:\Data\Behav\tasktest_.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>Timestamp</q1:Suffix>
@@ -642,7 +642,7 @@ def process(value):
         </Workflow>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
-        <Name>Rigth orange</Name>
+        <Name>Right orange</Name>
         <Description>Right Condition</Description>
         <Workflow>
           <Nodes>
@@ -734,7 +734,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:VideoWriter">
-          <q2:FileName>C:\Data\Video\clocktest_HSCam.avi</q2:FileName>
+          <q2:FileName>C:\Data\Video\tasktest_HSCam.avi</q2:FileName>
           <q2:Suffix>Timestamp</q2:Suffix>
           <q2:Buffered>true</q2:Buffered>
           <q2:Overwrite>false</q2:Overwrite>
@@ -748,7 +748,7 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>C:\Data\Video\clocktest_HSCam.csv</q1:FileName>
+        <q1:FileName>C:\Data\Video\tasktest_HSCam.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>Timestamp</q1:Suffix>
@@ -803,7 +803,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:VideoWriter">
-          <q2:FileName>C:\Data\Video\clocktest_Webcam.avi</q2:FileName>
+          <q2:FileName>C:\Data\Video\tasktest_Webcam.avi</q2:FileName>
           <q2:Suffix>Timestamp</q2:Suffix>
           <q2:Buffered>true</q2:Buffered>
           <q2:Overwrite>false</q2:Overwrite>
