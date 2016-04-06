@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.2.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FileCapture">
+          <q1:FileName>C:\Data\Video\PrV77_56_Trial_X.avi</q1:FileName>
+          <q1:PlaybackRate>40</q1:PlaybackRate>
+          <q1:StartPosition>0</q1:StartPosition>
+          <q1:PositionUnits>Frames</q1:PositionUnits>
+          <q1:Loop>true</q1:Loop>
+          <q1:Playing>true</q1:Playing>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>66</q1:X>
+            <q1:Y>124</q1:Y>
+            <q1:Width>524</q1:Width>
+            <q1:Height>178</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:BinaryRegionExtremes">
+          <q1:Method>Vertical</q1:Method>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FindContours">
+          <q1:Mode>ConnectedComponent</q1:Mode>
+          <q1:Method>ChainApproxNone</q1:Method>
+          <q1:Offset>
+            <q1:X>0</q1:X>
+            <q1:Y>0</q1:Y>
+          </q1:Offset>
+          <q1:MinArea>1000</q1:MinArea>
+          <q1:MaxArea xsi:nil="true" />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Grayscale" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:BinaryRegionAnalysis" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:LargestBinaryRegion" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:MaskPolygon">
+          <q1:Regions>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>410</q1:X>
+                <q1:Y>0</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>524</q1:X>
+                <q1:Y>0</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>525</q1:X>
+                <q1:Y>27</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>463</q1:X>
+                <q1:Y>13</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>19</q1:X>
+                <q1:Y>159</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>1</q1:X>
+                <q1:Y>147</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>1</q1:X>
+                <q1:Y>177</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>49</q1:X>
+                <q1:Y>177</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+          </q1:Regions>
+          <q1:MaskType>ToZeroInv</q1:MaskType>
+          <q1:FillValue>
+            <q1:Val0>150</q1:Val0>
+            <q1:Val1>150</q1:Val1>
+            <q1:Val2>150</q1:Val2>
+            <q1:Val3>150</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:WarpAffine">
+          <q1:Transform>NaN,NaN,NaN;NaN,NaN,NaN</q1:Transform>
+          <q1:Flags>Linear</q1:Flags>
+          <q1:FillValue>
+            <q1:Val0>0</q1:Val0>
+            <q1:Val1>0</q1:Val1>
+            <q1:Val2>0</q1:Val2>
+            <q1:Val3>0</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Threshold">
+          <q1:ThresholdValue>10</q1:ThresholdValue>
+          <q1:MaxValue>255</q1:MaxValue>
+          <q1:ThresholdType>BinaryInv</q1:ThresholdType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="CombineLatest" />
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfMatWarpAffine">
+        <MemberName>Transform</MemberName>
+        <Name>TransformBetter</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:AffineTransform">
+          <q1:Pivot>
+            <q1:X>NaN</q1:X>
+            <q1:Y>NaN</q1:Y>
+          </q1:Pivot>
+          <q1:Translation>
+            <q1:X>NaN</q1:X>
+            <q1:Y>NaN</q1:Y>
+          </q1:Translation>
+          <q1:Rotation>NaN</q1:Rotation>
+          <q1:Scale>
+            <q1:X>1</q1:X>
+            <q1:Y>1</q1:Y>
+          </q1:Scale>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="InputMapping">
+        <PropertyMappings>
+          <Property name="Translation" selector="Source.translationX,Source.translationY" />
+          <Property name="Rotation" selector="Source.rotation" />
+          <Property name="Pivot" selector="Source.pivot" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="q2:ExpressionTransform">
+        <q2:Expression>new(
+Centroid as pivot,
+-Centroid.X + 125 as translationX,
+-Centroid.Y + 125 as translationY,
+Orientation +180 as rotation)</q2:Expression>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Script>import clr
+import math
+clr.AddReference("Bonsai.Vision")
+clr.AddReference("OpenCV.Net")
+from System import Tuple, Math, Single
+from OpenCV.Net import Point2f
+from Bonsai.Vision import ConnectedComponent
+
+head = None
+tail = None
+
+def distancesquare(pt1,pt2):
+  dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return dx * dx + dy * dy
+
+def angleline(pt1,pt2):
+  dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return Math.Atan2(dy, dx)
+
+@returns(ConnectedComponent)
+def process(value):
+  global head, tail
+  pi = math.pi
+
+  LBRegion= value.Item1
+  OrientationAngle= value.Item2
+  pt1 = OrientationAngle.Item1
+  pt2 = OrientationAngle.Item2
+
+  centroid = LBRegion.Centroid
+  contour = LBRegion.Contour
+  if contour is not None:
+  #if (math.isnan(pt1.X)) and (head is None):
+  #  head = None
+  #  tail = None
+    # return float.NaN
+  # elif (math.isnan(pt1.X)) and (head is not None):
+  #   return angleline(head,tail)
+  #else:
+    if head is None or distancesquare(pt1, head) &lt; distancesquare(pt1, tail):
+      head = pt1
+      tail = pt2
+    else:
+      head = pt2
+      tail = pt1
+    LBRegion.Orientation = angleline(head,tail)
+  return LBRegion</q2:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:WarpAffine">
+          <q1:Transform>NaN,NaN,NaN;NaN,NaN,NaN</q1:Transform>
+          <q1:Flags>Linear</q1:Flags>
+          <q1:FillValue>
+            <q1:Val0>0</q1:Val0>
+            <q1:Val1>0</q1:Val1>
+            <q1:Val2>0</q1:Val2>
+            <q1:Val3>0</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfMatWarpAffine">
+        <MemberName>Transform</MemberName>
+        <Name>Transform</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:AffineTransform">
+          <q1:Pivot>
+            <q1:X>NaN</q1:X>
+            <q1:Y>NaN</q1:Y>
+          </q1:Pivot>
+          <q1:Translation>
+            <q1:X>NaN</q1:X>
+            <q1:Y>NaN</q1:Y>
+          </q1:Translation>
+          <q1:Rotation>NaN</q1:Rotation>
+          <q1:Scale>
+            <q1:X>1</q1:X>
+            <q1:Y>1</q1:Y>
+          </q1:Scale>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="InputMapping">
+        <PropertyMappings>
+          <Property name="Translation" selector="Source.translationX,Source.translationY" />
+          <Property name="Rotation" selector="Source.rotation" />
+          <Property name="Pivot" selector="Source.pivot" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="q2:ExpressionTransform">
+        <q2:Expression>new(
+Centroid as pivot,
+-Centroid.X + 125 as translationX,
+-Centroid.Y + 75 as translationY,
+-Orientation as rotation)</q2:Expression>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>8</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>16</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>10</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>20</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>15</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>17</From>
+        <To>16</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>18</From>
+        <To>17</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>19</From>
+        <To>18</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>20</From>
+        <To>19</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionExtremes, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.WarpAffine, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[OpenCV.Net.Mat, OpenCV.Net, Version=3.3.0.0, Culture=neutral, PublicKeyToken=null],[Bonsai.Vision.WarpAffine, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.AffineTransform, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.InputMappingBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

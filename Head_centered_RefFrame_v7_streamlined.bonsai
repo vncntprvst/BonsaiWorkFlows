@@ -1,0 +1,937 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.2.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FileCapture">
+          <q1:FileName>C:\Data\Video\PrV77_56_Trial_X.avi</q1:FileName>
+          <q1:PlaybackRate>40</q1:PlaybackRate>
+          <q1:StartPosition>614</q1:StartPosition>
+          <q1:PositionUnits>Frames</q1:PositionUnits>
+          <q1:Loop>true</q1:Loop>
+          <q1:Playing>true</q1:Playing>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>100</q1:X>
+            <q1:Y>120</q1:Y>
+            <q1:Width>500</q1:Width>
+            <q1:Height>178</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>Rotation</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q1:AffineTransform">
+                <q1:Pivot>
+                  <q1:X>99.4453</q1:X>
+                  <q1:Y>127.918068</q1:Y>
+                </q1:Pivot>
+                <q1:Translation>
+                  <q1:X>100.5547</q1:X>
+                  <q1:Y>-57.9180679</q1:Y>
+                </q1:Translation>
+                <q1:Rotation>-0.6516025</q1:Rotation>
+                <q1:Scale>
+                  <q1:X>1</q1:X>
+                  <q1:Y>1</q1:Y>
+                </q1:Scale>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="InputMapping">
+              <PropertyMappings>
+                <Property name="Translation" selector="Source.translationX,Source.translationY" />
+                <Property name="Rotation" selector="Source.rotation" />
+                <Property name="Pivot" selector="Source.pivot" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="q2:ExpressionTransform">
+              <q2:Expression>new(
+Centroid as pivot,
+-Centroid.X + 200 as translationX,
+-Centroid.Y + 70 as translationY,
+Orientation - Math.PI / 2.0 as rotation)</q2:Expression>
+            </Expression>
+            <Expression xsi:type="q2:PythonTransform">
+              <q2:Script>import clr
+import math
+clr.AddReference("Bonsai.Vision")
+clr.AddReference("OpenCV.Net")
+from System import Tuple, Math, Single
+from OpenCV.Net import Point2f
+from Bonsai.Vision import ConnectedComponent
+
+def angleline(pt1,pt2):
+  try:
+    dx = (pt2.X - pt1.X)
+    dy = (pt2.Y - pt1.Y)
+  except:
+    dx = (pt2.Item1 - pt1.Item1)
+    dy = (pt2.Item2 - pt1.Item2)
+  return Math.Atan2(dy, dx)
+
+@returns(ConnectedComponent)
+def process(value):
+  LBRegion= value.Item1
+  OrientationAngle= value.Item2
+  SmoothedOrientationAngle= value.Item3
+  if SmoothedOrientationAngle.Item1.Item1 != None:
+    pt1 = SmoothedOrientationAngle.Item1
+    pt2 = SmoothedOrientationAngle.Item2
+  else:
+    pt1 = OrientationAngle.Item1
+    pt2 = OrientationAngle.Item2
+  result = ConnectedComponent()
+
+  centroid = LBRegion.Centroid
+  contour = LBRegion.Contour
+  result.Area = LBRegion.Area
+  result.MajorAxisLength = LBRegion.MajorAxisLength
+  result.MinorAxisLength = LBRegion.MinorAxisLength
+  result.Contour = contour
+  result.Centroid = centroid
+  if contour is not None:
+    head = pt2
+    tail = pt1
+    #result.Centroid = Point2f((pt1.X+pt2.X)/2.0,(pt1.Y+pt2.Y)/2.0)
+    result.Orientation = angleline(head,tail)
+    result.Contour = contour
+    return result
+  else:
+    result.Centroid = centroid
+    result.Orientation = LBRegion.Orientation
+  return result</q2:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Grayscale" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:MaskPolygon">
+          <q1:Regions>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>368</q1:X>
+                <q1:Y>0</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>524</q1:X>
+                <q1:Y>0</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>504</q1:X>
+                <q1:Y>34</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>434</q1:X>
+                <q1:Y>17</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>4</q1:X>
+                <q1:Y>175</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>-3</q1:X>
+                <q1:Y>164</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>-3</q1:X>
+                <q1:Y>181</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>31</q1:X>
+                <q1:Y>181</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>492</q1:X>
+                <q1:Y>163</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>509</q1:X>
+                <q1:Y>157</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>509</q1:X>
+                <q1:Y>180</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>490</q1:X>
+                <q1:Y>180</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+          </q1:Regions>
+          <q1:MaskType>ToZeroInv</q1:MaskType>
+          <q1:FillValue>
+            <q1:Val0>150</q1:Val0>
+            <q1:Val1>150</q1:Val1>
+            <q1:Val2>150</q1:Val2>
+            <q1:Val3>150</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:WarpAffine">
+          <q1:Transform>0.795113,-0.6064613,198.5071;0.6064613,0.795113,-92.01904</q1:Transform>
+          <q1:Flags>Linear</q1:Flags>
+          <q1:FillValue>
+            <q1:Val0>0</q1:Val0>
+            <q1:Val1>0</q1:Val1>
+            <q1:Val2>0</q1:Val2>
+            <q1:Val3>0</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>WhiskerFilter</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q1:Smooth">
+                <q1:SmoothType>Gaussian</q1:SmoothType>
+                <q1:Size1>37</q1:Size1>
+                <q1:Size2>37</q1:Size2>
+                <q1:Sigma1>100</q1:Sigma1>
+                <q1:Sigma2>100</q1:Sigma2>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Subtract" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Add" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Add" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Skip">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Add" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Skip">
+                <Count>0</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Subtract" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Skip">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>4</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>15</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>6</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>9</From>
+              <To>8</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>10</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>10</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>9</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>12</From>
+              <To>11</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>13</From>
+              <To>12</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>13</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>12</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>2</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfMatWarpAffine">
+        <MemberName>Transform</MemberName>
+        <Name>Transform</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:WarpAffine">
+          <q1:Transform>0.795113,-0.6064613,198.5071;0.6064613,0.795113,-92.01904</q1:Transform>
+          <q1:Flags>Linear</q1:Flags>
+          <q1:FillValue>
+            <q1:Val0>0</q1:Val0>
+            <q1:Val1>0</q1:Val1>
+            <q1:Val2>0</q1:Val2>
+            <q1:Val3>0</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Script>import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import *
+from System import Array, Tuple, Single
+
+@returns(Tuple[Point2f,Point2f])
+def process(value):
+  global head, body, maxheight
+  BinRegion= value.Item1
+  VideoSize= value.Item2
+  BRPerc=(BinRegion.Area/(VideoSize.Width*VideoSize.Height))*100
+  contour = BinRegion.Contour
+  if contour is not None and contour.Count &gt; 0 and BRPerc &gt; 2.5:
+    points = Array.CreateInstance(Point,contour.Count)
+    contour.CopyTo(points)
+
+    # compute center of "body" mass (mean of bottom pixels)
+    # and head tip (mean of top pixels)
+    minheight = None
+    maxheight = 0
+    headXsum = 0.0
+    headXcount = 0.0
+    bodyXsum = 0.0
+    bodyXcount = 0.0
+    for point in points:
+      # update "head" position
+      if minheight is None or point.Y &lt; minheight:
+        headXsum = 0
+        headXcount = 0
+        minheight = point.Y
+
+      # accumulate "head" votes
+      if point.Y == minheight:
+        headXsum += point.X
+        headXcount += 1.0
+
+      # update "body" height
+      if point.Y &gt; maxheight:
+        bodyXsum = 0
+        bodyXcount = 0
+        maxheight = point.Y
+
+      # accumulate "body" votes
+      if point.Y == maxheight:
+        bodyXsum += point.X
+        bodyXcount += 1.0
+
+    headX = headXsum / headXcount
+    bodyX = bodyXsum / bodyXcount
+    body = Point2f(bodyX,maxheight)
+    head = Point2f(headX,minheight)
+    return Tuple.Create(body,head)
+  else:
+    if maxheight &gt; 0:
+      return Tuple.Create(body,head)
+    else:
+      return Tuple.Create(Point2f(float.NaN,float.NaN),Point2f(float.NaN,float.NaN))</q2:Script>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>FindHead</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q1:LargestBinaryRegion" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q1:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q1:FindContours">
+                <q1:Mode>External</q1:Mode>
+                <q1:Method>ChainApproxNone</q1:Method>
+                <q1:Offset>
+                  <q1:X>0</q1:X>
+                  <q1:Y>0</q1:Y>
+                </q1:Offset>
+                <q1:MinArea>1000</q1:MinArea>
+                <q1:MaxArea xsi:nil="true" />
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q1:Threshold">
+                <q1:ThresholdValue>10</q1:ThresholdValue>
+                <q1:MaxValue>255</q1:MaxValue>
+                <q1:ThresholdType>BinaryInv</q1:ThresholdType>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Grayscale" />
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>Dampening</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="SelectMany">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Average" />
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="SelectMany">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Average" />
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="SelectMany">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Average" />
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="SelectMany">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Average" />
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ElementCountWindow">
+                <Count>10</Count>
+                <Skip>1</Skip>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ElementCountWindow">
+                <Count>10</Count>
+                <Skip>1</Skip>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ElementCountWindow">
+                <Count>10</Count>
+                <Skip>1</Skip>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ElementCountWindow">
+                <Count>10</Count>
+                <Skip>1</Skip>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.X</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Y</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.X</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Y</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Item1</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Item2</Selector>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source2</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>20</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>1</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>2</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>3</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>9</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>10</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>12</From>
+              <To>8</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>13</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>10</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>15</From>
+              <To>11</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>16</From>
+              <To>12</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>16</From>
+              <To>13</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>17</From>
+              <To>14</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>17</From>
+              <To>15</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>18</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>19</From>
+              <To>0</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>19</From>
+              <To>16</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>19</From>
+              <To>17</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Size</Selector>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>8</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>5</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>12</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>13</To>
+        <Label>Source2</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.AffineTransform, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.InputMappingBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.WarpAffine, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Smooth, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.AddBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[OpenCV.Net.Mat, OpenCV.Net, Version=3.3.0.0, Culture=neutral, PublicKeyToken=null],[Bonsai.Vision.WarpAffine, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Average, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.ElementCountWindow, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
