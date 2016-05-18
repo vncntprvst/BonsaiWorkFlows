@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.2.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="q1:CsvReader">
+        <q1:FileName>C:\Data\Video\PrV77_69_HSCam2016-04-18T22_58_36.csv</q1:FileName>
+        <q1:ScanPattern>%s</q1:ScanPattern>
+        <q1:SkipRows>0</q1:SkipRows>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item1</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:FunctionGenerator">
+          <q2:BufferLength>10</q2:BufferLength>
+          <q2:Frequency>1</q2:Frequency>
+          <q2:Waveform>Sine</q2:Waveform>
+          <q2:PlaybackRate>1700</q2:PlaybackRate>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Parse">
+        <Pattern>%i-%i-%iT%i:%i:%f-%i:%i</Pattern>
+      </Expression>
+      <Expression xsi:type="q3:PythonTransform">
+        <q3:Script>import math
+from System import Tuple
+countFrames=0;
+
+@returns(Tuple[int,int])
+def process(values):
+  global countFrames
+  if countFrames==500:
+    countFrames=0
+  countFrames += 1
+  # get time values
+  initTime=values.Item1
+  presentTime=values.Item2
+  initHrs= initTime.Item4
+  initMns= initTime.Item5
+  initSec_float= initTime.Item6
+  initMillis=round(initSec_float*1000)
+  #calculate initial time
+  initMilliTime=int((initHrs*3600 + initMns*60)*1000 + initMillis)
+  #calculate present time
+  hrs= presentTime.Item4
+  if hrs==0:
+    hrs=24
+  mns= presentTime.Item5
+  sec_float= presentTime.Item6
+  millis=round(sec_float*1000)
+  milliTime=int((hrs*3600 + mns*60)*1000 + millis)
+  elapsedTime=milliTime-initMilliTime
+  
+  return Tuple.Create(elapsedTime,countFrames)
+</q3:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Take">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Parse">
+        <Pattern>%i-%i-%iT%i:%i:%f-%i:%i</Pattern>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item1</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="CombineLatest" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item2</Selector>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>1</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>9</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.FunctionGenerator, Bonsai.Dsp, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ParseBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
