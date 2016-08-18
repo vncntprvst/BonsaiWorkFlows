@@ -121,7 +121,7 @@
         <XMin>0</XMin>
         <XMax>20</XMax>
         <YMin>0</YMin>
-        <YMax>180</YMax>
+        <YMax>8</YMax>
         <AutoScaleX>true</AutoScaleX>
         <AutoScaleY>true</AutoScaleY>
         <SelectedPage>0</SelectedPage>
@@ -284,8 +284,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>12</X>
-      <Y>82</Y>
+      <X>102</X>
+      <Y>339</Y>
     </Location>
     <Size>
       <Width>578</Width>

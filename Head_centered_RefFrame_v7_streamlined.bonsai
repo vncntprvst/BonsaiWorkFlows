@@ -4,22 +4,12 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:FileCapture">
-          <q1:FileName>C:\Data\Video\PrV77_56_Trial_X.avi</q1:FileName>
-          <q1:PlaybackRate>40</q1:PlaybackRate>
-          <q1:StartPosition>614</q1:StartPosition>
+          <q1:FileName>C:\Data\Video\VidExports\PrV77_108__HSCamClips2.avi</q1:FileName>
+          <q1:PlaybackRate>100</q1:PlaybackRate>
+          <q1:StartPosition>0</q1:StartPosition>
           <q1:PositionUnits>Frames</q1:PositionUnits>
           <q1:Loop>true</q1:Loop>
           <q1:Playing>true</q1:Playing>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Crop">
-          <q1:RegionOfInterest>
-            <q1:X>100</q1:X>
-            <q1:Y>120</q1:Y>
-            <q1:Width>500</q1:Width>
-            <q1:Height>178</q1:Height>
-          </q1:RegionOfInterest>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
@@ -29,14 +19,14 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q1:AffineTransform">
                 <q1:Pivot>
-                  <q1:X>99.4453</q1:X>
-                  <q1:Y>127.918068</q1:Y>
+                  <q1:X>491.667419</q1:X>
+                  <q1:Y>458.078369</q1:Y>
                 </q1:Pivot>
                 <q1:Translation>
-                  <q1:X>100.5547</q1:X>
-                  <q1:Y>-57.9180679</q1:Y>
+                  <q1:X>-141.667419</q1:X>
+                  <q1:Y>-108.078369</q1:Y>
                 </q1:Translation>
-                <q1:Rotation>-0.6516025</q1:Rotation>
+                <q1:Rotation>-0.615344644</q1:Rotation>
                 <q1:Scale>
                   <q1:X>1</q1:X>
                   <q1:Y>1</q1:Y>
@@ -53,8 +43,8 @@
             <Expression xsi:type="q2:ExpressionTransform">
               <q2:Expression>new(
 Centroid as pivot,
--Centroid.X + 200 as translationX,
--Centroid.Y + 70 as translationY,
+-Centroid.X + 350 as translationX,
+-Centroid.Y + 350 as translationY,
 Orientation - Math.PI / 2.0 as rotation)</q2:Expression>
             </Expression>
             <Expression xsi:type="q2:PythonTransform">
@@ -145,75 +135,8 @@ def process(value):
         <Combinator xsi:type="q1:Grayscale" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:MaskPolygon">
-          <q1:Regions>
-            <q1:ArrayOfPoint>
-              <q1:Point>
-                <q1:X>368</q1:X>
-                <q1:Y>0</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>524</q1:X>
-                <q1:Y>0</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>504</q1:X>
-                <q1:Y>34</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>434</q1:X>
-                <q1:Y>17</q1:Y>
-              </q1:Point>
-            </q1:ArrayOfPoint>
-            <q1:ArrayOfPoint>
-              <q1:Point>
-                <q1:X>4</q1:X>
-                <q1:Y>175</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>-3</q1:X>
-                <q1:Y>164</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>-3</q1:X>
-                <q1:Y>181</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>31</q1:X>
-                <q1:Y>181</q1:Y>
-              </q1:Point>
-            </q1:ArrayOfPoint>
-            <q1:ArrayOfPoint>
-              <q1:Point>
-                <q1:X>492</q1:X>
-                <q1:Y>163</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>509</q1:X>
-                <q1:Y>157</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>509</q1:X>
-                <q1:Y>180</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>490</q1:X>
-                <q1:Y>180</q1:Y>
-              </q1:Point>
-            </q1:ArrayOfPoint>
-          </q1:Regions>
-          <q1:MaskType>ToZeroInv</q1:MaskType>
-          <q1:FillValue>
-            <q1:Val0>150</q1:Val0>
-            <q1:Val1>150</q1:Val1>
-            <q1:Val2>150</q1:Val2>
-            <q1:Val3>150</q1:Val3>
-          </q1:FillValue>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:WarpAffine">
-          <q1:Transform>0.795113,-0.6064613,198.5071;0.6064613,0.795113,-92.01904</q1:Transform>
+          <q1:Transform>0.8165746,-0.57724,212.938;0.57724,0.8165746,-307.8652</q1:Transform>
           <q1:Flags>Linear</q1:Flags>
           <q1:FillValue>
             <q1:Val0>0</q1:Val0>
@@ -386,7 +309,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:WarpAffine">
-          <q1:Transform>0.795113,-0.6064613,198.5071;0.6064613,0.795113,-92.01904</q1:Transform>
+          <q1:Transform>0.8165746,-0.57724,212.938;0.57724,0.8165746,-307.8652</q1:Transform>
           <q1:Flags>Linear</q1:Flags>
           <q1:FillValue>
             <q1:Val0>0</q1:Val0>
@@ -821,37 +744,32 @@ def process(value):
     <Edges>
       <Edge>
         <From>0</From>
-        <To>1</To>
+        <To>2</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>0</From>
-        <To>11</To>
+        <To>9</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>1</From>
-        <To>4</To>
+        <To>5</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>2</From>
-        <To>7</To>
+        <To>6</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>3</From>
+        <From>2</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
         <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>14</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>10</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
@@ -860,66 +778,59 @@ def process(value):
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>6</From>
-        <To>5</To>
+        <From>5</From>
+        <To>6</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>3</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>10</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>10</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>7</From>
-        <To>8</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>5</To>
-        <Label>Source2</Label>
+        <From>8</From>
+        <To>11</To>
+        <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>9</From>
-        <To>12</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>12</To>
+        <To>4</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>10</From>
-        <To>13</To>
+        <To>1</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>11</From>
-        <To>6</To>
+        <To>7</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>12</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>13</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>14</From>
-        <To>13</To>
+        <To>11</To>
         <Label>Source2</Label>
       </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
     <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.AffineTransform, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.InputMappingBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.WarpAffine, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Smooth, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>

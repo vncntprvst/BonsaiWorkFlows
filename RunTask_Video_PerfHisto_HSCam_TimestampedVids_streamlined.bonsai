@@ -194,7 +194,7 @@ def process(value):
       <Expression xsi:type="ExternalizedPropertyOfStringSerialStringWrite">
         <MemberName>PortName</MemberName>
         <Name>PortName</Name>
-        <Value>COM4</Value>
+        <Value>COM9</Value>
       </Expression>
       <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
         <MemberName>Value</MemberName>
@@ -204,7 +204,7 @@ def process(value):
       <Expression xsi:type="Accumulate" />
       <Expression xsi:type="Multiply" />
       <Expression xsi:type="q3:CsvWriter">
-        <q3:FileName>C:\Data\Behav\filename_.csv</q3:FileName>
+        <q3:FileName>C:\Data\Behav\PrV77_81_.csv</q3:FileName>
         <q3:Append>false</q3:Append>
         <q3:Overwrite>false</q3:Overwrite>
         <q3:Suffix>Timestamp</q3:Suffix>
@@ -602,7 +602,7 @@ def process(input):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q5:VideoWriter">
-          <q5:FileName>C:\Data\Video\filename_Webcam.avi</q5:FileName>
+          <q5:FileName>C:\Data\Video\PrV77_81_Webcam.avi</q5:FileName>
           <q5:Suffix>Timestamp</q5:Suffix>
           <q5:Buffered>true</q5:Buffered>
           <q5:Overwrite>false</q5:Overwrite>
@@ -617,7 +617,7 @@ def process(input):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q5:VideoWriter">
-          <q5:FileName>C:\Data\Video\filename_HSCam.avi</q5:FileName>
+          <q5:FileName>C:\Data\Video\PrV77_81_HSCam.avi</q5:FileName>
           <q5:Suffix>Timestamp</q5:Suffix>
           <q5:Buffered>true</q5:Buffered>
           <q5:Overwrite>false</q5:Overwrite>
@@ -631,7 +631,7 @@ def process(input):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvWriter">
-        <q3:FileName>C:\Data\Video\filename_HSCam.csv</q3:FileName>
+        <q3:FileName>C:\Data\Video\PrV77_81_HSCam.csv</q3:FileName>
         <q3:Append>false</q3:Append>
         <q3:Overwrite>false</q3:Overwrite>
         <q3:Suffix>Timestamp</q3:Suffix>
@@ -1170,12 +1170,12 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>filename</Value>
+          <Value>PrV77_81</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>filename</Value>
+          <Value>PrV77_81</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
@@ -1251,12 +1251,12 @@ def process(input):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>filename</Value>
+          <Value>PrV77_81</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>filename</Value>
+          <Value>PrV77_81</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
