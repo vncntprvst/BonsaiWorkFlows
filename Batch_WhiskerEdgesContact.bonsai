@@ -25,7 +25,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>C:\Data\Video\VidExports</q1:Path>
+          <q1:Path>C:\Data\Video\PrV77_108__HSCamClips</q1:Path>
           <q1:SearchPattern>*.avi</q1:SearchPattern>
           <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
         </Combinator>
@@ -187,367 +187,375 @@
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>469</q2:X>
-                            <q2:Y>12</q2:Y>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>545</q2:X>
-                            <q2:Y>12</q2:Y>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>622</q2:X>
-                            <q2:Y>12</q2:Y>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>622</q2:X>
-                            <q2:Y>121</q2:Y>
+                            <q2:Y>134</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>553</q2:X>
-                            <q2:Y>74</q2:Y>
+                            <q2:Y>87</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
-                            <q2:X>409</q2:X>
-                            <q2:Y>12</q2:Y>
+                            <q2:X>408</q2:X>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>485</q2:X>
-                            <q2:Y>12</q2:Y>
+                            <q2:X>484</q2:X>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>562</q2:X>
-                            <q2:Y>12</q2:Y>
+                            <q2:X>561</q2:X>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>562</q2:X>
-                            <q2:Y>121</q2:Y>
+                            <q2:X>561</q2:X>
+                            <q2:Y>134</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>527</q2:X>
-                            <q2:Y>97</q2:Y>
+                            <q2:X>526</q2:X>
+                            <q2:Y>110</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>510</q2:X>
-                            <q2:Y>85</q2:Y>
+                            <q2:X>509</q2:X>
+                            <q2:Y>98</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>493</q2:X>
-                            <q2:Y>74</q2:Y>
+                            <q2:X>492</q2:X>
+                            <q2:Y>87</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>425</q2:X>
-                            <q2:Y>66</q2:Y>
+                            <q2:Y>79</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>349</q2:X>
-                            <q2:Y>12</q2:Y>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>12</q2:Y>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>121</q2:Y>
+                            <q2:Y>134</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
-                            <q2:X>289</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:X>288</q2:X>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>442</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:X>441</q2:X>
+                            <q2:Y>25</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>442</q2:X>
-                            <q2:Y>122</q2:Y>
+                            <q2:X>441</q2:X>
+                            <q2:Y>134</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>373</q2:X>
-                            <q2:Y>75</q2:Y>
+                            <q2:X>372</q2:X>
+                            <q2:Y>87</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>622</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>592</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>622</q2:X>
-                            <q2:Y>13</q2:Y>
-                          </q2:Point>
-                        </q2:ArrayOfPoint>
-                        <q2:ArrayOfPoint>
-                          <q2:Point>
-                            <q2:X>622</q2:X>
-                            <q2:Y>25</q2:Y>
-                          </q2:Point>
-                          <q2:Point>
-                            <q2:X>562</q2:X>
-                            <q2:Y>25</q2:Y>
-                          </q2:Point>
-                          <q2:Point>
-                            <q2:X>562</q2:X>
-                            <q2:Y>19</q2:Y>
-                          </q2:Point>
-                          <q2:Point>
-                            <q2:X>622</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>622</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>622</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>24</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>25</q2:Y>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>25</q2:Y>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:Y>24</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>562</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:Y>24</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>472</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>13</q2:Y>
-                          </q2:Point>
-                        </q2:ArrayOfPoint>
-                        <q2:ArrayOfPoint>
-                          <q2:Point>
-                            <q2:X>502</q2:X>
-                            <q2:Y>26</q2:Y>
-                          </q2:Point>
-                          <q2:Point>
-                            <q2:X>442</q2:X>
-                            <q2:Y>26</q2:Y>
-                          </q2:Point>
-                          <q2:Point>
-                            <q2:X>442</q2:X>
-                            <q2:Y>20</q2:Y>
-                          </q2:Point>
-                          <q2:Point>
-                            <q2:X>502</q2:X>
-                            <q2:Y>20</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>472</q2:X>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>502</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>24</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>382</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>382</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>25</q2:Y>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>382</q2:X>
-                            <q2:Y>25</q2:Y>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>382</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>382</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>382</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:Y>24</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>442</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:Y>24</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
                             <q2:X>382</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>322</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:Y>43</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>322</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>352</q2:X>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                           <q2:Point>
                             <q2:X>382</q2:X>
-                            <q2:Y>13</q2:Y>
+                            <q2:Y>37</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
-                            <q2:X>382</q2:X>
-                            <q2:Y>25</q2:Y>
+                            <q2:X>381</q2:X>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>322</q2:X>
-                            <q2:Y>25</q2:Y>
+                            <q2:X>321</q2:X>
+                            <q2:Y>36</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>322</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:X>321</q2:X>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>382</q2:X>
-                            <q2:Y>19</q2:Y>
+                            <q2:X>381</q2:X>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                         <q2:ArrayOfPoint>
                           <q2:Point>
-                            <q2:X>382</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:X>381</q2:X>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>322</q2:X>
-                            <q2:Y>32</q2:Y>
+                            <q2:X>321</q2:X>
+                            <q2:Y>30</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>322</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:X>321</q2:X>
+                            <q2:Y>24</q2:Y>
                           </q2:Point>
                           <q2:Point>
-                            <q2:X>382</q2:X>
-                            <q2:Y>26</q2:Y>
+                            <q2:X>381</q2:X>
+                            <q2:Y>24</q2:Y>
                           </q2:Point>
                         </q2:ArrayOfPoint>
                       </q2:Regions>
@@ -964,7 +972,7 @@
               </Workflow>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>C:\Data\Video\tests\PrV77_108__HSCamClips204_ROIs.csv</q1:FileName>
+              <q1:FileName>C:\Data\Video\VidExports\PrV77_108__HSCamClips5_ROIs.csv</q1:FileName>
               <q1:Append>false</q1:Append>
               <q1:Overwrite>true</q1:Overwrite>
               <q1:Suffix>None</q1:Suffix>
@@ -995,7 +1003,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:FileCapture">
-                <q2:FileName>C:\Data\Video\tests\PrV77_108__HSCamClips204.avi</q2:FileName>
+                <q2:FileName>C:\Data\Video\VidExports\PrV77_108__HSCamClips5.avi</q2:FileName>
                 <q2:PlaybackRate>1000</q2:PlaybackRate>
                 <q2:StartPosition>0</q2:StartPosition>
                 <q2:PositionUnits>Frames</q2:PositionUnits>

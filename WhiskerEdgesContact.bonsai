@@ -4,11 +4,11 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:FileCapture">
-          <q1:FileName>C:\Data\Video\VidExports\PrV77_108__HSCamClips2.avi</q1:FileName>
-          <q1:PlaybackRate>200</q1:PlaybackRate>
+          <q1:FileName>C:\Data\Video\PrV77_108__HSCamClips\PrV77_108__HSCamClips0.avi</q1:FileName>
+          <q1:PlaybackRate>1000</q1:PlaybackRate>
           <q1:StartPosition>0</q1:StartPosition>
           <q1:PositionUnits>Frames</q1:PositionUnits>
-          <q1:Loop>false</q1:Loop>
+          <q1:Loop>true</q1:Loop>
           <q1:Playing>true</q1:Playing>
         </Combinator>
       </Expression>
@@ -227,19 +227,19 @@
                   <q1:ArrayOfPoint>
                     <q1:Point>
                       <q1:X>289</q1:X>
-                      <q1:Y>13</q1:Y>
+                      <q1:Y>19</q1:Y>
                     </q1:Point>
                     <q1:Point>
                       <q1:X>442</q1:X>
-                      <q1:Y>13</q1:Y>
+                      <q1:Y>19</q1:Y>
                     </q1:Point>
                     <q1:Point>
                       <q1:X>442</q1:X>
-                      <q1:Y>122</q1:Y>
+                      <q1:Y>128</q1:Y>
                     </q1:Point>
                     <q1:Point>
                       <q1:X>373</q1:X>
-                      <q1:Y>75</q1:Y>
+                      <q1:Y>81</q1:Y>
                     </q1:Point>
                   </q1:ArrayOfPoint>
                   <q1:ArrayOfPoint>
@@ -936,11 +936,88 @@
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:MaskPolygon">
+          <q1:Regions>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>0</q1:X>
+                <q1:Y>0</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>640</q1:X>
+                <q1:Y>0</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>640</q1:X>
+                <q1:Y>9</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>551</q1:X>
+                <q1:Y>12</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>551</q1:X>
+                <q1:Y>22</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>542</q1:X>
+                <q1:Y>23</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>538</q1:X>
+                <q1:Y>14</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>454</q1:X>
+                <q1:Y>16</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>295</q1:X>
+                <q1:Y>20</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>111</q1:X>
+                <q1:Y>15</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>0</q1:X>
+                <q1:Y>9</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>640</q1:X>
+                <q1:Y>299</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>1</q1:X>
+                <q1:Y>296</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>-5</q1:X>
+                <q1:Y>313</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>640</q1:X>
+                <q1:Y>318</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+          </q1:Regions>
+          <q1:MaskType>ToZeroInv</q1:MaskType>
+          <q1:FillValue>
+            <q1:Val0>0</q1:Val0>
+            <q1:Val1>0</q1:Val1>
+            <q1:Val2>0</q1:Val2>
+            <q1:Val3>0</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
       <Expression xsi:type="q2:CsvWriter">
         <q2:FileName>C:\Data\Video\VidExports\ROIWhiskerContact.csv</q2:FileName>
         <q2:Append>false</q2:Append>
-        <q2:Overwrite>false</q2:Overwrite>
-        <q2:Suffix>FileCount</q2:Suffix>
+        <q2:Overwrite>true</q2:Overwrite>
+        <q2:Suffix>None</q2:Suffix>
         <q2:IncludeHeader>false</q2:IncludeHeader>
         <q2:Selector>Source.Item1,Source.Item2,Source.Item3,Source.Item4,Source.Item5,Source.Item6</q2:Selector>
       </Expression>
@@ -953,7 +1030,7 @@
       </Edge>
       <Edge>
         <From>1</From>
-        <To>6</To>
+        <To>7</To>
         <Label>Source2</Label>
       </Edge>
       <Edge>
@@ -973,6 +1050,11 @@
       </Edge>
       <Edge>
         <From>5</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
         <To>3</To>
         <Label>Source1</Label>
       </Edge>
@@ -990,6 +1072,7 @@
     <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.AddBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
