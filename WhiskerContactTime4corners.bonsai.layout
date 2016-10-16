@@ -102,12 +102,12 @@
     <EditorDialogSettings>
       <Visible>true</Visible>
       <Location>
-        <X>331</X>
-        <Y>290</Y>
+        <X>318</X>
+        <Y>262</Y>
       </Location>
       <Size>
-        <Width>795</Width>
-        <Height>715</Height>
+        <Width>808</Width>
+        <Height>743</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -435,12 +435,12 @@
       <DialogSettings>
         <Visible>true</Visible>
         <Location>
-          <X>560</X>
-          <Y>598</Y>
+          <X>-87</X>
+          <Y>221</Y>
         </Location>
         <Size>
-          <Width>336</Width>
-          <Height>278</Height>
+          <Width>966</Width>
+          <Height>897</Height>
         </Size>
         <WindowState>Normal</WindowState>
         <VisualizerTypeName>Bonsai.Vision.Design.RegionActivityCollectionVisualizer</VisualizerTypeName>

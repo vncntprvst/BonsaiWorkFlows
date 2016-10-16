@@ -1,0 +1,5 @@
+9/13 changed to vX naming convention, starting at v9.0
+
+v9.0: 	- changed save directory to E: drive
+v9.1: 	- remove ROI stuff that wasn't used
+		- remove time print-over for HScam file

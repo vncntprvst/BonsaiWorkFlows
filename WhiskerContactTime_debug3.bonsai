@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.2.1">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q2="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:FileCapture">
           <q1:FileName>E:\Data\Video\VidExports\PrV75_115_Handheld_HSCamClips0.avi</q1:FileName>
-          <q1:PlaybackRate>50</q1:PlaybackRate>
+          <q1:PlaybackRate>100</q1:PlaybackRate>
           <q1:StartPosition>0</q1:StartPosition>
           <q1:PositionUnits>Frames</q1:PositionUnits>
           <q1:Loop>false</q1:Loop>
@@ -38,137 +38,1721 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="Zip" />
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>11</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>12</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>13</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>14</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>15</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>16</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>17</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>31</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>32</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>33</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>34</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>35</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>36</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>37</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>51</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>52</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>53</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>54</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>55</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>56</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>57</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>71</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>72</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>73</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>74</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>75</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>76</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>77</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>91</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>92</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>93</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>94</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>95</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>96</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>97</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>111</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>112</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>113</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>114</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>115</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>116</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>117</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>0</q1:Index>
-                <q1:Threshold>150</q1:Threshold>
-              </Combinator>
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>131</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>132</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>133</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>134</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>135</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>136</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>137</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>1</q1:Index>
-                <q1:Threshold>150</q1:Threshold>
-              </Combinator>
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>251</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>252</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>253</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>254</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>255</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>256</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>257</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>2</q1:Index>
-                <q1:Threshold>150</q1:Threshold>
-              </Combinator>
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>191</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>192</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>193</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>194</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>195</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>196</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>197</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>3</q1:Index>
-                <q1:Threshold>150</q1:Threshold>
-              </Combinator>
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>171</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>172</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>173</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>174</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>175</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>176</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>177</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>4</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>231</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>232</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>233</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>234</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>235</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>236</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>237</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>5</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>211</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>212</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>213</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>214</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>215</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>216</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>217</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>6</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>7</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>8</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>9</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>10</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>11</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>12</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>13</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>14</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>15</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>16</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>17</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:RoiActivityDetected">
-                <q1:Index>18</q1:Index>
-                <q1:Threshold>100</q1:Threshold>
-              </Combinator>
+            <Expression xsi:type="NestedWorkflow">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>151</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>152</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>153</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>154</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>155</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>156</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q1:RoiActivityDetected">
+                      <q1:Index>157</q1:Index>
+                      <q1:Threshold>150</q1:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source12</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source13</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source14</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source15</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source16</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source17</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>0</To>
+                    <Label>Source18</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q1:RoiActivity">
@@ -4860,37 +6444,43 @@
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
           </Nodes>
           <Edges>
             <Edge>
               <From>0</From>
-              <To>28</To>
+              <To>18</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
               <From>1</From>
               <To>0</To>
-              <Label>Source1</Label>
+              <Label>Source2</Label>
             </Edge>
             <Edge>
               <From>2</From>
               <To>0</To>
-              <Label>Source2</Label>
+              <Label>Source3</Label>
             </Edge>
             <Edge>
               <From>3</From>
               <To>0</To>
-              <Label>Source3</Label>
+              <Label>Source4</Label>
             </Edge>
             <Edge>
               <From>4</From>
               <To>0</To>
-              <Label>Source4</Label>
+              <Label>Source5</Label>
             </Edge>
             <Edge>
               <From>5</From>
               <To>0</To>
-              <Label>Source5</Label>
+              <Label>Source1</Label>
             </Edge>
             <Edge>
               <From>6</From>
@@ -4899,38 +6489,53 @@
             </Edge>
             <Edge>
               <From>7</From>
-              <To>1</To>
-              <Label>Source1</Label>
+              <To>0</To>
+              <Label>Source7</Label>
             </Edge>
             <Edge>
               <From>8</From>
-              <To>1</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>9</From>
-              <To>1</To>
-              <Label>Source3</Label>
-            </Edge>
-            <Edge>
-              <From>10</From>
-              <To>1</To>
-              <Label>Source4</Label>
-            </Edge>
-            <Edge>
-              <From>11</From>
-              <To>2</To>
+              <To>17</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>12</From>
-              <To>2</To>
+              <From>9</From>
+              <To>17</To>
               <Label>Source2</Label>
             </Edge>
             <Edge>
-              <From>13</From>
-              <To>2</To>
+              <From>10</From>
+              <To>17</To>
               <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>17</To>
+              <Label>Source4</Label>
+            </Edge>
+            <Edge>
+              <From>12</From>
+              <To>17</To>
+              <Label>Source5</Label>
+            </Edge>
+            <Edge>
+              <From>13</From>
+              <To>17</To>
+              <Label>Source6</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>2</To>
+              <Label>Source1</Label>
             </Edge>
             <Edge>
               <From>14</From>
@@ -4938,158 +6543,63 @@
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>15</From>
-              <To>3</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>16</From>
-              <To>3</To>
-              <Label>Source3</Label>
-            </Edge>
-            <Edge>
-              <From>17</From>
+              <From>14</From>
               <To>4</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>18</From>
-              <To>4</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>19</From>
-              <To>4</To>
-              <Label>Source3</Label>
-            </Edge>
-            <Edge>
-              <From>20</From>
-              <To>5</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>21</From>
-              <To>5</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>22</From>
-              <To>5</To>
-              <Label>Source3</Label>
-            </Edge>
-            <Edge>
-              <From>23</From>
+              <From>14</From>
               <To>6</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>24</From>
-              <To>6</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>25</From>
-              <To>6</To>
-              <Label>Source3</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
+              <From>14</From>
               <To>7</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>26</From>
+              <From>14</From>
               <To>8</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>26</From>
+              <From>14</From>
               <To>9</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>26</From>
+              <From>14</From>
               <To>10</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>26</From>
-              <To>25</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>24</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>23</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>22</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>21</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>20</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>19</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>18</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>17</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>16</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>15</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>14</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>13</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>12</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
+              <From>14</From>
               <To>11</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>27</From>
-              <To>26</To>
+              <From>14</From>
+              <To>12</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>13</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>15</From>
+              <To>14</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>17</From>
+              <To>18</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>18</From>
+              <To>16</To>
               <Label>Source1</Label>
             </Edge>
           </Edges>
@@ -5101,7 +6611,7 @@
         <q2:Overwrite>false</q2:Overwrite>
         <q2:Suffix>FileCount</q2:Suffix>
         <q2:IncludeHeader>false</q2:IncludeHeader>
-        <q2:Selector>Source.Item1,Source.Item2,Source.Item3,Source.Item4,Source.Item5,Source.Item6</q2:Selector>
+        <q2:Selector>Source.Item1.Item2,Source.Item1.Item3,Source.Item1.Item4,Source.Item1.Item5,Source.Item1.Item1,Source.Item1.Item6,Source.Item1.Item7,Source.Item2.Item6,Source.Item2.Item3,Source.Item2.Item2,Source.Item2.Item5,Source.Item2.Item4,Source.Item2.Item1</q2:Selector>
       </Expression>
     </Nodes>
     <Edges>
