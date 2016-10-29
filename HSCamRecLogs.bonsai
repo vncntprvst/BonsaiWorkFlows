@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.2.1">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q1="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:VideoCaptureDevice">
+          <q1:Index>0</q1:Index>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q2:CsvWriter">
+        <q2:FileName>E:\Data\Video\PrV88_118_AN_ManualStim_HSCam.csv</q2:FileName>
+        <q2:Append>false</q2:Append>
+        <q2:Overwrite>false</q2:Overwrite>
+        <q2:Suffix>Timestamp</q2:Suffix>
+        <q2:IncludeHeader>false</q2:IncludeHeader>
+        <q2:Selector>Source.Timestamp</q2:Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:VideoWriter">
+          <q3:FileName>E:\Data\Video\PrV88_118_AN_ManualStim_HSCam.avi</q3:FileName>
+          <q3:Suffix>Timestamp</q3:Suffix>
+          <q3:Buffered>true</q3:Buffered>
+          <q3:Overwrite>false</q3:Overwrite>
+          <q3:FourCC>FMP4</q3:FourCC>
+          <q3:FrameRate>500</q3:FrameRate>
+          <q3:FrameSize>
+            <q3:Width>0</q3:Width>
+            <q3:Height>0</q3:Height>
+          </q3:FrameSize>
+          <q3:ResizeInterpolation>NearestNeighbor</q3:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringVideoWriter">
+        <MemberName>FileName</MemberName>
+        <Name />
+        <Value />
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringCsvWriter">
+        <MemberName>FileName</MemberName>
+        <Name />
+        <Value />
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>HSCamCSV_fname</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>_HSCam.csv</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>E:\Data\Video\</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Repeat" />
+            </Expression>
+            <Expression xsi:type="q4:PythonTransform">
+              <q4:Script>import clr
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(input):
+#    Directory= value.Item1
+#    FileName= value.Item2
+#    FileNameSuf= value.Item3
+    return input.Item1+input.Item2+input.Item3</q4:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>2</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>PrV88_118_AN_ManualStim</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
+        <MemberName>Value</MemberName>
+        <Name>XPName</Name>
+        <Value>PrV88_118_AN_ManualStim</Value>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>HSCamAVI_fname</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>_HSCam.avi</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>E:\Data\Video\</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Repeat" />
+            </Expression>
+            <Expression xsi:type="q4:PythonTransform">
+              <q4:Script>import clr
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(input):
+#    Directory= value.Item1
+#    FileName= value.Item2
+#    FileNameSuf= value.Item3
+    return input.Item1+input.Item2+input.Item3</q4:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>2</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>PrV88_118_AN_ManualStim</Value>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>3</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>1</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvWriter, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

@@ -199,12 +199,12 @@ def process(value):
       <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
         <MemberName>Value</MemberName>
         <Name>XPName</Name>
-        <Value>PrV75_115_Handheld_</Value>
+        <Value>SpVi8_117_Training1</Value>
       </Expression>
       <Expression xsi:type="Accumulate" />
       <Expression xsi:type="Multiply" />
       <Expression xsi:type="q3:CsvWriter">
-        <q3:FileName>E:\Data\Behav\PrV75_115_Training2__.csv</q3:FileName>
+        <q3:FileName>E:\Data\Behav\PrV75_117_Training1_.csv</q3:FileName>
         <q3:Append>false</q3:Append>
         <q3:Overwrite>false</q3:Overwrite>
         <q3:Suffix>Timestamp</q3:Suffix>
@@ -602,7 +602,7 @@ def process(input):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q5:VideoWriter">
-          <q5:FileName>E:\Data\Video\PrV75_115_Training2__Webcam.avi</q5:FileName>
+          <q5:FileName>E:\Data\Video\PrV75_117_Training1_Webcam.avi</q5:FileName>
           <q5:Suffix>Timestamp</q5:Suffix>
           <q5:Buffered>true</q5:Buffered>
           <q5:Overwrite>false</q5:Overwrite>
@@ -617,7 +617,7 @@ def process(input):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q5:VideoWriter">
-          <q5:FileName>E:\Data\Video\PrV75_115_Training2__HSCam.avi</q5:FileName>
+          <q5:FileName>E:\Data\Video\PrV75_117_Training1_HSCam.avi</q5:FileName>
           <q5:Suffix>Timestamp</q5:Suffix>
           <q5:Buffered>true</q5:Buffered>
           <q5:Overwrite>false</q5:Overwrite>
@@ -631,7 +631,7 @@ def process(input):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvWriter">
-        <q3:FileName>E:\Data\Video\PrV75_115_Training2__HSCam.csv</q3:FileName>
+        <q3:FileName>E:\Data\Video\PrV75_117_Training1_HSCam.csv</q3:FileName>
         <q3:Append>false</q3:Append>
         <q3:Overwrite>false</q3:Overwrite>
         <q3:Suffix>Timestamp</q3:Suffix>
@@ -777,12 +777,12 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>PrV75_115_Training2_</Value>
+          <Value>PrV75_117_Training1</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>PrV75_115_Training2_</Value>
+          <Value>PrV75_117_Training1</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
@@ -858,12 +858,12 @@ def process(input):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>PrV75_115_Training2_</Value>
+          <Value>PrV75_117_Training1</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>PrV75_115_Training2_</Value>
+          <Value>PrV75_117_Training1</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">

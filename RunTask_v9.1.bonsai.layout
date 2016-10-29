@@ -119,9 +119,9 @@
     <VisualizerSettings>
       <MatVisualizer>
         <XMin>0</XMin>
-        <XMax>1</XMax>
+        <XMax>20</XMax>
         <YMin>0</YMin>
-        <YMax>1.1</YMax>
+        <YMax>120</YMax>
         <AutoScaleX>true</AutoScaleX>
         <AutoScaleY>true</AutoScaleY>
         <SelectedPage>0</SelectedPage>
@@ -284,12 +284,12 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>20</X>
-      <Y>133</Y>
+      <X>69</X>
+      <Y>200</Y>
     </Location>
     <Size>
-      <Width>853</Width>
-      <Height>903</Height>
+      <Width>699</Width>
+      <Height>538</Height>
     </Size>
     <WindowState>Normal</WindowState>
     <VisualizerTypeName>Bonsai.Vision.Design.IplImageVisualizer</VisualizerTypeName>
@@ -300,12 +300,12 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>960</X>
-      <Y>0</Y>
+      <X>0</X>
+      <Y>217</Y>
     </Location>
     <Size>
-      <Width>960</Width>
-      <Height>1040</Height>
+      <Width>732</Width>
+      <Height>576</Height>
     </Size>
     <WindowState>Normal</WindowState>
     <VisualizerTypeName>Bonsai.Vision.Design.IplImageVisualizer</VisualizerTypeName>
