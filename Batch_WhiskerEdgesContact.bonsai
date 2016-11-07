@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.2.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.2.1">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="SelectMany">
         <Name>FileNames</Name>
@@ -25,7 +25,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>C:\Data\Video\PrV77_108__HSCamClips</q1:Path>
+          <q1:Path>E:\Data\Video\PrV77_108__HSCamClips</q1:Path>
           <q1:SearchPattern>*.avi</q1:SearchPattern>
           <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
         </Combinator>
@@ -40,7 +40,7 @@
             <Expression xsi:type="ExternalizedPropertyOfStringFileCapture">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>CSVFileName</Value>
+              <Value>C:\Data\Video\VidExports\PrV77_108__HSCamClips5.avi</Value>
             </Expression>
             <Expression xsi:type="NestedWorkflow">
               <Name>ROIs</Name>
@@ -972,7 +972,7 @@
               </Workflow>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>C:\Data\Video\VidExports\PrV77_108__HSCamClips5_ROIs.csv</q1:FileName>
+              <q1:FileName>E:\Data\Video\PrV77_108__HSCamClips\PrV77_108__HSCamClips0_ROIs.csv</q1:FileName>
               <q1:Append>false</q1:Append>
               <q1:Overwrite>true</q1:Overwrite>
               <q1:Suffix>None</q1:Suffix>
@@ -991,7 +991,7 @@
             <Expression xsi:type="ExternalizedPropertyOfStringCsvWriter">
               <MemberName>FileName</MemberName>
               <Name>CSVFileName</Name>
-              <Value>C:\Data\Video\VidExports\ROIWhiskerContact.csv</Value>
+              <Value>E:\Data\Video\VidExports\ROIWhiskerContact.csv</Value>
             </Expression>
             <Expression xsi:type="q3:PythonTransform">
               <q3:Script>@returns(str)
@@ -1050,12 +1050,12 @@ def process(value):
             </Edge>
             <Edge>
               <From>8</From>
-              <To>1</To>
+              <To>10</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
               <From>8</From>
-              <To>10</To>
+              <To>1</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
