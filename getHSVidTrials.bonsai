@@ -3,7 +3,7 @@
   <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="q1:CsvReader">
-        <q1:FileName>E:\Data\Video\TrialTimes\PrV75_115_Handheld__HSCam2016-09-23T19_38_00_trialTimes.csv</q1:FileName>
+        <q1:FileName>E:\Data\Video\TrialTimes\PrV77_43_HSCam2016-02-19T13_39_07_trialTimes.csv</q1:FileName>
         <q1:ScanPattern>%i,%i</q1:ScanPattern>
         <q1:SkipRows>0</q1:SkipRows>
       </Expression>
@@ -27,14 +27,14 @@
                 <Nodes>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="Take">
-                      <Count>72293</Count>
+                      <Count>2434</Count>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="q2:FileCapture">
-                      <q2:FileName>E:\Data\Video\PrV75_115_Handheld__HSCam2016-09-23T19_38_00.avi</q2:FileName>
+                      <q2:FileName>E:\Data\Video\PrV77_43_HSCam2016-02-19T13_39_07.avi</q2:FileName>
                       <q2:PlaybackRate>1000</q2:PlaybackRate>
-                      <q2:StartPosition>4356</q2:StartPosition>
+                      <q2:StartPosition>88296</q2:StartPosition>
                       <q2:PositionUnits>Frames</q2:PositionUnits>
                       <q2:Loop>false</q2:Loop>
                       <q2:Playing>true</q2:Playing>
@@ -43,22 +43,22 @@
                   <Expression xsi:type="ExternalizedPropertyOfInt32Take">
                     <MemberName>Count</MemberName>
                     <Name>Count</Name>
-                    <Value>72293</Value>
+                    <Value>2434</Value>
                   </Expression>
                   <Expression xsi:type="ExternalizedPropertyOfStringFileCapture">
                     <MemberName>FileName</MemberName>
                     <Name>FileName</Name>
-                    <Value>E:\Data\Video\PrV75_115_Handheld__HSCam2016-09-23T19_38_00.avi</Value>
+                    <Value>E:\Data\Video\PrV77_43_HSCam2016-02-19T13_39_07.avi</Value>
                   </Expression>
                   <Expression xsi:type="ExternalizedPropertyOfDoubleFileCapture">
                     <MemberName>StartPosition</MemberName>
                     <Name>StartPosition</Name>
-                    <Value>4356</Value>
+                    <Value>88296</Value>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="q2:VideoWriter">
-                      <q2:FileName>E:\Data\Video\VidExports\PrV75_115_Handheld_HSCamClips.avi</q2:FileName>
+                      <q2:FileName>E:\Data\Video\VidExports\PrV77_42_HSCamClips.avi</q2:FileName>
                       <q2:Suffix>FileCount</q2:Suffix>
                       <q2:Buffered>true</q2:Buffered>
                       <q2:Overwrite>false</q2:Overwrite>
