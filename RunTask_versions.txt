@@ -3,3 +3,8 @@
 v9.0: 	- changed save directory to E: drive
 v9.1: 	- remove ROI stuff that wasn't used
 		- remove time print-over for HScam file
+v9.2:	- New rig, new computer, head fixed setup, C++ code for Arduino
+		- Parse is taking 4 arguments as sendToPC is changed to
+sendtoPC(trialCount,int(trialType),int(trialOutcome),rewardCount);
+		(Source.Item3 becomes Source.Item4)
+		- Baud rate set to 115200
