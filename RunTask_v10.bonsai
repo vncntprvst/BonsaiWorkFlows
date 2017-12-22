@@ -1,0 +1,1187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>RandomStart</Name>
+        <Description>RandomStart</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>&lt;1</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="q1:ExpressionTransform">
+              <q1:Expression>it ? 1 : 0</q1:Expression>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>&gt;</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="GreaterThan">
+              <Operand xsi:type="DoubleProperty">
+                <Value>0.5</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="q1:PythonTransform">
+              <q1:Script>from System import Random
+generator = Random()
+
+@returns(float)
+def process(value):
+  return generator.NextDouble()</q1:Script>
+            </Expression>
+            <Expression xsi:type="Equal">
+              <Operand xsi:type="WorkflowPropertyOfKeys">
+                <Value>S</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>0</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>0</To>
+              <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>0</To>
+              <Label>Source4</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:KeyDown">
+          <q2:Filter>S</q2:Filter>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:KeyDown">
+          <q2:Filter>End</q2:Filter>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:SerialStringWrite">
+          <q3:PortName>COM9</q3:PortName>
+          <q3:NewLine>\r\n</q3:NewLine>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>End signal</Name>
+        <Description>End signal</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>&lt;0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>1</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="q1:ExpressionTransform">
+              <q1:Expression>it ? 1 : 0</q1:Expression>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>&gt;</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Equal">
+              <Operand xsi:type="WorkflowPropertyOfKeys">
+                <Value>End</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>0</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>0</To>
+              <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>0</To>
+              <Label>Source4</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringSerialStringWrite">
+        <MemberName>PortName</MemberName>
+        <Name>PortName</Name>
+        <Value>COM9</Value>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:ImageWriter">
+          <q4:Path>\\.\pipe\video</q4:Path>
+          <q4:Suffix>None</q4:Suffix>
+          <q4:Overwrite>false</q4:Overwrite>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Accumulate" />
+      <Expression xsi:type="Multiply" />
+      <Expression xsi:type="q3:CsvWriter">
+        <q3:FileName>D:\Data\Video\test_20171204-120716HSCam.csv</q3:FileName>
+        <q3:Append>false</q3:Append>
+        <q3:Overwrite>false</q3:Overwrite>
+        <q3:Suffix>Timestamp</q3:Suffix>
+        <q3:IncludeHeader>false</q3:IncludeHeader>
+        <q3:Selector>Source.Value,Source.Timestamp.DateTime</q3:Selector>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>Histoconvet</Name>
+        <Description>conversion to histogram</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="NestedWorkflow">
+              <Name>FilterMatrix</Name>
+              <Description>FilterMatrix</Description>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="q1:PythonSource">
+                    <q1:Script>import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import Mat
+from System import Array
+
+@returns(Mat)
+def generate():
+  array = Array.CreateInstance(int, 2, 20)
+  for i in range(10):
+    array[0, i] = 1
+    array[1, i+10] = 1
+  yield Mat.FromArray(array)</q1:Script>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="CombineLatest" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q5:Tile">
+                <q5:RowTiles>2</q5:RowTiles>
+                <q5:ColumnTiles>1</q5:ColumnTiles>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="q1:PythonTransform">
+              <q1:Script>import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import Mat
+
+@returns(Mat)
+def process(value):
+  return value.Reshape(0, 1)</q1:Script>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q5:Tile">
+                <q5:RowTiles>1</q5:RowTiles>
+                <q5:ColumnTiles>10</q5:ColumnTiles>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q5:Buffer">
+                <q5:Count>1</q5:Count>
+                <q5:Skip xsi:nil="true" />
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="CombineLatest" />
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source2</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>1</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>6</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringCsvWriter">
+        <MemberName>FileName</MemberName>
+        <Name>Behav Data csv filename</Name>
+        <Value />
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>Left blue</Name>
+        <Description>Left condition</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Accumulate" />
+            <Expression xsi:type="Add">
+              <Operand xsi:type="IntProperty">
+                <Value>1</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="Condition">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="Equal">
+                    <Operand xsi:type="IntProperty">
+                      <Value>0</Value>
+                    </Operand>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>Right orange</Name>
+        <Description>Right Condition</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Accumulate" />
+            <Expression xsi:type="Condition">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="Equal">
+                    <Operand xsi:type="IntProperty">
+                      <Value>1</Value>
+                    </Operand>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>BehaviorData</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>Trial number, Trial type, Succes count, Time</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Merge" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Timestamp" />
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>1</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Subtract">
+        <Operand xsi:type="IntProperty">
+          <Value>1</Value>
+        </Operand>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item2</Selector>
+      </Expression>
+      <Expression xsi:type="Parse">
+        <Pattern>%i,%i,%i,%i,</Pattern>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:SerialStringRead">
+          <q3:PortName>COM9</q3:PortName>
+          <q3:NewLine />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="q1:PythonTransform">
+        <q1:Name>avi filename</q1:Name>
+        <q1:Description>webcam avi filename</q1:Description>
+        <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "Webcam.avi"
+  return path
+</q1:Script>
+      </Expression>
+      <Expression xsi:type="q1:PythonTransform">
+        <q1:Name>csv filename</q1:Name>
+        <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "Webcam.csv"
+  return path
+</q1:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:CameraCapture">
+          <q4:Index>0</q4:Index>
+          <q4:CaptureProperties />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q1:PythonTransform">
+        <q1:Name>avi filename</q1:Name>
+        <q1:Description>avi filename</q1:Description>
+        <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "HSCam.avi"
+  return path
+</q1:Script>
+      </Expression>
+      <Expression xsi:type="q1:PythonTransform">
+        <q1:Name>csv filename</q1:Name>
+        <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "HSCam.csv"
+  return path
+</q1:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timer">
+          <DueTime>PT1S</DueTime>
+          <Period>PT0S</Period>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringVideoWriter">
+        <MemberName>FileName</MemberName>
+        <Name>Webcam Video FileName</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:CameraCapture">
+          <q4:Index>1</q4:Index>
+          <q4:CaptureProperties />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:SerialStringWrite">
+          <q3:PortName>COM9</q3:PortName>
+          <q3:NewLine>\r\n</q3:NewLine>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q1:PythonTransform">
+        <q1:Name>ffmpeg call</q1:Name>
+        <q1:Script>import os
+
+#fname = 'D:\\Data\\Video\\video.avi'
+pipename = r'\\.\pipe\video'
+
+@returns(bool)
+def process(value):
+  fname=value.Item2;
+  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -r 500 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 20M {1}',pipename,fname))
+  return True</q1:Script>
+      </Expression>
+      <Expression xsi:type="q3:CsvWriter">
+        <q3:FileName>D:\Data\Video\test_20171204-120716Behavior.csv</q3:FileName>
+        <q3:Append>false</q3:Append>
+        <q3:Overwrite>false</q3:Overwrite>
+        <q3:Suffix>None</q3:Suffix>
+        <q3:IncludeHeader>false</q3:IncludeHeader>
+        <q3:Selector>Source.Timestamp</q3:Selector>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringCsvWriter">
+        <MemberName>FileName</MemberName>
+        <Name>webcam csv filename</Name>
+        <Value />
+      </Expression>
+      <Expression xsi:type="q3:CsvWriter">
+        <q3:FileName>D:\Data\Video\test_20171204-120716Webcam.csv</q3:FileName>
+        <q3:Append>false</q3:Append>
+        <q3:Overwrite>false</q3:Overwrite>
+        <q3:Suffix>None</q3:Suffix>
+        <q3:IncludeHeader>false</q3:IncludeHeader>
+        <q3:Selector>Source.Timestamp</q3:Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:VideoWriter">
+          <q4:FileName>D:\Data\Video\test_20171204-120716Webcam.avi</q4:FileName>
+          <q4:Suffix>None</q4:Suffix>
+          <q4:Buffered>true</q4:Buffered>
+          <q4:Overwrite>false</q4:Overwrite>
+          <q4:FourCC>FMP4</q4:FourCC>
+          <q4:FrameRate>30</q4:FrameRate>
+          <q4:FrameSize>
+            <q4:Width>0</q4:Width>
+            <q4:Height>0</q4:Height>
+          </q4:FrameSize>
+          <q4:ResizeInterpolation>NearestNeighbor</q4:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:Flip">
+          <q4:Mode>Vertical</q4:Mode>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringCsvWriter">
+        <MemberName>FileName</MemberName>
+        <Name>HScam csv filename</Name>
+        <Value />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item4</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>test</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>test</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>test</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>test</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
+        <MemberName>Value</MemberName>
+        <Name>XP name</Name>
+        <Value>test</Value>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
+        <MemberName>Value</MemberName>
+        <Name>Directory</Name>
+        <Value>D:\Data\Video\</Value>
+      </Expression>
+      <Expression xsi:type="q1:PythonTransform">
+        <q1:Name>csv filename</q1:Name>
+        <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "Behavior.csv"
+  return path
+</q1:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>test</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>30</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>3</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>30</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>3</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>18</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>9</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>10</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>16</From>
+        <To>15</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>17</From>
+        <To>16</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>17</From>
+        <To>38</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>18</From>
+        <To>17</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>18</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>19</From>
+        <To>32</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>20</From>
+        <To>28</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>33</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>22</From>
+        <To>36</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>22</From>
+        <To>25</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>26</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>24</From>
+        <To>37</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>25</From>
+        <To>34</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>26</From>
+        <To>31</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>27</From>
+        <To>26</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>28</From>
+        <To>35</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>29</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>29</From>
+        <To>19</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>33</From>
+        <To>34</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>36</From>
+        <To>35</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>37</From>
+        <To>32</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>38</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>39</From>
+        <To>24</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>40</From>
+        <To>23</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>41</From>
+        <To>21</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>42</From>
+        <To>20</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>43</From>
+        <To>39</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>44</From>
+        <To>40</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>45</From>
+        <To>41</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>46</From>
+        <To>42</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>47</From>
+        <To>43</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>48</From>
+        <To>43</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>49</From>
+        <To>44</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>50</From>
+        <To>44</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>51</From>
+        <To>45</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>52</From>
+        <To>45</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>53</From>
+        <To>46</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>54</From>
+        <To>46</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>55</From>
+        <To>47</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>55</From>
+        <To>49</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>55</From>
+        <To>51</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>55</From>
+        <To>53</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>55</From>
+        <To>60</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>56</From>
+        <To>48</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>56</From>
+        <To>50</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>56</From>
+        <To>52</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>56</From>
+        <To>54</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>56</From>
+        <To>61</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>57</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>58</From>
+        <To>57</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>59</From>
+        <To>58</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>60</From>
+        <To>59</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>61</From>
+        <To>59</To>
+        <Label>Source2</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.EqualBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.WorkflowProperty`1[[System.Windows.Forms.Keys, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.SerialStringWrite, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.SerialStringWrite, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.ImageWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.AccumulateBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.MultiplyBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonSource, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Tile, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Buffer, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.AddBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Merge, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ParseBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.SerialStringRead, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.CameraCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Flip, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

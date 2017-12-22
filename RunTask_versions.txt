@@ -8,3 +8,5 @@ v9.2:	- New rig, new computer, head fixed setup, C++ code for Arduino
 sendtoPC(trialCount,int(trialType),int(trialOutcome),rewardCount);
 		(Source.Item3 becomes Source.Item4)
 		- Baud rate set to 115200
+v10.0:	- incoroporated ffmpeg video recording for HS cam
+		- added directory input

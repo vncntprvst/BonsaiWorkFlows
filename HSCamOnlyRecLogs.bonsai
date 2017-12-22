@@ -3,7 +3,7 @@
   <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>C:\Data\Video\039v_WheelRunning_HSCam.csv</q1:FileName>
+        <q1:FileName>D:\Data\Video\039v_1013_HSCam.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>Timestamp</q1:Suffix>
@@ -31,7 +31,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:VideoWriter">
-          <q2:FileName>C:\Data\Video\039v_WheelRunning_HSCam.avi</q2:FileName>
+          <q2:FileName>D:\Data\Video\039v_1013_HSCam.avi</q2:FileName>
           <q2:Suffix>Timestamp</q2:Suffix>
           <q2:Buffered>true</q2:Buffered>
           <q2:Overwrite>false</q2:Overwrite>
@@ -55,7 +55,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="StringProperty">
-                <Value>C:\Data\Video\</Value>
+                <Value>D:\Data\Video\</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -118,16 +118,16 @@ def process(input):
       <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
         <MemberName>Value</MemberName>
         <Name>XPName</Name>
-        <Value>test</Value>
+        <Value>039v_1017_WR</Value>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>039v_WheelRunning</Value>
+          <Value>039v_1013</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>039v_WheelRunning</Value>
+          <Value>039v_1013</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
@@ -141,7 +141,7 @@ def process(input):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="StringProperty">
-                <Value>C:\Data\Video\</Value>
+                <Value>D:\Data\Video\</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
