@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="q1:PythonTransform">
+        <q1:Script># 2D Forward Discrete Fourier Transform 
+# http://www.nudoq.org/#!/Packages/OpenCV.Net/OpenCV.Net/CV/M/DFT
+import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import *
+
+@returns(IplImage)
+def process(img):
+  transform=IplImage(img.Size, IplDepth.U8, 1)
+  CV.DFT(img,transform,Forward,0)
+  return transform #img #</q1:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:Crop">
+          <q2:RegionOfInterest>
+            <q2:X>158</q2:X>
+            <q2:Y>4</q2:Y>
+            <q2:Width>290</q2:Width>
+            <q2:Height>318</q2:Height>
+          </q2:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:Grayscale" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:FileCapture">
+          <q2:FileName>D:\Vincent\vIRt7\vIRt7_Acute_HSCam2017-12-21T23_56_49.avi</q2:FileName>
+          <q2:PlaybackRate>500</q2:PlaybackRate>
+          <q2:StartPosition>0</q2:StartPosition>
+          <q2:PositionUnits>Frames</q2:PositionUnits>
+          <q2:Loop>false</q2:Loop>
+          <q2:Playing>true</q2:Playing>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:MaskPolygon">
+          <q2:Regions>
+            <q2:ArrayOfPoint>
+              <q2:Point>
+                <q2:X>194</q2:X>
+                <q2:Y>4</q2:Y>
+              </q2:Point>
+              <q2:Point>
+                <q2:X>294</q2:X>
+                <q2:Y>31</q2:Y>
+              </q2:Point>
+              <q2:Point>
+                <q2:X>297</q2:X>
+                <q2:Y>-7</q2:Y>
+              </q2:Point>
+              <q2:Point>
+                <q2:X>230</q2:X>
+                <q2:Y>-5</q2:Y>
+              </q2:Point>
+            </q2:ArrayOfPoint>
+            <q2:ArrayOfPoint>
+              <q2:Point>
+                <q2:X>220</q2:X>
+                <q2:Y>51</q2:Y>
+              </q2:Point>
+              <q2:Point>
+                <q2:X>220</q2:X>
+                <q2:Y>51</q2:Y>
+              </q2:Point>
+              <q2:Point>
+                <q2:X>220</q2:X>
+                <q2:Y>52</q2:Y>
+              </q2:Point>
+              <q2:Point>
+                <q2:X>220</q2:X>
+                <q2:Y>52</q2:Y>
+              </q2:Point>
+            </q2:ArrayOfPoint>
+          </q2:Regions>
+          <q2:MaskType>ToZeroInv</q2:MaskType>
+          <q2:FillValue>
+            <q2:Val0>255</q2:Val0>
+            <q2:Val1>255</q2:Val1>
+            <q2:Val2>255</q2:Val2>
+            <q2:Val3>0</q2:Val3>
+          </q2:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:AdaptiveThreshold">
+          <q2:MaxValue>255</q2:MaxValue>
+          <q2:AdaptiveMethod>MeanC</q2:AdaptiveMethod>
+          <q2:ThresholdType>Binary</q2:ThresholdType>
+          <q2:BlockSize>7</q2:BlockSize>
+          <q2:Parameter>3</q2:Parameter>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:BackgroundSubtraction">
+          <q2:BackgroundFrames>0</q2:BackgroundFrames>
+          <q2:AdaptationRate>0</q2:AdaptationRate>
+          <q2:ThresholdValue>0</q2:ThresholdValue>
+          <q2:ThresholdType>Binary</q2:ThresholdType>
+          <q2:SubtractionMethod>Absolute</q2:SubtractionMethod>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>1</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
