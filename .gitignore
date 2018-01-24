@@ -46,3 +46,6 @@ looming/looming.bonsai
 looming/looming.bonsai.layout
 looming/Shaders.config
 looming/circle.vert
+Bonsai.Examples.Ephys
+Bonsai.Examples.RoiTrigger
+Bonsai.Examples.ImageProcessing
