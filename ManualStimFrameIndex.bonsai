@@ -11,10 +11,10 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>Z:\VMSharedFolder %\Vincent\001p\001p_0308_HFtube_545_305_FirstWave_MStim_TTLOnset.csv</q1:FileName>
+        <q1:FileName>Z:\VMSharedFolder %\Vincent\001p\001p_0308_HFtube_545_305_FirstWave_MStim_FrameIndex.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
-        <q1:Suffix>None</q1:Suffix>
+        <q1:Suffix>FileCount</q1:Suffix>
         <q1:IncludeHeader>false</q1:IncludeHeader>
       </Expression>
       <Expression xsi:type="Accumulate" />
@@ -55,7 +55,7 @@
       </Expression>
       <Expression xsi:type="GreaterThan">
         <Operand xsi:type="DoubleProperty">
-          <Value>2000</Value>
+          <Value>5000</Value>
         </Operand>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -72,9 +72,9 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:Threshold">
-          <q2:ThresholdValue>176</q2:ThresholdValue>
+          <q2:ThresholdValue>107</q2:ThresholdValue>
           <q2:MaxValue>255</q2:MaxValue>
-          <q2:ThresholdType>Binary</q2:ThresholdType>
+          <q2:ThresholdType>BinaryInv</q2:ThresholdType>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -111,10 +111,10 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:Crop">
                 <q2:RegionOfInterest>
-                  <q2:X>462</q2:X>
-                  <q2:Y>320</q2:Y>
-                  <q2:Width>84</q2:Width>
-                  <q2:Height>76</q2:Height>
+                  <q2:X>222</q2:X>
+                  <q2:Y>14</q2:Y>
+                  <q2:Width>410</q2:Width>
+                  <q2:Height>46</q2:Height>
                 </q2:RegionOfInterest>
               </Combinator>
             </Expression>
