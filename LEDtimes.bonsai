@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="MemberSelector">
         <Selector>Source.Index</Selector>
@@ -11,7 +11,7 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>D:\Vincent\vIRt7\vIRt7_Acute_HSCam2017-12-21T23_56_49_TTLOnset.csv</q1:FileName>
+        <q1:FileName>C:\Data\Video\vIRt12_Acute_KAionto_5100_cutWhiskers_HSCam2018-01-18T15_53_01_TTLOnset.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>None</q1:Suffix>
@@ -20,7 +20,7 @@
       <Expression xsi:type="Accumulate" />
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:FileCapture">
-          <q2:FileName>D:\Vincent\vIRt7\vIRt7_Acute_HSCam2017-12-21T23_56_49.avi</q2:FileName>
+          <q2:FileName>C:\Data\Video\vIRt12_Acute_KAionto_5100_cutWhiskers_HSCam2018-01-18T15_53_03.avi</q2:FileName>
           <q2:PlaybackRate>500</q2:PlaybackRate>
           <q2:StartPosition>0</q2:StartPosition>
           <q2:PositionUnits>Frames</q2:PositionUnits>
@@ -72,7 +72,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:Threshold">
-          <q2:ThresholdValue>153</q2:ThresholdValue>
+          <q2:ThresholdValue>162</q2:ThresholdValue>
           <q2:MaxValue>255</q2:MaxValue>
           <q2:ThresholdType>Binary</q2:ThresholdType>
         </Combinator>
@@ -111,10 +111,10 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:Crop">
                 <q2:RegionOfInterest>
-                  <q2:X>223</q2:X>
-                  <q2:Y>69</q2:Y>
-                  <q2:Width>51</q2:Width>
-                  <q2:Height>70</q2:Height>
+                  <q2:X>118</q2:X>
+                  <q2:Y>382</q2:Y>
+                  <q2:Width>26</q2:Width>
+                  <q2:Height>32</q2:Height>
                 </q2:RegionOfInterest>
               </Combinator>
             </Expression>
