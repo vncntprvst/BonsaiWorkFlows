@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="q1:CsvReader">
+        <q1:FileName>E:\Data\Video\TrialTimes\PrV77_43_HSCam2016-02-19T13_39_07_trialTimes.csv</q1:FileName>
+        <q1:ScanPattern>%i,%i</q1:ScanPattern>
+        <q1:SkipRows>0</q1:SkipRows>
+      </Expression>
+      <Expression xsi:type="WindowWorkflow">
+        <Name>VideoClips</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property name="StartPosition" selector="Source.StartPosition" />
+                <Property name="Count" selector="Source.Count" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="NestedWorkflow">
+              <Name>SaveClip</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Take">
+                      <Count>2434</Count>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:FileCapture">
+                      <q2:FileName>E:\Data\Video\PrV77_43_HSCam2016-02-19T13_39_07.avi</q2:FileName>
+                      <q2:PlaybackRate>1000</q2:PlaybackRate>
+                      <q2:StartPosition>88296</q2:StartPosition>
+                      <q2:PositionUnits>Frames</q2:PositionUnits>
+                      <q2:Loop>false</q2:Loop>
+                      <q2:Playing>true</q2:Playing>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="ExternalizedPropertyOfInt32Take">
+                    <MemberName>Count</MemberName>
+                    <Name>Count</Name>
+                    <Value>2434</Value>
+                  </Expression>
+                  <Expression xsi:type="ExternalizedPropertyOfStringFileCapture">
+                    <MemberName>FileName</MemberName>
+                    <Name>FileName</Name>
+                    <Value>E:\Data\Video\PrV77_43_HSCam2016-02-19T13_39_07.avi</Value>
+                  </Expression>
+                  <Expression xsi:type="ExternalizedPropertyOfDoubleFileCapture">
+                    <MemberName>StartPosition</MemberName>
+                    <Name>StartPosition</Name>
+                    <Value>88296</Value>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:VideoWriter">
+                      <q2:FileName>E:\Data\Video\VidExports\PrV77_42_HSCamClips.avi</q2:FileName>
+                      <q2:Suffix>FileCount</q2:Suffix>
+                      <q2:Buffered>true</q2:Buffered>
+                      <q2:Overwrite>false</q2:Overwrite>
+                      <q2:FourCC>FMP4</q2:FourCC>
+                      <q2:FrameRate>100</q2:FrameRate>
+                      <q2:FrameSize>
+                        <q2:Width>0</q2:Width>
+                        <q2:Height>0</q2:Height>
+                      </q2:FrameSize>
+                      <q2:ResizeInterpolation>NearestNeighbor</q2:ResizeInterpolation>
+                    </Combinator>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>1</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="q3:ExpressionTransform">
+        <q3:Expression>new(
+Item1 as StartPosition,
+Item2-Item1 as Count
+)</q3:Expression>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Concat" />
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.PropertyMappingBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Reactive.Take, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

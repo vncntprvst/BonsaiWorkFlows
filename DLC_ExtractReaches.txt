@@ -1,0 +1,11 @@
+As usual, very annoying issues. 
+Sequences will be split by condition, but if saving images, 
+then all images even the from the incorrect sequences 
+Can save videos, but that's not the goal here, and there will be one video
+per frame when the condition is met, that's stupid. 
+Need to turn "off" the saving when condition is not met,
+and keep it on continuously while the condition is met. 
+Using SkipUntil to do that, although I'm no sure that does anything after the 
+first (initial) inactive period.
+Also, saving only the last 10 frames of each sequence as proxy. 
+That describes the reach/grasp pretty well. 

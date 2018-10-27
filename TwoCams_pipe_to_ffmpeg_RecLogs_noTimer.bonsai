@@ -3,7 +3,7 @@
   <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>D:\Data\Video\SpVi16_0403_WR_5225_pole_20180403-201930HSCam.csv</q1:FileName>
+        <q1:FileName>D:\Data\Video\vIRt20_0802_5156+_LS50mW10Hz5ms_20180802-174113HSCam.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>None</q1:Suffix>
@@ -21,11 +21,11 @@
       <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
         <MemberName>Value</MemberName>
         <Name>XP name</Name>
-        <Value>SpVi16_0403_WR_5225_pole</Value>
+        <Value>vIRt20_0802_5156+_LS50mW10Hz5ms</Value>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>SpVi16_0403_WR_5225_pole</Value>
+          <Value>vIRt20_0802_5156+_LS50mW10Hz5ms</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -75,7 +75,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>SpVi16_0403_WR_5225_pole</Value>
+          <Value>vIRt20_0802_5156+_LS50mW10Hz5ms</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -144,7 +144,7 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>D:\Data\Video\SpVi16_0403_WR_5225_pole_20180403-201930Webcam.csv</q1:FileName>
+        <q1:FileName>D:\Data\Video\vIRt20_0802_5156+_LS50mW10Hz5ms_20180802-174113Webcam.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>false</q1:Overwrite>
         <q1:Suffix>None</q1:Suffix>
@@ -185,7 +185,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>SpVi16_0403_WR_5225_pole</Value>
+          <Value>vIRt20_0802_5156+_LS50mW10Hz5ms</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -195,7 +195,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:VideoWriter">
-          <q2:FileName>D:\Data\Video\SpVi16_0403_WR_5225_pole_20180403-201930Webcam.avi</q2:FileName>
+          <q2:FileName>D:\Data\Video\vIRt20_0802_5156+_LS50mW10Hz5ms_20180802-174113Webcam.avi</q2:FileName>
           <q2:Suffix>None</q2:Suffix>
           <q2:Buffered>true</q2:Buffered>
           <q2:Overwrite>false</q2:Overwrite>
@@ -239,7 +239,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>SpVi16_0403_WR_5225_pole</Value>
+          <Value>vIRt20_0802_5156+_LS50mW10Hz5ms</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">

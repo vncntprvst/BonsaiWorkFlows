@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="WindowWorkflow">
+        <Name>Batching</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q1:FileCapture">
+                <q1:FileName>D:\mice\002.avi</q1:FileName>
+                <q1:PlaybackRate>0</q1:PlaybackRate>
+                <q1:StartPosition>0</q1:StartPosition>
+                <q1:PositionUnits>Frames</q1:PositionUnits>
+                <q1:Loop>false</q1:Loop>
+                <q1:Playing>true</q1:Playing>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedPropertyOfStringFileCapture">
+              <MemberName>FileName</MemberName>
+              <Name>FileName</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="CombineLatest" />
+            </Expression>
+            <Expression xsi:type="ReplaySubject">
+              <Name>FileName</Name>
+              <BufferSize xsi:nil="true" />
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>FileName</Name>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>4</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="SelectMany">
+        <Name>FileNames</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Concat" />
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Name>Upper</q2:Name>
+        <q2:Script>import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import Scalar
+
+@returns(Scalar)
+def process(value):
+  if (value == "001"):
+    return Scalar(25, 25, 25, 25)
+  elif (value == "002"):
+    return Scalar(50, 50, 50, 50)
+  elif (value == "003"):
+    return Scalar(75, 75, 75, 75)
+  elif (value == "004"):
+    return Scalar(100, 100, 100, 100)
+  elif (value == "005"):
+    return Scalar(125, 125, 125, 125)
+  </q2:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Concat" />
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfScalarHsvThreshold">
+        <MemberName>Lower</MemberName>
+        <Name>Lower</Name>
+        <Value>
+          <Val0>0</Val0>
+          <Val1>207</Val1>
+          <Val2>0</Val2>
+          <Val3>25</Val3>
+        </Value>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:VideoWriter">
+          <q1:Suffix>None</q1:Suffix>
+          <q1:Buffered>true</q1:Buffered>
+          <q1:Overwrite>false</q1:Overwrite>
+          <q1:FourCC>FMP4</q1:FourCC>
+          <q1:FrameRate>30</q1:FrameRate>
+          <q1:FrameSize>
+            <q1:Width>0</q1:Width>
+            <q1:Height>0</q1:Height>
+          </q1:FrameSize>
+          <q1:ResizeInterpolation>NearestNeighbor</q1:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item1</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item2</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:ConvertColor">
+          <q1:Conversion>Bgr2Hsv</q1:Conversion>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:HsvThreshold">
+          <q1:Lower>
+            <q1:Val0>0</q1:Val0>
+            <q1:Val1>207</q1:Val1>
+            <q1:Val2>0</q1:Val2>
+            <q1:Val3>25</q1:Val3>
+          </q1:Lower>
+          <q1:Upper>
+            <q1:Val0>179</q1:Val0>
+            <q1:Val1>255</q1:Val1>
+            <q1:Val2>255</q1:Val2>
+            <q1:Val3>255</q1:Val3>
+          </q1:Upper>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfScalarHsvThreshold">
+        <MemberName>Upper</MemberName>
+        <Name>Upper</Name>
+        <Value>
+          <Val0>179</Val0>
+          <Val1>255</Val1>
+          <Val2>255</Val2>
+          <Val3>255</Val3>
+        </Value>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Name>Lower</q2:Name>
+        <q2:Script>import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import Scalar
+
+@returns(Scalar)
+def process(value):
+  if (value == "001"):
+    return Scalar(25, 25, 25, 25)
+  elif (value == "002"):
+    return Scalar(50, 50, 50, 50)
+  elif (value == "003"):
+    return Scalar(75, 75, 75, 75)
+  elif (value == "004"):
+    return Scalar(100, 100, 100, 100)
+  elif (value == "005"):
+    return Scalar(125, 125, 125, 125)
+  </q2:Script>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Name>FNameNum</q2:Name>
+        <q2:Script>@returns(str)
+def process(value):
+# This node only takes the file name number codes and passes them on. For example, in my case the codes are my filename's 8th-11th characters. 
+  return value[8:11]</q2:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:GetFiles">
+          <q3:Path>C:\Data\Video\tests</q3:Path>
+          <q3:SearchPattern>*.avi</q3:SearchPattern>
+          <q3:SearchOption>TopDirectoryOnly</q3:SearchOption>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>9</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>9</To>
+        <Label>Source3</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[OpenCV.Net.Scalar, OpenCV.Net, Version=3.3.0.0, Culture=neutral, PublicKeyToken=null],[Bonsai.Vision.HsvThreshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.ConvertColor, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.HsvThreshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.GetFiles, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
