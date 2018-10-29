@@ -3,7 +3,7 @@
   <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>E:\Dropbox\Vincent Docs\WhiskerTracking\MainWhiskerAngle.csv</q1:FileName>
+        <q1:FileName>D:\Data\Ephys\vIRt22\vIRt22_1016\WhiskerTracking\vIRt22_1016_5100_50ms1Hz10mW\MainWhiskerAngle.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>true</q1:Overwrite>
         <q1:Suffix>None</q1:Suffix>
@@ -25,8 +25,8 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:FileCapture">
-          <q2:FileName>E:\Dropbox\Vincent Docs\WhiskerTracking\vIRt22_1016_5100_50ms1Hz5mW.mp4</q2:FileName>
-          <q2:PlaybackRate>500</q2:PlaybackRate>
+          <q2:FileName>D:\Data\Ephys\vIRt22\vIRt22_1016\vIRt22_1016_5100_50ms1Hz10mW.mp4</q2:FileName>
+          <q2:PlaybackRate>5000</q2:PlaybackRate>
           <q2:StartPosition>0</q2:StartPosition>
           <q2:PositionUnits>Frames</q2:PositionUnits>
           <q2:Loop>false</q2:Loop>
@@ -40,7 +40,7 @@
         <Combinator xsi:type="q2:SortBinaryRegions" />
       </Expression>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>E:\Dropbox\Vincent Docs\WhiskerTracking\MultiWhiskerAngleCentroid.csv</q1:FileName>
+        <q1:FileName>D:\Data\Ephys\vIRt22\vIRt22_1016\WhiskerTracking\vIRt22_1016_5100_50ms1Hz10mW\MultiWhiskerAngleCentroid.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>true</q1:Overwrite>
         <q1:Suffix>None</q1:Suffix>
