@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Rhd2000EvalBoard">
+          <q1:BitFileName>C:\OpenEphys\open-ephys-windows\rhd2000.bit</q1:BitFileName>
+          <q1:SampleRate>SampleRate20000Hz</q1:SampleRate>
+          <q1:FastSettle>false</q1:FastSettle>
+          <q1:LowerBandwidth>0.1</q1:LowerBandwidth>
+          <q1:UpperBandwidth>7500</q1:UpperBandwidth>
+          <q1:DspCutoffFrequency>1</q1:DspCutoffFrequency>
+          <q1:DspEnabled>true</q1:DspEnabled>
+          <q1:CableDelayA xsi:nil="true" />
+          <q1:CableDelayB xsi:nil="true" />
+          <q1:CableDelayC xsi:nil="true" />
+          <q1:CableDelayD xsi:nil="true" />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DetectSpikes">
+          <q2:Delay>16</q2:Delay>
+          <q2:Length>48</q2:Length>
+          <q2:Threshold>
+            <q2:double>-42.578102018003179</q2:double>
+            <q2:double>-22.136259339883509</q2:double>
+          </q2:Threshold>
+          <q2:WaveformRefinement>AlignPeaks</q2:WaveformRefinement>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:MatrixWriter">
+          <q2:Path>C:\Data\raw\Bonsai\_TTL_.bin</q2:Path>
+          <q2:Suffix>Timestamp</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:Layout>ColumnMajor</q2:Layout>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.BufferCapacity</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:SelectChannels">
+          <q2:Channels>
+            <q2:int>0</q2:int>
+            <q2:int>8</q2:int>
+          </q2:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.TtlIn</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:ReferenceChannels">
+          <q2:Channels>
+            <q2:int>10</q2:int>
+          </q2:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:FrequencyFilter">
+          <q2:SamplingFrequency>30000</q2:SamplingFrequency>
+          <q2:Cutoff1>300</q2:Cutoff1>
+          <q2:Cutoff2>5000</q2:Cutoff2>
+          <q2:KernelLength>120</q2:KernelLength>
+          <q2:FilterType>BandPass</q2:FilterType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:MatrixWriter">
+          <q2:Path>C:\Data\raw\Bonsai\_16ch_.bin</q2:Path>
+          <q2:Suffix>Timestamp</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:Layout>ColumnMajor</q2:Layout>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:SelectChannels">
+          <q2:Channels>
+            <q2:int>0</q2:int>
+            <q2:int>1</q2:int>
+            <q2:int>2</q2:int>
+            <q2:int>3</q2:int>
+            <q2:int>4</q2:int>
+            <q2:int>5</q2:int>
+            <q2:int>6</q2:int>
+            <q2:int>7</q2:int>
+            <q2:int>8</q2:int>
+            <q2:int>9</q2:int>
+            <q2:int>10</q2:int>
+            <q2:int>11</q2:int>
+            <q2:int>12</q2:int>
+            <q2:int>13</q2:int>
+            <q2:int>14</q2:int>
+            <q2:int>15</q2:int>
+          </q2:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:ConvertScale">
+          <q2:Depth>S16</q2:Depth>
+          <q2:Scale>1</q2:Scale>
+          <q2:Shift>0</q2:Shift>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:ReferenceChannels">
+          <q2:Channels>
+            <q2:int>10</q2:int>
+          </q2:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:ConvertScale">
+          <q2:Depth>F32</q2:Depth>
+          <q2:Scale>1</q2:Scale>
+          <q2:Shift>-32768</q2:Shift>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:SelectChannels">
+          <q2:Channels>
+            <q2:int>0</q2:int>
+            <q2:int>1</q2:int>
+            <q2:int>2</q2:int>
+            <q2:int>3</q2:int>
+            <q2:int>4</q2:int>
+            <q2:int>5</q2:int>
+            <q2:int>6</q2:int>
+            <q2:int>7</q2:int>
+            <q2:int>8</q2:int>
+            <q2:int>9</q2:int>
+            <q2:int>10</q2:int>
+            <q2:int>11</q2:int>
+            <q2:int>12</q2:int>
+            <q2:int>13</q2:int>
+            <q2:int>14</q2:int>
+            <q2:int>15</q2:int>
+          </q2:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.AmplifierData</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:MatrixWriter">
+          <q2:Path>LOCAL STORAGE\Ephys\Ivy\Ivy_ColumnAccel_.bin</q2:Path>
+          <q2:Suffix>Timestamp</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:Layout>ColumnMajor</q2:Layout>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.AuxiliaryData</Selector>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>16</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>16</From>
+        <To>15</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.DetectSpikes, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.MatrixWriter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.ReferenceChannels, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.ConvertScale, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
