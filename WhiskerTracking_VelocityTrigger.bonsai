@@ -321,13 +321,21 @@ def pointvelocity(pt1,pt2):
   dy = (pt2.Y - pt1.Y)
   return Point(dx,dy)
 
-def calchypot(pt1,pt2):
-  dx = (pt2.X - pt1.X)
-  dy = (pt2.Y - pt1.Y)
-  return math.hypot(dx, dy)
+def bisector(pt1,pt2):
+  dx = abs(pt2.X - pt1.X)
+  dy = abs(pt2.Y - pt1.Y)
+  if dx+dy !=0:
+    #if abs(pt2.X) + abs(pt2.Y) &lt; 20:
+    #  return 0
+    #el
+    if  pt2.X &lt;= 0:
+      return (dx*dy)*2/math.hypot(dx, dy) #flipping polarity, as head oriented leftward
+    else:
+      return -(dx*dy)*2/math.hypot(dx, dy)
+  else:
+    return 0
 
-
-@returns(Point2f) #ConnectedComponentCollection) #@returns(Tuple[float,int]) #@returns(Single)
+@returns(float) #ConnectedComponentCollection) #@returns(Tuple[float,int]) #@returns(Single)
 def process(sortedRegions):
   global base, centroidLoc, centroidVel
   # Order blob list by descending area
@@ -394,13 +402,13 @@ def process(sortedRegions):
 
     if Single.IsNaN(centroidVel.X) == True: 
       centroidVel=currCentroidVel
-    centroidAcc = calchypot(centroidVel,currCentroidVel)
-
+    centroidAcc = bisector(centroidVel,currCentroidVel)
+    
     centroidLoc = currCentroid
     centroidVel = currCentroidVel
-    return currCentroid #calchypot(centroidLoc,currCentroid) #currCentroidVel #centroidAcc
+    return centroidAcc #calchypot(centroidLoc,currCentroid) #currCentroidVel #centroidAcc
   else:
-    return Point(0,0) #float(0) #
+    return float(0) #Point(0,0) #
 
 </q2:Script>
       </Expression>
@@ -435,6 +443,41 @@ def process(value):
                         value[1].Item1,value[1].Item2,
                         value[2].Item1,value[2].Item2)
 </q2:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="DistinctUntilChanged" />
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Name>ConvertLogicalToZeroOne</q2:Name>
+        <q2:Script>@returns(bool)
+def process(value):
+  if value &gt;=0:
+    return value
+  else:
+    return 0</q2:Script>
+      </Expression>
+      <Expression xsi:type="Subtract" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Skip">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Name>TrueFor30</q2:Name>
+        <q2:Script>@returns(int)
+def process(value):
+  if value &lt;31:
+    return value
+  else:
+    return 0</q2:Script>
+      </Expression>
+      <Expression xsi:type="GreaterThan">
+        <Operand xsi:type="DoubleProperty">
+          <Value>10</Value>
+        </Operand>
       </Expression>
     </Nodes>
     <Edges>
@@ -524,8 +567,48 @@ def process(value):
         <Label>Source1</Label>
       </Edge>
       <Edge>
+        <From>14</From>
+        <To>23</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
         <From>15</From>
         <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>18</From>
+        <To>17</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>19</From>
+        <To>18</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>20</From>
+        <To>19</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>20</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>22</From>
+        <To>21</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>22</From>
+        <To>20</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>22</To>
         <Label>Source1</Label>
       </Edge>
     </Edges>
@@ -546,5 +629,10 @@ def process(value):
     <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.DistinctUntilChanged, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
