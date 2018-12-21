@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q2="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:q1="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="TriggeredWindow">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="SelectMany">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:KeyDown">
+          <q1:Filter>Space</q1:Filter>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:Rhd2000EvalBoard">
+          <q2:BitFileName>C:\OpenEphys\open-ephys-windows\rhd2000.bit</q2:BitFileName>
+          <q2:SampleRate>SampleRate30000Hz</q2:SampleRate>
+          <q2:FastSettle>false</q2:FastSettle>
+          <q2:LowerBandwidth>0.1</q2:LowerBandwidth>
+          <q2:UpperBandwidth>7500</q2:UpperBandwidth>
+          <q2:DspCutoffFrequency>1</q2:DspCutoffFrequency>
+          <q2:DspEnabled>true</q2:DspEnabled>
+          <q2:CableDelayA xsi:nil="true" />
+          <q2:CableDelayB xsi:nil="true" />
+          <q2:CableDelayC xsi:nil="true" />
+          <q2:CableDelayD xsi:nil="true" />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:FrequencyFilter">
+          <q3:SamplingFrequency>30000</q3:SamplingFrequency>
+          <q3:Cutoff1>300</q3:Cutoff1>
+          <q3:Cutoff2>6000</q3:Cutoff2>
+          <q3:KernelLength>60</q3:KernelLength>
+          <q3:FilterType>BandPass</q3:FilterType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:SelectChannels">
+          <q3:Channels>
+            <q3:int>0</q3:int>
+          </q3:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:AdcScale">
+          <q2:AdcType>BoardAdc</q2:AdcType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.BoardAdcData</Selector>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>0</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Reactive.TriggeredWindow, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Ephys.AdcScale, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
