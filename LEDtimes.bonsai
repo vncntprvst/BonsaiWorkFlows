@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="MemberSelector">
         <Selector>Source.Index</Selector>
@@ -11,17 +11,17 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>Z:\VMSharedFolder %\Vincent\001p\001p_0308_HFtube_545_305_FirstWave_MStim_TTLOnset.csv</q1:FileName>
+        <q1:FileName>Z:\VMSharedFolder %\Dominic\vIRt20\vIRt20_0704_5119+_CutWhiskers_pole_20180704-134312HSCam_TTLOnset.csv</q1:FileName>
         <q1:Append>false</q1:Append>
-        <q1:Overwrite>false</q1:Overwrite>
+        <q1:Overwrite>true</q1:Overwrite>
         <q1:Suffix>None</q1:Suffix>
         <q1:IncludeHeader>false</q1:IncludeHeader>
       </Expression>
       <Expression xsi:type="Accumulate" />
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:FileCapture">
-          <q2:FileName>Z:\VMSharedFolder %\Vincent\001p\001p_0308_HFtube_545_305_FirstWave_MStim_20180308-152248HSCam.avi</q2:FileName>
-          <q2:PlaybackRate>500</q2:PlaybackRate>
+          <q2:FileName>Z:\VMSharedFolder %\Dominic\vIRt20\vIRt20_0704_5119+_CutWhiskers_pole_20180704-134312HSCam.avi</q2:FileName>
+          <q2:PlaybackRate>5000</q2:PlaybackRate>
           <q2:StartPosition>0</q2:StartPosition>
           <q2:PositionUnits>Frames</q2:PositionUnits>
           <q2:Loop>false</q2:Loop>
@@ -111,10 +111,10 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:Crop">
                 <q2:RegionOfInterest>
-                  <q2:X>462</q2:X>
-                  <q2:Y>320</q2:Y>
-                  <q2:Width>84</q2:Width>
-                  <q2:Height>76</q2:Height>
+                  <q2:X>0</q2:X>
+                  <q2:Y>396</q2:Y>
+                  <q2:Width>130</q2:Width>
+                  <q2:Height>84</q2:Height>
                 </q2:RegionOfInterest>
               </Combinator>
             </Expression>
