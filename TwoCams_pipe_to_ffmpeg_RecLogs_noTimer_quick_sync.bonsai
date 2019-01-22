@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="q1:CsvWriter">
+        <q1:FileName>D:\Data\Video\SpVi12_1107_WR_MS_pole_20171107-183052.csv</q1:FileName>
+        <q1:Append>false</q1:Append>
+        <q1:Overwrite>false</q1:Overwrite>
+        <q1:Suffix>None</q1:Suffix>
+        <q1:IncludeHeader>false</q1:IncludeHeader>
+        <q1:Selector>Source.Timestamp</q1:Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringCsvWriter">
+        <MemberName>FileName</MemberName>
+        <Name>HScam csv filename</Name>
+        <Value />
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
+        <MemberName>Value</MemberName>
+        <Name>XP name</Name>
+        <Value>SpVi12_1107_WR</Value>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>SpVi12_1107_WR_MS_pole</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:ImageWriter">
+          <q2:Path>\\.\pipe\video</q2:Path>
+          <q2:Suffix>None</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q3:PythonTransform">
+        <q3:Name>ffmpeg call</q3:Name>
+        <q3:Script>import os
+
+#fname = 'D:\\Data\\Video\\video.avi'
+pipename = r'\\.\pipe\video'
+
+@returns(bool)
+def process(value):
+  fname=value.Item2;
+  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -r 500 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 20M {1}',pipename,fname))
+  return True</q3:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:CameraCapture">
+          <q2:Index>1</q2:Index>
+          <q2:CaptureProperties />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timer">
+          <DueTime>PT1S</DueTime>
+          <Period>PT0S</Period>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
+        <MemberName>Value</MemberName>
+        <Name>Directory</Name>
+        <Value>D:\Data\Video\</Value>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>SpVi12_1107_WR_MS_pole</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="q3:PythonTransform">
+        <q3:Name>csv filename</q3:Name>
+        <q3:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "HSCam.csv"
+  return path
+</q3:Script>
+      </Expression>
+      <Expression xsi:type="q3:PythonTransform">
+        <q3:Name>avi filename</q3:Name>
+        <q3:Description>avi filename</q3:Description>
+        <q3:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "HSCam.avi"
+  return path
+</q3:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:Flip">
+          <q2:Mode>Vertical</q2:Mode>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:CameraCapture">
+          <q2:Index>0</q2:Index>
+          <q2:CaptureProperties />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q1:CsvWriter">
+        <q1:FileName>D:\Data\Video\SpVi12_1107_WR_MS_pole_20171107-183052.csv</q1:FileName>
+        <q1:Append>false</q1:Append>
+        <q1:Overwrite>false</q1:Overwrite>
+        <q1:Suffix>None</q1:Suffix>
+        <q1:IncludeHeader>false</q1:IncludeHeader>
+        <q1:Selector>Source.Timestamp</q1:Selector>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringCsvWriter">
+        <MemberName>FileName</MemberName>
+        <Name>webcam csv filename</Name>
+        <Value />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="q3:PythonTransform">
+        <q3:Name>csv filename</q3:Name>
+        <q3:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "Webcam.csv"
+  return path
+</q3:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>SpVi12_1107_WR_MS_pole</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:VideoWriter">
+          <q2:Suffix>None</q2:Suffix>
+          <q2:Buffered>true</q2:Buffered>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:FourCC>FMP4</q2:FourCC>
+          <q2:FrameRate>30</q2:FrameRate>
+          <q2:FrameSize>
+            <q2:Width>0</q2:Width>
+            <q2:Height>0</q2:Height>
+          </q2:FrameSize>
+          <q2:ResizeInterpolation>NearestNeighbor</q2:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedPropertyOfStringVideoWriter">
+        <MemberName>FileName</MemberName>
+        <Name>Webcam Video FileName</Name>
+      </Expression>
+      <Expression xsi:type="q3:PythonTransform">
+        <q3:Name>avi filename</q3:Name>
+        <q3:Description>webcam avi filename</q3:Description>
+        <q3:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "Webcam.avi"
+  return path
+</q3:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Repeat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>SpVi12_1107_WR_MS_pole</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>D:\Data\Video\</Value>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>1</From>
+        <To>0</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>28</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>35</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>15</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>15</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>29</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>36</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>19</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>19</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>16</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>16</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>17</From>
+        <To>5</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>18</From>
+        <To>17</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>19</From>
+        <To>18</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>20</From>
+        <To>30</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>20</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>24</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>22</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>24</From>
+        <To>22</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>25</From>
+        <To>23</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>26</From>
+        <To>25</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>27</From>
+        <To>26</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>28</From>
+        <To>27</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>29</From>
+        <To>27</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>31</From>
+        <To>30</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>32</From>
+        <To>31</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>33</From>
+        <To>32</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>34</From>
+        <To>33</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>35</From>
+        <To>34</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>36</From>
+        <To>34</To>
+        <Label>Source2</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.ImageWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.CameraCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Flip, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
