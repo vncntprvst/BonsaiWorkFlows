@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:Crop">
@@ -15,8 +15,8 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:FileCapture">
           <q1:FileName>Z:\VMSharedFolder %\Vincent\vIRt24\vIRt24_0110_3751_2ms10Hz5mW.mp4</q1:FileName>
-          <q1:PlaybackRate>500</q1:PlaybackRate>
-          <q1:StartPosition>115000</q1:StartPosition>
+          <q1:PlaybackRate>50000</q1:PlaybackRate>
+          <q1:StartPosition>0</q1:StartPosition>
           <q1:PositionUnits>Frames</q1:PositionUnits>
           <q1:Loop>false</q1:Loop>
           <q1:Playing>true</q1:Playing>
@@ -250,11 +250,11 @@ def process(sortedRegions):
   # Order component list by leftmost centroid
   leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
   if Single.IsNaN(blob1Index) == False:
-    Component.Add(leftmost[int(blob1Index)])
+    #Component.Add(leftmost[int(blob1Index)])
     if int(blob1Index)+1 &lt;= len(leftmost)-1:
       Component.Add(leftmost[int(blob1Index)+1])
-    if int(blob1Index)+2 &lt;= len(leftmost)-1:
-      Component.Add(leftmost[int(blob1Index)+2])
+    #if int(blob1Index)+2 &lt;= len(leftmost)-1:
+      #Component.Add(leftmost[int(blob1Index)+2])
     
   return Component
 
@@ -282,7 +282,10 @@ def process(sortedRegions):
         <q3:Overwrite>false</q3:Overwrite>
         <q3:Suffix>None</q3:Suffix>
         <q3:IncludeHeader>false</q3:IncludeHeader>
-        <q3:Selector>Source.Item.Centroid,Source.Item.Orientation</q3:Selector>
+        <q3:Selector>Source.Centroid,Source.Orientation</q3:Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:LargestBinaryRegion" />
       </Expression>
     </Nodes>
     <Edges>
@@ -333,6 +336,11 @@ def process(sortedRegions):
       </Edge>
       <Edge>
         <From>9</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
         <To>10</To>
         <Label>Source1</Label>
       </Edge>
@@ -350,5 +358,6 @@ def process(sortedRegions):
     <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
