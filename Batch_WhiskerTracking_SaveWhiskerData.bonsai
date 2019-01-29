@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0-preview">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Concat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:GetFiles">
+          <q1:Path>D:\Data\vIRt24_0110</q1:Path>
+          <q1:SearchPattern>*.mp4</q1:SearchPattern>
+          <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="SelectMany">
+        <Name>FileNames</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Concat" />
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="CreateObservable">
+        <Name>ProcessVideo</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="q1:CsvWriter">
+              <q1:FileName>D:\Data\vIRt24_0110\vIRt24_0110_3100_WhiskersCentroidOrientation.csv</q1:FileName>
+              <q1:Append>false</q1:Append>
+              <q1:Overwrite>true</q1:Overwrite>
+              <q1:Suffix>None</q1:Suffix>
+              <q1:IncludeHeader>false</q1:IncludeHeader>
+              <q1:Selector>Centroid,Orientation</q1:Selector>
+              <q1:CompatibilityMode>true</q1:CompatibilityMode>
+            </Expression>
+            <Expression xsi:type="ReplaySubject">
+              <Name>FileName</Name>
+              <BufferSize xsi:nil="true" />
+            </Expression>
+            <Expression xsi:type="q2:PythonTransform">
+              <q2:Script>@returns(str)
+def process(value):
+  return value.replace('.mp4', '_WhiskersCentroidOrientation.csv')</q2:Script>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:FileCapture">
+                <q3:FileName>D:\Data\vIRt24_0110\vIRt24_0110_3100.mp4</q3:FileName>
+                <q3:PlaybackRate>5000</q3:PlaybackRate>
+                <q3:StartPosition>0</q3:StartPosition>
+                <q3:PositionUnits>Frames</q3:PositionUnits>
+                <q3:Loop>false</q3:Loop>
+                <q3:Playing>true</q3:Playing>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedProperty">
+              <MemberName>FileName</MemberName>
+              <Name>FileName</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedProperty">
+              <MemberName>FileName</MemberName>
+              <Name>CSVFileName</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:Crop">
+                <q3:RegionOfInterest>
+                  <q3:X>0</q3:X>
+                  <q3:Y>82</q3:Y>
+                  <q3:Width>630</q3:Width>
+                  <q3:Height>388</q3:Height>
+                </q3:RegionOfInterest>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:SortBinaryRegions" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:FindContours">
+                <q3:Mode>List</q3:Mode>
+                <q3:Method>ChainApproxSimple</q3:Method>
+                <q3:Offset>
+                  <q3:X>0</q3:X>
+                  <q3:Y>0</q3:Y>
+                </q3:Offset>
+                <q3:MinArea>400</q3:MinArea>
+                <q3:MaxArea>10000</q3:MaxArea>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:BackgroundSubtraction">
+                <q3:BackgroundFrames>0</q3:BackgroundFrames>
+                <q3:AdaptationRate>0</q3:AdaptationRate>
+                <q3:ThresholdValue>0</q3:ThresholdValue>
+                <q3:ThresholdType>Binary</q3:ThresholdType>
+                <q3:SubtractionMethod>Absolute</q3:SubtractionMethod>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:MaskPolygon">
+                <q3:Regions>
+                  <q3:ArrayOfPoint>
+                    <q3:Point>
+                      <q3:X>220</q3:X>
+                      <q3:Y>51</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>220</q3:X>
+                      <q3:Y>51</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>220</q3:X>
+                      <q3:Y>52</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>220</q3:X>
+                      <q3:Y>52</q3:Y>
+                    </q3:Point>
+                  </q3:ArrayOfPoint>
+                  <q3:ArrayOfPoint>
+                    <q3:Point>
+                      <q3:X>629</q3:X>
+                      <q3:Y>-1</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>559</q3:X>
+                      <q3:Y>-1</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>421</q3:X>
+                      <q3:Y>0</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>283</q3:X>
+                      <q3:Y>0</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>198</q3:X>
+                      <q3:Y>-1</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>218</q3:X>
+                      <q3:Y>24</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>270</q3:X>
+                      <q3:Y>53</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>310</q3:X>
+                      <q3:Y>59</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>378</q3:X>
+                      <q3:Y>96</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>482</q3:X>
+                      <q3:Y>138</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>508</q3:X>
+                      <q3:Y>159</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>514</q3:X>
+                      <q3:Y>211</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>519</q3:X>
+                      <q3:Y>278</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>542</q3:X>
+                      <q3:Y>346</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>566</q3:X>
+                      <q3:Y>390</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>629</q3:X>
+                      <q3:Y>398</q3:Y>
+                    </q3:Point>
+                  </q3:ArrayOfPoint>
+                </q3:Regions>
+                <q3:MaskType>ToZeroInv</q3:MaskType>
+                <q3:FillValue>
+                  <q3:Val0>255</q3:Val0>
+                  <q3:Val1>255</q3:Val1>
+                  <q3:Val2>255</q3:Val2>
+                  <q3:Val3>0</q3:Val3>
+                </q3:FillValue>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:AdaptiveThreshold">
+                <q3:MaxValue>255</q3:MaxValue>
+                <q3:AdaptiveMethod>MeanC</q3:AdaptiveMethod>
+                <q3:ThresholdType>Binary</q3:ThresholdType>
+                <q3:BlockSize>25</q3:BlockSize>
+                <q3:Parameter>3</q3:Parameter>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:Grayscale" />
+            </Expression>
+            <Expression xsi:type="q2:PythonTransform">
+              <q2:Script>import clr
+clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+clr.AddReference("Bonsai.Vision")
+from System import Tuple, Math, Single, Array
+import math
+from System.Linq import Enumerable
+from OpenCV.Net import Point, Point2f
+from Bonsai.Vision import ConnectedComponentCollection
+
+base = None
+nanpoint = Point2f(float.NaN,float.NaN)
+centroidLoc = nanpoint
+centroidVel = nanpoint
+
+def distfromlastframe(pt1,pt2):
+  dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return dx + dy
+
+def pointvelocity(pt1,pt2):
+  dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return Point(dx,dy)
+
+def bisector(pt1,pt2):
+  dx = abs(pt2.X - pt1.X)
+  dy = abs(pt2.Y - pt1.Y)
+  if dx+dy !=0:
+    #if abs(pt2.X) + abs(pt2.Y) &lt; 20:
+    #  return 0
+    #el
+    if  pt2.X &lt;= 0:
+      return (dx*dy)/math.hypot(dx, dy) #flipping polarity, as head oriented leftward
+    else:
+      return -(dx*dy)/math.hypot(dx, dy)
+  else:
+    return 0
+
+@returns(ConnectedComponentCollection) #(Tuple[float,float]) #ConnectedComponentCollection) #@returns(Tuple[float,int]) #@returns(Single)
+def process(sortedRegions):
+  global base, centroidLoc, centroidVel
+  # Order blob list by descending area
+  #largest = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Area))
+  # Order component list by rightmost centroid
+  #rightmost = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Centroid.X))
+  leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
+
+  if len(leftmost) &gt;= 1:
+    blob1Index = 0
+    currbase = base
+    newbase = leftmost[blob1Index].Contour.ToArray[Point]()[0]
+    if base is None:
+      base = newbase
+      #return float.NaN
+    elif abs(distfromlastframe(currbase, newbase)) &lt; 20:
+      base = newbase
+      #float(largest[0].Orientation)
+      #return distfromlastframe(currbase, base)  
+    else: # find which blob is which instead
+      if len(leftmost) &gt;= blob1Index+2:
+        nextbase = leftmost[blob1Index+1].Contour.ToArray[Point]()[0]
+        if abs(distfromlastframe(currbase, nextbase)) &lt; 20:
+          blob1Index = blob1Index+1
+          base = nextbase
+        else:
+          if len(leftmost) &gt;= blob1Index+3:
+            nextbase = leftmost[blob1Index+2].Contour.ToArray[Point]()[0]
+            if abs(distfromlastframe(currbase, nextbase)) &lt; 20:
+              blob1Index = blob1Index+2
+              base = nextbase
+            else: #keep previous value
+              blob1Index = float.NaN
+              base = base
+          else:
+            blob1Index = float.NaN
+      else:
+        blob1Index = float.NaN
+      #return distfromlastframe(currbase, base)  
+    blob1Index = float(blob1Index)
+  else:
+    # otherwise, return nan
+    base = None
+    blob1Index = float.NaN
+
+  #return Tuple.Create(blob1Index,len(leftmost))
+
+  Component = ConnectedComponentCollection(sortedRegions.ImageSize)
+  # Order component list by leftmost centroid
+  leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
+  if Single.IsNaN(blob1Index) == False:
+    #Component.Add(leftmost[int(blob1Index)])
+    if int(blob1Index)+1 &lt;= len(leftmost)-1:
+      Component.Add(leftmost[int(blob1Index)+1])
+    #if int(blob1Index)+2 &lt;= len(leftmost)-1:
+      #Component.Add(leftmost[int(blob1Index)+2])
+    
+  return Component
+
+  # if len(Component)&gt;=2:
+  #   currCentroid = Component[1].Centroid
+  #   if Single.IsNaN(centroidLoc.X) == True: 
+  #     centroidLoc=currCentroid
+  #   currCentroidVel = pointvelocity(centroidLoc,currCentroid)
+  #   instantVel = -bisector(centroidLoc,currCentroid)
+  #   if Single.IsNaN(centroidVel.X) == True: 
+  #     centroidVel=currCentroidVel
+  #   instantAcc = bisector(centroidVel,currCentroidVel)
+    
+  #   centroidLoc = currCentroid
+  #   centroidVel = currCentroidVel
+  #   return Tuple.Create(float(instantAcc),float(instantVel)) #calchypot(centroidLoc,currCentroid) #currCentroidVel #centroidAcc
+  # else:
+  #   return Tuple.Create(float(0),float(0)) #Point(0,0) #
+
+</q2:Script>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:LargestBinaryRegion" />
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>1</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>14</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>15</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>9</From>
+              <To>8</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>10</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>10</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>12</From>
+              <To>11</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>13</From>
+              <To>12</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>13</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>15</From>
+              <To>16</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>16</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>1</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.GetFiles, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
