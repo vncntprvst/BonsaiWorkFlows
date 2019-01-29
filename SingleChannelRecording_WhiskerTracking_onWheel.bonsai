@@ -385,15 +385,15 @@ def process(sortedRegions):
                   <q6:X>0</q6:X>
                   <q6:Y>0</q6:Y>
                 </q6:Offset>
-                <q6:MinArea>400</q6:MinArea>
-                <q6:MaxArea>10000</q6:MaxArea>
+                <q6:MinArea>200</q6:MinArea>
+                <q6:MaxArea>100000</q6:MaxArea>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q6:BackgroundSubtraction">
                 <q6:BackgroundFrames>0</q6:BackgroundFrames>
                 <q6:AdaptationRate>0</q6:AdaptationRate>
-                <q6:ThresholdValue>0</q6:ThresholdValue>
+                <q6:ThresholdValue>6</q6:ThresholdValue>
                 <q6:ThresholdType>Binary</q6:ThresholdType>
                 <q6:SubtractionMethod>Absolute</q6:SubtractionMethod>
               </Combinator>
@@ -449,24 +449,20 @@ def process(sortedRegions):
                       <q6:Y>70</q6:Y>
                     </q6:Point>
                     <q6:Point>
-                      <q6:X>319</q6:X>
-                      <q6:Y>108</q6:Y>
+                      <q6:X>394</q6:X>
+                      <q6:Y>3</q6:Y>
                     </q6:Point>
                     <q6:Point>
-                      <q6:X>367</q6:X>
-                      <q6:Y>106</q6:Y>
+                      <q6:X>454</q6:X>
+                      <q6:Y>-10</q6:Y>
                     </q6:Point>
                     <q6:Point>
-                      <q6:X>435</q6:X>
-                      <q6:Y>144</q6:Y>
+                      <q6:X>552</q6:X>
+                      <q6:Y>7</q6:Y>
                     </q6:Point>
                     <q6:Point>
-                      <q6:X>527</q6:X>
-                      <q6:Y>169</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>575</q6:X>
-                      <q6:Y>176</q6:Y>
+                      <q6:X>602</q6:X>
+                      <q6:Y>14</q6:Y>
                     </q6:Point>
                     <q6:Point>
                       <q6:X>584</q6:X>
@@ -496,7 +492,7 @@ def process(sortedRegions):
                 <q6:MaxValue>255</q6:MaxValue>
                 <q6:AdaptiveMethod>MeanC</q6:AdaptiveMethod>
                 <q6:ThresholdType>Binary</q6:ThresholdType>
-                <q6:BlockSize>25</q6:BlockSize>
+                <q6:BlockSize>5</q6:BlockSize>
                 <q6:Parameter>3</q6:Parameter>
               </Combinator>
             </Expression>
@@ -595,7 +591,7 @@ def process(sortedRegions):
         <Workflow>
           <Nodes>
             <Expression xsi:type="q7:CsvWriter">
-              <q7:FileName>C:\Data\test\test_20190125-183304_HSCam.csv</q7:FileName>
+              <q7:FileName>C:\Data\test\test_20190125-183622_HSCam.csv</q7:FileName>
               <q7:Append>false</q7:Append>
               <q7:Overwrite>false</q7:Overwrite>
               <q7:Suffix>None</q7:Suffix>
@@ -618,7 +614,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:MatrixWriter">
-                <q2:Path>C:\Data\test\test_20190125-183304_AIN1.bin</q2:Path>
+                <q2:Path>C:\Data\test\test_20190125-183622_AIN1.bin</q2:Path>
                 <q2:Suffix>None</q2:Suffix>
                 <q2:Overwrite>false</q2:Overwrite>
                 <q2:Layout>ColumnMajor</q2:Layout>
@@ -626,7 +622,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:MatrixWriter">
-                <q2:Path>C:\Data\test\test_20190125-183304_TTL.bin</q2:Path>
+                <q2:Path>C:\Data\test\test_20190125-183622_TTL.bin</q2:Path>
                 <q2:Suffix>None</q2:Suffix>
                 <q2:Overwrite>false</q2:Overwrite>
                 <q2:Layout>ColumnMajor</q2:Layout>

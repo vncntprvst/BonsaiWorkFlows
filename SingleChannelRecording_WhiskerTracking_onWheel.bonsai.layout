@@ -365,9 +365,9 @@
     <VisualizerSettings>
       <MatVisualizer>
         <XMin>0</XMin>
-        <XMax>1</XMax>
-        <YMin>0</YMin>
-        <YMax>1.1</YMax>
+        <XMax>6000</XMax>
+        <YMin>-8E-05</YMin>
+        <YMax>8E-05</YMax>
         <AutoScaleX>true</AutoScaleX>
         <AutoScaleY>true</AutoScaleY>
         <SelectedPage>0</SelectedPage>
@@ -542,10 +542,10 @@
         </VisualizerSettings>
       </DialogSettings>
       <DialogSettings>
-        <Visible>false</Visible>
+        <Visible>true</Visible>
         <Location>
-          <X>87</X>
-          <Y>151</Y>
+          <X>774</X>
+          <Y>553</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -558,10 +558,10 @@
         </VisualizerSettings>
       </DialogSettings>
       <DialogSettings>
-        <Visible>false</Visible>
+        <Visible>true</Visible>
         <Location>
-          <X>150</X>
-          <Y>150</Y>
+          <X>317</X>
+          <Y>641</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -574,7 +574,7 @@
         </VisualizerSettings>
       </DialogSettings>
       <DialogSettings>
-        <Visible>false</Visible>
+        <Visible>true</Visible>
         <Location>
           <X>151</X>
           <Y>435</Y>
@@ -590,10 +590,10 @@
         </VisualizerSettings>
       </DialogSettings>
       <DialogSettings>
-        <Visible>false</Visible>
+        <Visible>true</Visible>
         <Location>
-          <X>75</X>
-          <Y>75</Y>
+          <X>441</X>
+          <Y>421</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -606,10 +606,10 @@
         </VisualizerSettings>
       </DialogSettings>
       <DialogSettings>
-        <Visible>false</Visible>
+        <Visible>true</Visible>
         <Location>
-          <X>125</X>
-          <Y>125</Y>
+          <X>79</X>
+          <Y>419</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -682,9 +682,9 @@
     <VisualizerSettings>
       <MatVisualizer>
         <XMin>0</XMin>
-        <XMax>1</XMax>
-        <YMin>0</YMin>
-        <YMax>1.1</YMax>
+        <XMax>6000</XMax>
+        <YMin>-8E-05</YMin>
+        <YMax>8E-05</YMax>
         <AutoScaleX>true</AutoScaleX>
         <AutoScaleY>true</AutoScaleY>
         <SelectedPage>0</SelectedPage>
@@ -1185,9 +1185,9 @@
     <VisualizerSettings>
       <MatVisualizer>
         <XMin>0</XMin>
-        <XMax>1</XMax>
-        <YMin>0</YMin>
-        <YMax>1.1</YMax>
+        <XMax>6000</XMax>
+        <YMin>-8E-05</YMin>
+        <YMax>8E-05</YMax>
         <AutoScaleX>true</AutoScaleX>
         <AutoScaleY>true</AutoScaleY>
         <SelectedPage>0</SelectedPage>
