@@ -7,8 +7,8 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>D:\Data\vIRt24_0110</q1:Path>
-          <q1:SearchPattern>*.mp4</q1:SearchPattern>
+          <q1:Path>D:\Data\process</q1:Path>
+          <q1:SearchPattern>*.avi</q1:SearchPattern>
           <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
         </Combinator>
       </Expression>
@@ -46,7 +46,7 @@
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>D:\Data\vIRt24_0110\vIRt24_0110_3100_WhiskersCentroidOrientation.csv</q1:FileName>
+              <q1:FileName>D:\Data\process\vIRt24_orofacial_20190109-173851_HSCam.avi</q1:FileName>
               <q1:Append>false</q1:Append>
               <q1:Overwrite>true</q1:Overwrite>
               <q1:Suffix>None</q1:Suffix>
@@ -61,11 +61,11 @@
             <Expression xsi:type="q2:PythonTransform">
               <q2:Script>@returns(str)
 def process(value):
-  return value.replace('.mp4', '_WhiskersCentroidOrientation.csv')</q2:Script>
+  return value.replace('.avi', '_WhiskersCentroidOrientation.csv')</q2:Script>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q3:FileCapture">
-                <q3:FileName>D:\Data\vIRt24_0110\vIRt24_0110_3100.mp4</q3:FileName>
+                <q3:FileName>D:\Data\process\vIRt24_orofacial_20190109-173851_HSCam.avi</q3:FileName>
                 <q3:PlaybackRate>5000</q3:PlaybackRate>
                 <q3:StartPosition>0</q3:StartPosition>
                 <q3:PositionUnits>Frames</q3:PositionUnits>
