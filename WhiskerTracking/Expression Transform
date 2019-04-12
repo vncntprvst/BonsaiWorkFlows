@@ -1,0 +1,14 @@
+new(
+Item1.Item1 as Whisker1_Base,
+Item1.Item2 as Whisker2_Base,
+Item1.Item3 as Whisker3_Base,
+Item1.Item4 as Whisker4_Base,
+Item1.Item5 as Whisker5_Base,
+Item1.Item6 as Whisker6_Base,
+Item2.Item1 as Whisker1_Centroid,
+Item2.Item2 as Whisker2_Centroid,
+Item2.Item3 as Whisker3_Centroid,
+Item2.Item4 as Whisker4_Centroid,
+Item2.Item5 as Whisker5_Centroid,
+Item2.Item6 as Whisker6_Centroid
+)
