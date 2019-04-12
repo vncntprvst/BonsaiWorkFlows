@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0-preview">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Rhd2000EvalBoard">
+          <q1:BitFileName>C:\OpenEphys\open-ephys-windows\rhd2000.bit</q1:BitFileName>
+          <q1:SampleRate>SampleRate30000Hz</q1:SampleRate>
+          <q1:FastSettle>false</q1:FastSettle>
+          <q1:LowerBandwidth>0.1</q1:LowerBandwidth>
+          <q1:UpperBandwidth>7500</q1:UpperBandwidth>
+          <q1:DspCutoffFrequency>1</q1:DspCutoffFrequency>
+          <q1:DspEnabled>true</q1:DspEnabled>
+          <q1:CableDelayA xsi:nil="true" />
+          <q1:CableDelayB xsi:nil="true" />
+          <q1:CableDelayC xsi:nil="true" />
+          <q1:CableDelayD xsi:nil="true" />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>TtlIn</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:MatrixWriter">
+          <q2:Path>C:\Data\test\test_readfiles_TTL.bin</q2:Path>
+          <q2:Suffix>Timestamp</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:Layout>ColumnMajor</q2:Layout>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.MatrixWriter, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

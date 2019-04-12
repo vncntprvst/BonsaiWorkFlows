@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q1="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:AudioCapture">
+          <q1:Frequency>44100</q1:Frequency>
+          <q1:SampleFormat>Mono16</q1:SampleFormat>
+          <q1:BufferLength>10</q1:BufferLength>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:TriggeredBuffer">
+          <q2:Count>1500</q2:Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Condition">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="q3:PythonTransform">
+              <q3:Script>@returns(bool)
+def process(value):
+  if value.Item2 == True:
+    return True
+  else:
+    return False</q3:Script>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="q3:ExpressionTransform">
+              <q3:Expression>it.Getreal(0)</q3:Expression>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source2</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>1</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="TriggeredWindow">
+          <Count xsi:nil="true" />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:MouseMove" />
+      </Expression>
+      <Expression xsi:type="GreaterThan">
+        <Operand xsi:type="IntProperty">
+          <Value>0</Value>
+        </Operand>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.X</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Skip">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Subtract" />
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>2</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>3</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>8</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Audio.AudioCapture, Bonsai.Audio, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.TriggeredBuffer, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.TriggeredWindow, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Windows.Input.MouseMove, Bonsai.Windows.Input, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
