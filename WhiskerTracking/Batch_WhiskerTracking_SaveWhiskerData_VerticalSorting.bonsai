@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="Concat" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>D:\Data\Ephys\vIRt32_0410\WhiskerTracking</q1:Path>
+          <q1:Path>D:\Data\vIRt32\vIRt32_0410\Analysis</q1:Path>
           <q1:SearchPattern>*.mp4</q1:SearchPattern>
           <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
         </Combinator>
@@ -25,8 +25,16 @@
             </Expression>
           </Nodes>
           <Edges>
-            <Edge From="0" To="2" Label="Source1" />
-            <Edge From="2" To="1" Label="Source1" />
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
           </Edges>
         </Workflow>
       </Expression>
@@ -44,11 +52,11 @@
             <Expression xsi:type="q2:PythonTransform">
               <q2:Script>@returns(str)
 def process(value):
-  return value.replace('.mp4', '_WhiskersCentroids.csv')</q2:Script>
+  return value.replace('.mp4', '_WhiskersBaseCentroids.csv')</q2:Script>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q3:FileCapture">
-                <q3:FileName>D:\Data\Ephys\vIRt32_0410\WhiskerTracking\vIRt32_0410_4799.mp4</q3:FileName>
+                <q3:FileName>D:\Data\vIRt32\vIRt32_0410\Analysis\vIRt32_0410_4910.mp4</q3:FileName>
                 <q3:PlaybackRate>5000</q3:PlaybackRate>
                 <q3:StartPosition>0</q3:StartPosition>
                 <q3:PositionUnits>Frames</q3:PositionUnits>
@@ -132,36 +140,36 @@ def process(value):
                       <q3:Y>479</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>125</q3:X>
-                      <q3:Y>305</q3:Y>
+                      <q3:X>110</q3:X>
+                      <q3:Y>289</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>139</q3:X>
-                      <q3:Y>271</q3:Y>
+                      <q3:X>137</q3:X>
+                      <q3:Y>243</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>179</q3:X>
-                      <q3:Y>224</q3:Y>
+                      <q3:X>166</q3:X>
+                      <q3:Y>206</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>179</q3:X>
-                      <q3:Y>168</q3:Y>
+                      <q3:X>172</q3:X>
+                      <q3:Y>142</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>205</q3:X>
-                      <q3:Y>132</q3:Y>
+                      <q3:X>213</q3:X>
+                      <q3:Y>115</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>339</q3:X>
-                      <q3:Y>37</q3:Y>
+                      <q3:X>355</q3:X>
+                      <q3:Y>25</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>403</q3:X>
-                      <q3:Y>55</q3:Y>
+                      <q3:X>430</q3:X>
+                      <q3:Y>51</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>513</q3:X>
-                      <q3:Y>103</q3:Y>
+                      <q3:X>515</q3:X>
+                      <q3:Y>83</q3:Y>
                     </q3:Point>
                     <q3:Point>
                       <q3:X>512</q3:X>
@@ -252,13 +260,13 @@ def process(sortedRegions):
   if len(vSortRegionList) &gt;=6:
     baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[4].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[5].Contour.ToArray[Point]()[0]))
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),Point2f(vSortRegionList[4].Centroid.X,vSortRegionList[4].Centroid.Y),Point2f(vSortRegionList[5].Centroid.X,vSortRegionList[5].Centroid.Y))
-  if len(vSortRegionList) ==5:
+  elif len(vSortRegionList) ==5:
     baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[4].Contour.ToArray[Point]()[0]),NaNPoint)
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),Point2f(vSortRegionList[4].Centroid.X,vSortRegionList[4].Centroid.Y),NaNPoint)
-  if len(vSortRegionList) ==4:
+  elif len(vSortRegionList) ==4:
     baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint)
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),NaNPoint,NaNPoint)
-  if len(vSortRegionList) ==3:
+  elif len(vSortRegionList) ==3:
     baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint,NaNPoint)
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),NaNPoint,NaNPoint,NaNPoint)
   elif len(vSortRegionList) ==2:
@@ -291,7 +299,7 @@ Item2.Item6 as Whisker6_Centroid
 )</q2:Expression>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>D:\Data\Ephys\vIRt32_0410\WhiskerTracking\vIRt32_0410_4799_WhiskersCentroids.csv</q1:FileName>
+              <q1:FileName>D:\Data\vIRt32\vIRt32_0410\Analysis\vIRt32_0410_4910_WhiskersBaseCentroids.csv</q1:FileName>
               <q1:Delimiter>,</q1:Delimiter>
               <q1:Append>false</q1:Append>
               <q1:Overwrite>true</q1:Overwrite>
@@ -301,31 +309,111 @@ Item2.Item6 as Whisker6_Centroid
             </Expression>
           </Nodes>
           <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="1" To="4" Label="Source1" />
-            <Edge From="2" To="5" Label="Source1" />
-            <Edge From="3" To="6" Label="Source1" />
-            <Edge From="4" To="3" Label="Source1" />
-            <Edge From="5" To="16" Label="Source2" />
-            <Edge From="6" To="13" Label="Source1" />
-            <Edge From="7" To="14" Label="Source1" />
-            <Edge From="8" To="7" Label="Source1" />
-            <Edge From="9" To="8" Label="Source1" />
-            <Edge From="10" To="9" Label="Source1" />
-            <Edge From="11" To="10" Label="Source1" />
-            <Edge From="12" To="11" Label="Source1" />
-            <Edge From="13" To="12" Label="Source1" />
-            <Edge From="14" To="15" Label="Source1" />
-            <Edge From="15" To="16" Label="Source1" />
+            <Edge>
+              <From>0</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>16</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>13</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>14</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>9</From>
+              <To>8</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>10</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>10</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>12</From>
+              <To>11</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>13</From>
+              <To>12</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>15</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>15</From>
+              <To>16</To>
+              <Label>Source1</Label>
+            </Edge>
           </Edges>
         </Workflow>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge From="1" To="2" Label="Source1" />
-      <Edge From="2" To="3" Label="Source1" />
-      <Edge From="3" To="0" Label="Source1" />
+      <Edge>
+        <From>1</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
