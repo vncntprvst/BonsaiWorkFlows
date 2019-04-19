@@ -7,7 +7,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>D:\Data\vIRt32\vIRt32_0410\Analysis</q1:Path>
+          <q1:Path>D:\Data\vIRt32\vIRt32_0419\WhiskerTracking</q1:Path>
           <q1:SearchPattern>*.mp4</q1:SearchPattern>
           <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
         </Combinator>
@@ -56,7 +56,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q3:FileCapture">
-                <q3:FileName>D:\Data\vIRt32\vIRt32_0410\Analysis\vIRt32_0410_4910.mp4</q3:FileName>
+                <q3:FileName>D:\Data\vIRt32\vIRt32_0419\WhiskerTracking\vIRt32_0419_4910.mp4</q3:FileName>
                 <q3:PlaybackRate>5000</q3:PlaybackRate>
                 <q3:StartPosition>0</q3:StartPosition>
                 <q3:PositionUnits>Frames</q3:PositionUnits>
@@ -299,7 +299,7 @@ Item2.Item6 as Whisker6_Centroid
 )</q2:Expression>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>D:\Data\vIRt32\vIRt32_0410\Analysis\vIRt32_0410_4910_WhiskersBaseCentroids.csv</q1:FileName>
+              <q1:FileName>D:\Data\vIRt32\vIRt32_0419\WhiskerTracking\vIRt32_0419_4910_WhiskersBaseCentroids.csv</q1:FileName>
               <q1:Delimiter>,</q1:Delimiter>
               <q1:Append>false</q1:Append>
               <q1:Overwrite>true</q1:Overwrite>
