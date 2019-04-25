@@ -114,24 +114,6 @@ def process(value):
                 <q3:Regions>
                   <q3:ArrayOfPoint>
                     <q3:Point>
-                      <q3:X>220</q3:X>
-                      <q3:Y>51</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>220</q3:X>
-                      <q3:Y>51</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>220</q3:X>
-                      <q3:Y>52</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>220</q3:X>
-                      <q3:Y>52</q3:Y>
-                    </q3:Point>
-                  </q3:ArrayOfPoint>
-                  <q3:ArrayOfPoint>
-                    <q3:Point>
                       <q3:X>-22</q3:X>
                       <q3:Y>515</q3:Y>
                     </q3:Point>
