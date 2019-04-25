@@ -7,7 +7,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>D:\Data\vIRt32\vIRt32_0419\WhiskerTracking</q1:Path>
+          <q1:Path>D:\Data\vIRt32\vIRt32_0424\videos</q1:Path>
           <q1:SearchPattern>*.mp4</q1:SearchPattern>
           <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
         </Combinator>
@@ -56,7 +56,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q3:FileCapture">
-                <q3:FileName>D:\Data\vIRt32\vIRt32_0419\WhiskerTracking\vIRt32_0419_4910.mp4</q3:FileName>
+                <q3:FileName>D:\Data\vIRt32\vIRt32_0424\videos\vIRt32_0424_5185_pole.mp4</q3:FileName>
                 <q3:PlaybackRate>5000</q3:PlaybackRate>
                 <q3:StartPosition>0</q3:StartPosition>
                 <q3:PositionUnits>Frames</q3:PositionUnits>
@@ -76,9 +76,9 @@ def process(value):
               <Combinator xsi:type="q3:Crop">
                 <q3:RegionOfInterest>
                   <q3:X>0</q3:X>
-                  <q3:Y>0</q3:Y>
-                  <q3:Width>522</q3:Width>
-                  <q3:Height>476</q3:Height>
+                  <q3:Y>2</q3:Y>
+                  <q3:Width>594</q3:Width>
+                  <q3:Height>478</q3:Height>
                 </q3:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -132,90 +132,166 @@ def process(value):
                   </q3:ArrayOfPoint>
                   <q3:ArrayOfPoint>
                     <q3:Point>
-                      <q3:X>-19</q3:X>
-                      <q3:Y>507</q3:Y>
+                      <q3:X>-22</q3:X>
+                      <q3:Y>515</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>83</q3:X>
-                      <q3:Y>479</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>110</q3:X>
-                      <q3:Y>289</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>137</q3:X>
-                      <q3:Y>243</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>166</q3:X>
-                      <q3:Y>206</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>172</q3:X>
-                      <q3:Y>142</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>213</q3:X>
-                      <q3:Y>115</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>355</q3:X>
-                      <q3:Y>25</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>430</q3:X>
-                      <q3:Y>51</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>515</q3:X>
-                      <q3:Y>83</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>512</q3:X>
-                      <q3:Y>295</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>515</q3:X>
-                      <q3:Y>468</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>512</q3:X>
+                      <q3:X>80</q3:X>
                       <q3:Y>487</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>526</q3:X>
-                      <q3:Y>517</q3:Y>
+                      <q3:X>102</q3:X>
+                      <q3:Y>282</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>574</q3:X>
-                      <q3:Y>-19</q3:Y>
+                      <q3:X>122</q3:X>
+                      <q3:Y>252</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>379</q3:X>
-                      <q3:Y>-95</q3:Y>
+                      <q3:X>163</q3:X>
+                      <q3:Y>214</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>0</q3:X>
-                      <q3:Y>-95</q3:Y>
+                      <q3:X>169</q3:X>
+                      <q3:Y>150</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>202</q3:X>
+                      <q3:Y>103</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>352</q3:X>
+                      <q3:Y>33</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>445</q3:X>
+                      <q3:Y>71</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>612</q3:X>
+                      <q3:Y>137</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>707</q3:X>
+                      <q3:Y>27</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>632</q3:X>
+                      <q3:Y>-49</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>376</q3:X>
+                      <q3:Y>-87</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>-3</q3:X>
+                      <q3:Y>-87</q3:Y>
                     </q3:Point>
                   </q3:ArrayOfPoint>
                   <q3:ArrayOfPoint>
                     <q3:Point>
-                      <q3:X>-19</q3:X>
-                      <q3:Y>483</q3:Y>
+                      <q3:X>597</q3:X>
+                      <q3:Y>444</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>539</q3:X>
+                      <q3:X>85</q3:X>
+                      <q3:Y>444</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>83</q3:X>
+                      <q3:Y>487</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>618</q3:X>
                       <q3:Y>497</q3:Y>
                     </q3:Point>
+                  </q3:ArrayOfPoint>
+                  <q3:ArrayOfPoint>
                     <q3:Point>
-                      <q3:X>559</q3:X>
-                      <q3:Y>468</q3:Y>
+                      <q3:X>549</q3:X>
+                      <q3:Y>444</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>4</q3:X>
-                      <q3:Y>466</q3:Y>
+                      <q3:X>603</q3:X>
+                      <q3:Y>442</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>612</q3:X>
+                      <q3:Y>139</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>558</q3:X>
+                      <q3:Y>115</q3:Y>
+                    </q3:Point>
+                  </q3:ArrayOfPoint>
+                  <q3:ArrayOfPoint>
+                    <q3:Point>
+                      <q3:X>324</q3:X>
+                      <q3:Y>275</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>348</q3:X>
+                      <q3:Y>301</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>374</q3:X>
+                      <q3:Y>341</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>440</q3:X>
+                      <q3:Y>391</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>480</q3:X>
+                      <q3:Y>344</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>508</q3:X>
+                      <q3:Y>314</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>551</q3:X>
+                      <q3:Y>317</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>548</q3:X>
+                      <q3:Y>443</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>440</q3:X>
+                      <q3:Y>443</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>351</q3:X>
+                      <q3:Y>358</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>322</q3:X>
+                      <q3:Y>313</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>284</q3:X>
+                      <q3:Y>282</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>260</q3:X>
+                      <q3:Y>260</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>236</q3:X>
+                      <q3:Y>221</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>245</q3:X>
+                      <q3:Y>203</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>262</q3:X>
+                      <q3:Y>206</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>280</q3:X>
+                      <q3:Y>242</q3:Y>
                     </q3:Point>
                   </q3:ArrayOfPoint>
                 </q3:Regions>
@@ -299,7 +375,7 @@ Item2.Item6 as Whisker6_Centroid
 )</q2:Expression>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>D:\Data\vIRt32\vIRt32_0419\WhiskerTracking\vIRt32_0419_4910_WhiskersBaseCentroids.csv</q1:FileName>
+              <q1:FileName>D:\Data\vIRt32\vIRt32_0424\videos\vIRt32_0424_5185_pole_WhiskersBaseCentroids.csv</q1:FileName>
               <q1:Delimiter>,</q1:Delimiter>
               <q1:Append>false</q1:Append>
               <q1:Overwrite>true</q1:Overwrite>
@@ -307,21 +383,17 @@ Item2.Item6 as Whisker6_Centroid
               <q1:IncludeHeader>true</q1:IncludeHeader>
               <q1:Selector>Whisker1_Base,Whisker1_Centroid,Whisker2_Base,Whisker2_Centroid,Whisker3_Base,Whisker3_Centroid,Whisker4_Base,Whisker4_Centroid,Whisker5_Base,Whisker5_Centroid,Whisker6_Base,Whisker6_Centroid</q1:Selector>
             </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>FileName</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>FileName</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge>
               <From>0</From>
               <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>4</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
@@ -392,6 +464,16 @@ Item2.Item6 as Whisker6_Centroid
             <Edge>
               <From>15</From>
               <To>16</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>17</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>18</From>
+              <To>4</To>
               <Label>Source1</Label>
             </Edge>
           </Edges>

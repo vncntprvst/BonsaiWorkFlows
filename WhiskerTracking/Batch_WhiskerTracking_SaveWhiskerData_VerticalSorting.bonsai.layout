@@ -50,12 +50,12 @@
     <EditorDialogSettings>
       <Visible>true</Visible>
       <Location>
-        <X>937</X>
-        <Y>498</Y>
+        <X>1012</X>
+        <Y>375</Y>
       </Location>
       <Size>
-        <Width>942</Width>
-        <Height>408</Height>
+        <Width>867</Width>
+        <Height>531</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -133,7 +133,7 @@
         <WindowState>Normal</WindowState>
       </DialogSettings>
       <DialogSettings>
-        <Visible>true</Visible>
+        <Visible>false</Visible>
         <Location>
           <X>156</X>
           <Y>156</Y>
@@ -151,8 +151,8 @@
       <DialogSettings>
         <Visible>false</Visible>
         <Location>
-          <X>1163</X>
-          <Y>604</Y>
+          <X>560</X>
+          <Y>773</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -179,8 +179,8 @@
       <DialogSettings>
         <Visible>true</Visible>
         <Location>
-          <X>784</X>
-          <Y>512</Y>
+          <X>159</X>
+          <Y>481</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -221,7 +221,7 @@
         </VisualizerSettings>
       </DialogSettings>
       <DialogSettings>
-        <Visible>true</Visible>
+        <Visible>false</Visible>
         <Location>
           <X>524</X>
           <Y>176</Y>
@@ -267,6 +267,30 @@
         <VisualizerSettings>
           <ObjectTextVisualizer />
         </VisualizerSettings>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
       </DialogSettings>
       <DialogSettings>
         <Visible>false</Visible>
