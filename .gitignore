@@ -49,3 +49,7 @@ looming/circle.vert
 Bonsai.Examples.Ephys
 Bonsai.Examples.RoiTrigger
 Bonsai.Examples.ImageProcessing
+
+Bonsai\.Examples\.OscReceive/
+
+Bonsai\.Examples\.OscSend/
