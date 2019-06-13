@@ -48,7 +48,7 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:FileCapture">
                 <q2:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos\vIRt32_0424_5184.mp4</q2:FileName>
-                <q2:PlaybackRate>5000</q2:PlaybackRate>
+                <q2:PlaybackRate>100</q2:PlaybackRate>
                 <q2:StartPosition>0</q2:StartPosition>
                 <q2:PositionUnits>Frames</q2:PositionUnits>
                 <q2:Loop>false</q2:Loop>
@@ -256,12 +256,12 @@ centroidLoc = NaNPoint
 centroidVel = NaNPoint
 distThd = 20
 
-#def distfromlastframe(pt1,pt2):
-#  dx = (pt2.X - pt1.X)
-#  dy = (pt2.Y - pt1.Y)
-#  return dx + dy
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
 
-def Vdistfromlastframe(pt1,pt2):
+def VDistFromLastFrame(pt1,pt2):
   #dx = (pt2.X - pt1.X)
   dy = (pt2.Y - pt1.Y)
   return dy
@@ -271,29 +271,29 @@ def process(sortedRegions):
   global base, centroidLoc, centroidVel
   # Order blob list by descending area
   #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Centroid.Y))
-
+  vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
+  
   if len(vSortRegionList) &gt;= 1:
     blob1Index = 0
     currbase = base
-    newbase = vSortRegionList[blob1Index].Contour.ToArray[Point]()[0]
+    newbase = FindBasePoint(vSortRegionList[blob1Index].Contour.ToArray[Point]()) #vSortRegionList[blob1Index].Contour.ToArray[Point]()[0]
     if base is None:
       base = newbase
       #return float.NaN
-    elif abs(Vdistfromlastframe(currbase, newbase)) &lt; distThd:
+    elif abs(VDistFromLastFrame(currbase, newbase)) &lt; distThd:
       base = newbase
       #float(largest[0].Orientation)
       #return distfromlastframe(currbase, base)  
     else: # find which blob is which instead
       if len(vSortRegionList) &gt;= blob1Index+2:
-        nextbase = vSortRegionList[blob1Index+1].Contour.ToArray[Point]()[0]
-        if abs(Vdistfromlastframe(currbase, nextbase)) &lt; distThd:
+        nextbase = FindBasePoint(vSortRegionList[blob1Index+1].Contour.ToArray[Point]())
+        if abs(VDistFromLastFrame(currbase, nextbase)) &lt; distThd:
           blob1Index = blob1Index+1
           base = nextbase
         else:
           if len(vSortRegionList) &gt;= blob1Index+3:
-            nextbase = vSortRegionList[blob1Index+2].Contour.ToArray[Point]()[0]
-            if abs(Vdistfromlastframe(currbase, nextbase)) &lt; distThd:
+            nextbase = FindBasePoint(vSortRegionList[blob1Index+2].Contour.ToArray[Point]())
+            if abs(VDistFromLastFrame(currbase, nextbase)) &lt; distThd:
               blob1Index = blob1Index+2
               base = nextbase
             else: #keep previous value
@@ -315,16 +315,15 @@ def process(sortedRegions):
   Component = ConnectedComponentCollection(sortedRegions.ImageSize)
   # Order component list by vSortRegionList centroid
   #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Centroid.Y))
+  vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
   if Single.IsNaN(blob1Index) == False:
     Component.Add(vSortRegionList[int(blob1Index)])
-    if int(blob1Index)+1 &lt;= len(vSortRegionList)-1:
-      Component.Add(vSortRegionList[int(blob1Index)+1])
-    if int(blob1Index)+2 &lt;= len(vSortRegionList)-1:
-      Component.Add(vSortRegionList[int(blob1Index)+2])
+#    if int(blob1Index)+1 &lt;= len(vSortRegionList)-1:
+#      Component.Add(vSortRegionList[int(blob1Index)+1])
+#    if int(blob1Index)+2 &lt;= len(vSortRegionList)-1:
+#      Component.Add(vSortRegionList[int(blob1Index)+2])
     
-  return Component
-</q3:Script>
+  return Component</q3:Script>
             </Expression>
             <Expression xsi:type="q3:PythonTransform">
               <q3:Script>#return x,y values for base, center, tip of three central whiskers
@@ -337,40 +336,29 @@ from OpenCV.Net import Point, Point2f
 
 NaNPoint = Point2f(float.NaN,float.NaN)
 
-def FindTipPoint(inputList):
-    tipIdx = float(len(inputList))/2
-    if tipIdx % 2 != 0:
-        return (inputList[int(tipIdx - .5)])
-    else:
-        return (inputList[int(tipIdx)])
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
 
-# @returns(Tuple[Tuple[Point2f,Point2f,Point2f,Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f,Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f,Point2f,Point2f,Point2f]])
+def FindTipPoint(inputPointArray):
+  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.X)
+  lastPoint = Enumerable.First(pointList)
+  return lastPoint
+
 @returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
 def process(sortedRegions):
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Centroid.Y))
-  # if len(vSortRegionList) &gt;=6:
-  #   baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[4].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[5].Contour.ToArray[Point]()[0]))
-  #   centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),Point2f(vSortRegionList[4].Centroid.X,vSortRegionList[4].Centroid.Y),Point2f(vSortRegionList[5].Centroid.X,vSortRegionList[5].Centroid.Y))
-  #   tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[3].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[4].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[5].Contour.ToArray[Point]())))
-  # elif len(vSortRegionList) ==5:
-  #   baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[4].Contour.ToArray[Point]()[0]),NaNPoint)
-  #   centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),Point2f(vSortRegionList[4].Centroid.X,vSortRegionList[4].Centroid.Y),NaNPoint)
-  #   tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[3].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[4].Contour.ToArray[Point]())),NaNPoint)
-  # elif len(vSortRegionList) ==4:
-  #   baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint)
-  #   centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),NaNPoint,NaNPoint)
-  #   tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[3].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
-  # el
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Area))
   if len(vSortRegionList) &gt;=3:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]))
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[2].Contour.ToArray[Point]())))
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y))
     tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())))
   elif len(vSortRegionList) ==2:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),NaNPoint)
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),NaNPoint)
     tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
   elif len(vSortRegionList) == 1:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint)
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),NaNPoint,NaNPoint) 
     tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
   else:
@@ -381,8 +369,9 @@ def process(sortedRegions):
   return Tuple.Create(baseList, centroidList, tipList)
 </q3:Script>
             </Expression>
-            <Expression xsi:type="q3:ExpressionTransform">
-              <q3:Expression>new(
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="q3:ExpressionTransform">
+                <q3:Expression>new(
 Item1.Item1 as Whisker1_Base,
 Item1.Item2 as Whisker2_Base,
 Item1.Item3 as Whisker3_Base,
@@ -393,15 +382,29 @@ Item3.Item1 as Whisker1_Tip,
 Item3.Item2 as Whisker2_Tip,
 Item3.Item3 as Whisker3_Tip
 )</q3:Expression>
+              </Builder>
             </Expression>
-            <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos\CollectedData_test.csv</q1:FileName>
-              <q1:Delimiter>,</q1:Delimiter>
-              <q1:Append>false</q1:Append>
-              <q1:Overwrite>true</q1:Overwrite>
-              <q1:Suffix>None</q1:Suffix>
-              <q1:IncludeHeader>true</q1:IncludeHeader>
-              <q1:Selector>Whisker1_Base.X,Whisker1_Base.Y,Whisker1_Centroid.X,Whisker1_Centroid.Y,Whisker1_Tip.X,Whisker1_Tip.Y,Whisker2_Base.X,Whisker2_Base.Y,Whisker2_Centroid.X,Whisker2_Centroid.Y,Whisker2_Tip.X,Whisker2_Tip.Y,Whisker3_Base.X,Whisker3_Base.Y,Whisker3_Centroid.X,Whisker3_Centroid.Y,Whisker3_Tip.X,Whisker3_Tip.Y</q1:Selector>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="q1:CsvWriter">
+                <q1:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt34_0515_4988\WhiskerCoordinates_Bonsai.csv</q1:FileName>
+                <q1:Delimiter>,</q1:Delimiter>
+                <q1:Append>true</q1:Append>
+                <q1:Overwrite>true</q1:Overwrite>
+                <q1:Suffix>None</q1:Suffix>
+                <q1:IncludeHeader>false</q1:IncludeHeader>
+                <q1:Selector>Whisker1_Base.X,Whisker1_Base.Y,Whisker1_Centroid.X,Whisker1_Centroid.Y,Whisker1_Tip.X,Whisker1_Tip.Y,Whisker2_Base.X,Whisker2_Base.Y,Whisker2_Centroid.X,Whisker2_Centroid.Y,Whisker2_Tip.X,Whisker2_Tip.Y,Whisker3_Base.X,Whisker3_Base.Y,Whisker3_Centroid.X,Whisker3_Centroid.Y,Whisker3_Tip.X,Whisker3_Tip.Y</q1:Selector>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="q1:CsvWriter">
+                <q1:Append>false</q1:Append>
+                <q1:Overwrite>false</q1:Overwrite>
+                <q1:Suffix>None</q1:Suffix>
+                <q1:IncludeHeader>false</q1:IncludeHeader>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:Grayscale" />
             </Expression>
             <Expression xsi:type="Disable">
               <Builder xsi:type="q3:PythonTransform">
@@ -417,6 +420,7 @@ Item3.Item3 as Whisker3_Tip
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
+            <Edge From="5" To="18" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
@@ -424,6 +428,7 @@ Item3.Item3 as Whisker3_Tip
             <Edge From="10" To="11" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
             <Edge From="12" To="13" Label="Source1" />
+            <Edge From="12" To="17" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />

@@ -42,12 +42,12 @@
     <EditorDialogSettings>
       <Visible>true</Visible>
       <Location>
-        <X>441</X>
-        <Y>68</Y>
+        <X>-1</X>
+        <Y>466</Y>
       </Location>
       <Size>
-        <Width>1113</Width>
-        <Height>309</Height>
+        <Width>1151</Width>
+        <Height>356</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -115,8 +115,8 @@
       <DialogSettings>
         <Visible>true</Visible>
         <Location>
-          <X>156</X>
-          <Y>156</Y>
+          <X>850</X>
+          <Y>733</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -163,8 +163,8 @@
       <DialogSettings>
         <Visible>true</Visible>
         <Location>
-          <X>474</X>
-          <Y>380</Y>
+          <X>182</X>
+          <Y>182</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -209,7 +209,7 @@
         </VisualizerSettings>
       </DialogSettings>
       <DialogSettings>
-        <Visible>true</Visible>
+        <Visible>false</Visible>
         <Location>
           <X>234</X>
           <Y>234</Y>
@@ -227,8 +227,8 @@
       <DialogSettings>
         <Visible>true</Visible>
         <Location>
-          <X>595</X>
-          <Y>598</Y>
+          <X>1179</X>
+          <Y>733</Y>
         </Location>
         <Size>
           <Width>336</Width>
@@ -239,6 +239,54 @@
         <VisualizerSettings>
           <ConnectedComponentCollectionVisualizer />
         </VisualizerSettings>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
       </DialogSettings>
       <DialogSettings>
         <Visible>false</Visible>

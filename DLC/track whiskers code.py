@@ -14,10 +14,10 @@ centroidLoc = NaNPoint
 centroidVel = NaNPoint
 distThd = 20
 
-#def distfromlastframe(pt1,pt2):
-#  dx = (pt2.X - pt1.X)
-#  dy = (pt2.Y - pt1.Y)
-#  return dx + dy
+def SmallestX(inputPointArray): # Use this function to define whisker base only if base to the left (else, OrderByDescending)
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
 
 def VDistFromLastFrame(pt1,pt2):
   #dx = (pt2.X - pt1.X)
@@ -34,7 +34,7 @@ def process(sortedRegions):
   if len(vSortRegionList) >= 1:
     blob1Index = 0
     currbase = base
-    newbase = vSortRegionList[blob1Index].Contour.ToArray[Point]()[0]
+    newbase = SmallestX(vSortRegionList[blob1Index].Contour.ToArray[Point]()) #vSortRegionList[blob1Index].Contour.ToArray[Point]()[0]
     if base is None:
       base = newbase
       #return float.NaN
@@ -44,13 +44,13 @@ def process(sortedRegions):
       #return distfromlastframe(currbase, base)  
     else: # find which blob is which instead
       if len(vSortRegionList) >= blob1Index+2:
-        nextbase = vSortRegionList[blob1Index+1].Contour.ToArray[Point]()[0]
+        nextbase = SmallestX(vSortRegionList[blob1Index+1].Contour.ToArray[Point]())
         if abs(VDistFromLastFrame(currbase, nextbase)) < distThd:
           blob1Index = blob1Index+1
           base = nextbase
         else:
           if len(vSortRegionList) >= blob1Index+3:
-            nextbase = vSortRegionList[blob1Index+2].Contour.ToArray[Point]()[0]
+            nextbase = SmallestX(vSortRegionList[blob1Index+2].Contour.ToArray[Point]())
             if abs(VDistFromLastFrame(currbase, nextbase)) < distThd:
               blob1Index = blob1Index+2
               base = nextbase

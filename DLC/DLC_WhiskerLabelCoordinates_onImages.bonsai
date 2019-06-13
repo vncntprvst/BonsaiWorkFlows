@@ -4,7 +4,7 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt34_0515_4988</q1:Path>
+          <q1:Path>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt32_0424_5184</q1:Path>
           <q1:SearchPattern>*.png</q1:SearchPattern>
           <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
         </Combinator>
@@ -47,7 +47,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:LoadImage">
-                <q2:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt34_0515_4988\img499252.png</q2:FileName>
+                <q2:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt32_0424_5184\img345817.png</q2:FileName>
                 <q2:Mode>Grayscale</q2:Mode>
               </Combinator>
             </Expression>
@@ -86,64 +86,64 @@
                       <q2:Y>481</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>55</q2:X>
+                      <q2:X>58</q2:X>
                       <q2:Y>477</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>55</q2:X>
+                      <q2:X>58</q2:X>
+                      <q2:Y>469</q2:Y>
+                    </q2:Point>
+                    <q2:Point>
+                      <q2:X>59</q2:X>
                       <q2:Y>456</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>63</q2:X>
-                      <q2:Y>387</q2:Y>
+                      <q2:X>72</q2:X>
+                      <q2:Y>285</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>74</q2:X>
-                      <q2:Y>346</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>108</q2:X>
-                      <q2:Y>328</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>112</q2:X>
-                      <q2:Y>309</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>155</q2:X>
+                      <q2:X>100</q2:X>
                       <q2:Y>274</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>169</q2:X>
-                      <q2:Y>242</q2:Y>
+                      <q2:X>107</q2:X>
+                      <q2:Y>255</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>170</q2:X>
-                      <q2:Y>198</q2:Y>
+                      <q2:X>132</q2:X>
+                      <q2:Y>231</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>179</q2:X>
-                      <q2:Y>171</q2:Y>
+                      <q2:X>151</q2:X>
+                      <q2:Y>218</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>198</q2:X>
-                      <q2:Y>152</q2:Y>
+                      <q2:X>164</q2:X>
+                      <q2:Y>184</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>225</q2:X>
-                      <q2:Y>121</q2:Y>
+                      <q2:X>162</q2:X>
+                      <q2:Y>151</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>275</q2:X>
-                      <q2:Y>96</q2:Y>
+                      <q2:X>172</q2:X>
+                      <q2:Y>132</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>333</q2:X>
-                      <q2:Y>48</q2:Y>
+                      <q2:X>200</q2:X>
+                      <q2:Y>97</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>470</q2:X>
-                      <q2:Y>84</q2:Y>
+                      <q2:X>247</q2:X>
+                      <q2:Y>79</q2:Y>
+                    </q2:Point>
+                    <q2:Point>
+                      <q2:X>300</q2:X>
+                      <q2:Y>6</q2:Y>
+                    </q2:Point>
+                    <q2:Point>
+                      <q2:X>443</q2:X>
+                      <q2:Y>66</q2:Y>
                     </q2:Point>
                     <q2:Point>
                       <q2:X>593</q2:X>
@@ -172,11 +172,11 @@
                       <q2:Y>471</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>56</q2:X>
-                      <q2:Y>472</q2:Y>
+                      <q2:X>58</q2:X>
+                      <q2:Y>469</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>55</q2:X>
+                      <q2:X>57</q2:X>
                       <q2:Y>477</q2:Y>
                     </q2:Point>
                     <q2:Point>
@@ -250,40 +250,29 @@ from OpenCV.Net import Point, Point2f
 
 NaNPoint = Point2f(float.NaN,float.NaN)
 
-def FindTipPoint(inputList):
-    tipIdx = float(len(inputList))/2
-    if tipIdx % 2 != 0:
-        return (inputList[int(tipIdx - .5)])
-    else:
-        return (inputList[int(tipIdx)])
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
 
-# @returns(Tuple[Tuple[Point2f,Point2f,Point2f,Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f,Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f,Point2f,Point2f,Point2f]])
+def FindTipPoint(inputPointArray):
+  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.X)
+  lastPoint = Enumerable.First(pointList)
+  return lastPoint
+
 @returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
 def process(sortedRegions):
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Centroid.Y))
-  # if len(vSortRegionList) &gt;=6:
-  #   baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[4].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[5].Contour.ToArray[Point]()[0]))
-  #   centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),Point2f(vSortRegionList[4].Centroid.X,vSortRegionList[4].Centroid.Y),Point2f(vSortRegionList[5].Centroid.X,vSortRegionList[5].Centroid.Y))
-  #   tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[3].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[4].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[5].Contour.ToArray[Point]())))
-  # elif len(vSortRegionList) ==5:
-  #   baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[4].Contour.ToArray[Point]()[0]),NaNPoint)
-  #   centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),Point2f(vSortRegionList[4].Centroid.X,vSortRegionList[4].Centroid.Y),NaNPoint)
-  #   tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[3].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[4].Contour.ToArray[Point]())),NaNPoint)
-  # elif len(vSortRegionList) ==4:
-  #   baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint)
-  #   centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),NaNPoint,NaNPoint)
-  #   tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[3].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
-  # el
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
   if len(vSortRegionList) &gt;=3:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]))
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[2].Contour.ToArray[Point]())))
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y))
     tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())))
   elif len(vSortRegionList) ==2:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),NaNPoint)
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),NaNPoint)
     tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
   elif len(vSortRegionList) == 1:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint)
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),NaNPoint,NaNPoint) 
     tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
   else:
@@ -308,13 +297,46 @@ Item3.Item3 as Whisker3_Tip
 )</q3:Expression>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt34_0515_4988\WhiskerCoordinates_Bonsai.csv</q1:FileName>
+              <q1:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt32_0424_5184\WhiskerCoordinates_Bonsai.csv</q1:FileName>
               <q1:Delimiter>,</q1:Delimiter>
               <q1:Append>true</q1:Append>
               <q1:Overwrite>true</q1:Overwrite>
               <q1:Suffix>None</q1:Suffix>
               <q1:IncludeHeader>false</q1:IncludeHeader>
               <q1:Selector>Whisker1_Base.X,Whisker1_Base.Y,Whisker1_Centroid.X,Whisker1_Centroid.Y,Whisker1_Tip.X,Whisker1_Tip.Y,Whisker2_Base.X,Whisker2_Base.Y,Whisker2_Centroid.X,Whisker2_Centroid.Y,Whisker2_Tip.X,Whisker2_Tip.Y,Whisker3_Base.X,Whisker3_Base.Y,Whisker3_Centroid.X,Whisker3_Centroid.Y,Whisker3_Tip.X,Whisker3_Tip.Y</q1:Selector>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="ExternalizedProperty">
+                <MemberName>FileName</MemberName>
+                <Name>FileName</Name>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="q2:LoadImage">
+                  <q2:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt32_0424_5184\img345817.png</q2:FileName>
+                  <q2:Mode>Grayscale</q2:Mode>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="PropertyMapping">
+                <PropertyMappings>
+                  <Property Name="FileName" />
+                </PropertyMappings>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="q2:FileCapture">
+                  <q2:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos\vIRt32_0424_5184.mp4</q2:FileName>
+                  <q2:PlaybackRate>5000</q2:PlaybackRate>
+                  <q2:StartPosition>0</q2:StartPosition>
+                  <q2:PositionUnits>Frames</q2:PositionUnits>
+                  <q2:Loop>false</q2:Loop>
+                  <q2:Playing>true</q2:Playing>
+                </Combinator>
+              </Builder>
             </Expression>
           </Nodes>
           <Edges>
@@ -332,6 +354,8 @@ Item3.Item3 as Whisker3_Tip
             <Edge From="12" To="13" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="18" To="19" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -355,6 +379,7 @@ Item3.Item3 as Whisker3_Tip
     <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.LoadImage, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
