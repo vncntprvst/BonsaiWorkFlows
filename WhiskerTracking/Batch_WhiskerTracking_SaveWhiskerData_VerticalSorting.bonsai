@@ -1,10 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://bonsai-rx.org/2018/workflow">
     <Nodes>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Concat" />
-      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
           <q1:Path>D:\Data\vIRt33\vIRt33_0424</q1:Path>
@@ -19,22 +16,14 @@
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="Concat" />
             </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -49,10 +38,24 @@
               <Name>FileName</Name>
               <BufferSize xsi:nil="true" />
             </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>FileName</Name>
+            </Expression>
             <Expression xsi:type="q2:PythonTransform">
               <q2:Script>@returns(str)
 def process(value):
   return value.replace('.mp4', '_WhiskersBaseCentroids.csv')</q2:Script>
+            </Expression>
+            <Expression xsi:type="ExternalizedProperty">
+              <MemberName>FileName</MemberName>
+              <Name>CSVFileName</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>FileName</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedProperty">
+              <MemberName>FileName</MemberName>
+              <Name>FileName</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q3:FileCapture">
@@ -63,14 +66,6 @@ def process(value):
                 <q3:Loop>false</q3:Loop>
                 <q3:Playing>true</q3:Playing>
               </Combinator>
-            </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>FileName</MemberName>
-              <Name>FileName</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>FileName</MemberName>
-              <Name>CSVFileName</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q3:Crop">
@@ -83,30 +78,15 @@ def process(value):
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:SortBinaryRegions" />
+              <Combinator xsi:type="q3:Grayscale" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:BinaryRegionAnalysis" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:FindContours">
-                <q3:Mode>List</q3:Mode>
-                <q3:Method>ChainApproxSimple</q3:Method>
-                <q3:Offset>
-                  <q3:X>0</q3:X>
-                  <q3:Y>0</q3:Y>
-                </q3:Offset>
-                <q3:MinArea>250</q3:MinArea>
-                <q3:MaxArea>5000</q3:MaxArea>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:BackgroundSubtraction">
-                <q3:BackgroundFrames>0</q3:BackgroundFrames>
-                <q3:AdaptationRate>0</q3:AdaptationRate>
-                <q3:ThresholdValue>0</q3:ThresholdValue>
-                <q3:ThresholdType>ToZero</q3:ThresholdType>
-                <q3:SubtractionMethod>Absolute</q3:SubtractionMethod>
+              <Combinator xsi:type="q3:AdaptiveThreshold">
+                <q3:MaxValue>255</q3:MaxValue>
+                <q3:AdaptiveMethod>MeanC</q3:AdaptiveMethod>
+                <q3:ThresholdType>Binary</q3:ThresholdType>
+                <q3:BlockSize>87</q3:BlockSize>
+                <q3:Parameter>5</q3:Parameter>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -229,19 +209,35 @@ def process(value):
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:AdaptiveThreshold">
-                <q3:MaxValue>255</q3:MaxValue>
-                <q3:AdaptiveMethod>MeanC</q3:AdaptiveMethod>
-                <q3:ThresholdType>Binary</q3:ThresholdType>
-                <q3:BlockSize>87</q3:BlockSize>
-                <q3:Parameter>5</q3:Parameter>
+              <Combinator xsi:type="q3:BackgroundSubtraction">
+                <q3:BackgroundFrames>0</q3:BackgroundFrames>
+                <q3:AdaptationRate>0</q3:AdaptationRate>
+                <q3:ThresholdValue>0</q3:ThresholdValue>
+                <q3:ThresholdType>ToZero</q3:ThresholdType>
+                <q3:SubtractionMethod>Absolute</q3:SubtractionMethod>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:Grayscale" />
+              <Combinator xsi:type="q3:FindContours">
+                <q3:Mode>List</q3:Mode>
+                <q3:Method>ChainApproxSimple</q3:Method>
+                <q3:Offset>
+                  <q3:X>0</q3:X>
+                  <q3:Y>0</q3:Y>
+                </q3:Offset>
+                <q3:MinArea>250</q3:MinArea>
+                <q3:MaxArea>5000</q3:MaxArea>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q3:SortBinaryRegions" />
             </Expression>
             <Expression xsi:type="q2:PythonTransform">
-              <q2:Script>import clr
+              <q2:Script>#return x,y values for base, center, tip of three central whiskers
+import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 from System import Tuple
@@ -250,36 +246,38 @@ from OpenCV.Net import Point, Point2f
 
 NaNPoint = Point2f(float.NaN,float.NaN)
 
-@returns(Tuple[Tuple[Point2f,Point2f,Point2f,Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f,Point2f,Point2f,Point2f]])
-def process(sortedRegions):
-  # Order component list by decreasing area size
-  #largest = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Area))
-  # Order component list by centroid position
-  #hSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Centroid.Y))
-  if len(vSortRegionList) &gt;=6:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[4].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[5].Contour.ToArray[Point]()[0]))
-    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),Point2f(vSortRegionList[4].Centroid.X,vSortRegionList[4].Centroid.Y),Point2f(vSortRegionList[5].Centroid.X,vSortRegionList[5].Centroid.Y))
-  elif len(vSortRegionList) ==5:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[4].Contour.ToArray[Point]()[0]),NaNPoint)
-    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),Point2f(vSortRegionList[4].Centroid.X,vSortRegionList[4].Centroid.Y),NaNPoint)
-  elif len(vSortRegionList) ==4:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[3].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint)
-    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),Point2f(vSortRegionList[3].Centroid.X,vSortRegionList[3].Centroid.Y),NaNPoint,NaNPoint)
-  elif len(vSortRegionList) ==3:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[2].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint,NaNPoint)
-    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y),NaNPoint,NaNPoint,NaNPoint)
-  elif len(vSortRegionList) ==2:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),Point2f(vSortRegionList[1].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint,NaNPoint,NaNPoint)
-    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),NaNPoint,NaNPoint,NaNPoint,NaNPoint)
-  elif len(vSortRegionList) == 1:
-    baseList=Tuple.Create(Point2f(vSortRegionList[0].Contour.ToArray[Point]()[0]),NaNPoint,NaNPoint,NaNPoint,NaNPoint,NaNPoint)
-    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),NaNPoint,NaNPoint,NaNPoint,NaNPoint,NaNPoint) 
-  else:
-    baseList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint,NaNPoint,NaNPoint,NaNPoint)
-    centroidList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint,NaNPoint,NaNPoint,NaNPoint)
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
 
-  return Tuple.Create(baseList, centroidList)
+def FindTipPoint(inputPointArray):
+  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.X)
+  lastPoint = Enumerable.First(pointList)
+  return lastPoint
+
+@returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
+def process(sortedRegions):
+  #vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+  if len(vSortRegionList) &gt;=3:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[2].Contour.ToArray[Point]())))
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y))
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())))
+  elif len(vSortRegionList) ==2:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),NaNPoint)
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
+  elif len(vSortRegionList) == 1:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),NaNPoint,NaNPoint) 
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
+  else:
+    baseList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+    centroidList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+    tipList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+
+  return Tuple.Create(baseList, centroidList, tipList)
 </q2:Script>
             </Expression>
             <Expression xsi:type="q2:ExpressionTransform">
@@ -287,15 +285,12 @@ def process(sortedRegions):
 Item1.Item1 as Whisker1_Base,
 Item1.Item2 as Whisker2_Base,
 Item1.Item3 as Whisker3_Base,
-Item1.Item4 as Whisker4_Base,
-Item1.Item5 as Whisker5_Base,
-Item1.Item6 as Whisker6_Base,
 Item2.Item1 as Whisker1_Centroid,
 Item2.Item2 as Whisker2_Centroid,
 Item2.Item3 as Whisker3_Centroid,
-Item2.Item4 as Whisker4_Centroid,
-Item2.Item5 as Whisker5_Centroid,
-Item2.Item6 as Whisker6_Centroid
+Item3.Item1 as Whisker1_Tip,
+Item3.Item2 as Whisker2_Tip,
+Item3.Item3 as Whisker3_Tip
 )</q2:Expression>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
@@ -307,135 +302,52 @@ Item2.Item6 as Whisker6_Centroid
               <q1:IncludeHeader>true</q1:IncludeHeader>
               <q1:Selector>Whisker1_Base,Whisker1_Centroid,Whisker2_Base,Whisker2_Centroid,Whisker3_Base,Whisker3_Centroid,Whisker4_Base,Whisker4_Centroid,Whisker5_Base,Whisker5_Centroid,Whisker6_Base,Whisker6_Centroid</q1:Selector>
             </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>FileName</Name>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>FileName</Name>
-            </Expression>
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>5</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>6</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>4</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>16</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>6</From>
-              <To>13</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>7</From>
-              <To>14</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>8</From>
-              <To>7</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>9</From>
-              <To>8</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>10</From>
-              <To>9</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>11</From>
-              <To>10</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>12</From>
-              <To>11</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>13</From>
-              <To>12</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>14</From>
-              <To>15</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>15</From>
-              <To>16</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>17</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>18</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="18" Label="Source2" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="17" To="18" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Concat" />
+      </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>1</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>0</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
     </Edges>
   </Workflow>
   <ExtensionTypes>
-    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.GetFiles, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.GetFiles, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>

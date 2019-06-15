@@ -262,7 +262,8 @@ def FindTipPoint(inputPointArray):
 
 @returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
 def process(sortedRegions):
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
+  #vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
   if len(vSortRegionList) &gt;=3:
     baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[2].Contour.ToArray[Point]())))
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y))
@@ -283,8 +284,9 @@ def process(sortedRegions):
   return Tuple.Create(baseList, centroidList, tipList)
 </q3:Script>
             </Expression>
-            <Expression xsi:type="q3:ExpressionTransform">
-              <q3:Expression>new(
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="q3:ExpressionTransform">
+                <q3:Expression>new(
 Item1.Item1 as Whisker1_Base,
 Item1.Item2 as Whisker2_Base,
 Item1.Item3 as Whisker3_Base,
@@ -295,15 +297,18 @@ Item3.Item1 as Whisker1_Tip,
 Item3.Item2 as Whisker2_Tip,
 Item3.Item3 as Whisker3_Tip
 )</q3:Expression>
+              </Builder>
             </Expression>
-            <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt32_0424_5184\WhiskerCoordinates_Bonsai.csv</q1:FileName>
-              <q1:Delimiter>,</q1:Delimiter>
-              <q1:Append>true</q1:Append>
-              <q1:Overwrite>true</q1:Overwrite>
-              <q1:Suffix>None</q1:Suffix>
-              <q1:IncludeHeader>false</q1:IncludeHeader>
-              <q1:Selector>Whisker1_Base.X,Whisker1_Base.Y,Whisker1_Centroid.X,Whisker1_Centroid.Y,Whisker1_Tip.X,Whisker1_Tip.Y,Whisker2_Base.X,Whisker2_Base.Y,Whisker2_Centroid.X,Whisker2_Centroid.Y,Whisker2_Tip.X,Whisker2_Tip.Y,Whisker3_Base.X,Whisker3_Base.Y,Whisker3_Centroid.X,Whisker3_Centroid.Y,Whisker3_Tip.X,Whisker3_Tip.Y</q1:Selector>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="q1:CsvWriter">
+                <q1:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt32_0424_5184\WhiskerCoordinates_Bonsai.csv</q1:FileName>
+                <q1:Delimiter>,</q1:Delimiter>
+                <q1:Append>true</q1:Append>
+                <q1:Overwrite>true</q1:Overwrite>
+                <q1:Suffix>None</q1:Suffix>
+                <q1:IncludeHeader>false</q1:IncludeHeader>
+                <q1:Selector>Whisker1_Base.X,Whisker1_Base.Y,Whisker1_Centroid.X,Whisker1_Centroid.Y,Whisker1_Tip.X,Whisker1_Tip.Y,Whisker2_Base.X,Whisker2_Base.Y,Whisker2_Centroid.X,Whisker2_Centroid.Y,Whisker2_Tip.X,Whisker2_Tip.Y,Whisker3_Base.X,Whisker3_Base.Y,Whisker3_Centroid.X,Whisker3_Centroid.Y,Whisker3_Tip.X,Whisker3_Tip.Y</q1:Selector>
+              </Builder>
             </Expression>
             <Expression xsi:type="Disable">
               <Builder xsi:type="ExternalizedProperty">

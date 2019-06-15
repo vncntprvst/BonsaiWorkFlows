@@ -47,8 +47,8 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:FileCapture">
-                <q2:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos\vIRt32_0424_5184.mp4</q2:FileName>
-                <q2:PlaybackRate>100</q2:PlaybackRate>
+                <q2:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos\vIRt32_0410_4910.mp4</q2:FileName>
+                <q2:PlaybackRate>1000</q2:PlaybackRate>
                 <q2:StartPosition>0</q2:StartPosition>
                 <q2:PositionUnits>Frames</q2:PositionUnits>
                 <q2:Loop>false</q2:Loop>
@@ -110,20 +110,20 @@
                       <q2:Y>235</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>147</q2:X>
-                      <q2:Y>220</q2:Y>
+                      <q2:X>152</q2:X>
+                      <q2:Y>225</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>159</q2:X>
-                      <q2:Y>199</q2:Y>
+                      <q2:X>158</q2:X>
+                      <q2:Y>210</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>161</q2:X>
-                      <q2:Y>173</q2:Y>
+                      <q2:X>165</q2:X>
+                      <q2:Y>184</q2:Y>
                     </q2:Point>
                     <q2:Point>
-                      <q2:X>160</q2:X>
-                      <q2:Y>144</q2:Y>
+                      <q2:X>167</q2:X>
+                      <q2:Y>160</q2:Y>
                     </q2:Point>
                     <q2:Point>
                       <q2:X>178</q2:X>
@@ -271,8 +271,9 @@ def process(sortedRegions):
   global base, centroidLoc, centroidVel
   # Order blob list by descending area
   #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
-  vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
-  
+  #vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+
   if len(vSortRegionList) &gt;= 1:
     blob1Index = 0
     currbase = base
@@ -315,13 +316,14 @@ def process(sortedRegions):
   Component = ConnectedComponentCollection(sortedRegions.ImageSize)
   # Order component list by vSortRegionList centroid
   #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
-  vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
+  #vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
   if Single.IsNaN(blob1Index) == False:
     Component.Add(vSortRegionList[int(blob1Index)])
-#    if int(blob1Index)+1 &lt;= len(vSortRegionList)-1:
-#      Component.Add(vSortRegionList[int(blob1Index)+1])
-#    if int(blob1Index)+2 &lt;= len(vSortRegionList)-1:
-#      Component.Add(vSortRegionList[int(blob1Index)+2])
+    if int(blob1Index)+1 &lt;= len(vSortRegionList)-1:
+      Component.Add(vSortRegionList[int(blob1Index)+1])
+    if int(blob1Index)+2 &lt;= len(vSortRegionList)-1:
+      Component.Add(vSortRegionList[int(blob1Index)+2])
     
   return Component</q3:Script>
             </Expression>
@@ -348,7 +350,8 @@ def FindTipPoint(inputPointArray):
 
 @returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
 def process(sortedRegions):
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Area))
+  #vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
   if len(vSortRegionList) &gt;=3:
     baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[2].Contour.ToArray[Point]())))
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y))
@@ -396,11 +399,81 @@ Item3.Item3 as Whisker3_Tip
               </Builder>
             </Expression>
             <Expression xsi:type="Disable">
+              <Builder xsi:type="q3:PythonTransform">
+                <q3:Script>#return x,y values for tip of first whisker
+import clr
+clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+from System import Tuple
+from System.Linq import Enumerable
+from OpenCV.Net import Point, Point2f
+
+NaNPoint = Point2f(float.NaN,float.NaN)
+
+def FindTipPoint(inputPointArray):
+  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.X)
+  lastPoint = Enumerable.First(pointList)
+  return lastPoint
+
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
+
+@returns(Point2f)
+def process(sortedRegions):
+  #vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+
+  if len(vSortRegionList) &gt;= 1:
+    tipList=Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]()))
+  else:
+    tipList=NaNPoint
+
+  return tipList
+</q3:Script>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
               <Builder xsi:type="q1:CsvWriter">
                 <q1:Append>false</q1:Append>
                 <q1:Overwrite>false</q1:Overwrite>
                 <q1:Suffix>None</q1:Suffix>
                 <q1:IncludeHeader>false</q1:IncludeHeader>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="MinBy">
+                <KeySelector>Count</KeySelector>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="q3:PythonTransform">
+                <q3:Script>#return x,y values for tip of first whisker
+import clr
+clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+from System import Tuple
+from System.Linq import Enumerable
+from OpenCV.Net import Point, Point2f
+
+NaNPoint = Point2f(float.NaN,float.NaN)
+
+def FindTipPoint(inputPointArray):
+  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.X)
+  lastPoint = Enumerable.First(pointList)
+  return lastPoint
+
+@returns(Point2f)
+def process(vSortRegionList):
+  #vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
+  #if len(vSortRegionList) &gt;= 1:
+  tipList=Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]()))
+  #else:
+  #  tipList=NaNPoint
+
+  return tipList
+</q3:Script>
               </Builder>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -420,18 +493,21 @@ Item3.Item3 as Whisker3_Tip
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="5" To="18" Label="Source1" />
+            <Edge From="5" To="21" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
+            <Edge From="11" To="19" Label="Source1" />
             <Edge From="12" To="13" Label="Source1" />
-            <Edge From="12" To="17" Label="Source1" />
+            <Edge From="12" To="18" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
+            <Edge From="13" To="17" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />
+            <Edge From="19" To="20" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -449,6 +525,7 @@ Item3.Item3 as Whisker3_Tip
     <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.GetFiles, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.MinByBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>

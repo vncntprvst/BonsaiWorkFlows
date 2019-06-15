@@ -14,7 +14,7 @@ centroidLoc = NaNPoint
 centroidVel = NaNPoint
 distThd = 20
 
-def SmallestX(inputPointArray): # Use this function to define whisker base only if base to the left (else, OrderByDescending)
+def FindBasePoint(inputPointArray):
   pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
   firstPoint = Enumerable.First(pointList)
   return firstPoint
@@ -27,14 +27,13 @@ def VDistFromLastFrame(pt1,pt2):
 @returns(ConnectedComponentCollection) #(Tuple[float,float]) #ConnectedComponentCollection) #@returns(Tuple[float,int]) #@returns(Single)
 def process(sortedRegions):
   global base, centroidLoc, centroidVel
-  # Order blob list by descending area
-  #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Centroid.Y))
+  # Order blob list by descending Y base point (ie, bottom to top)
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
 
   if len(vSortRegionList) >= 1:
     blob1Index = 0
     currbase = base
-    newbase = SmallestX(vSortRegionList[blob1Index].Contour.ToArray[Point]()) #vSortRegionList[blob1Index].Contour.ToArray[Point]()[0]
+    newbase = FindBasePoint(vSortRegionList[blob1Index].Contour.ToArray[Point]()) #vSortRegionList[blob1Index].Contour.ToArray[Point]()[0]
     if base is None:
       base = newbase
       #return float.NaN
@@ -44,13 +43,13 @@ def process(sortedRegions):
       #return distfromlastframe(currbase, base)  
     else: # find which blob is which instead
       if len(vSortRegionList) >= blob1Index+2:
-        nextbase = SmallestX(vSortRegionList[blob1Index+1].Contour.ToArray[Point]())
+        nextbase = FindBasePoint(vSortRegionList[blob1Index+1].Contour.ToArray[Point]())
         if abs(VDistFromLastFrame(currbase, nextbase)) < distThd:
           blob1Index = blob1Index+1
           base = nextbase
         else:
           if len(vSortRegionList) >= blob1Index+3:
-            nextbase = SmallestX(vSortRegionList[blob1Index+2].Contour.ToArray[Point]())
+            nextbase = FindBasePoint(vSortRegionList[blob1Index+2].Contour.ToArray[Point]())
             if abs(VDistFromLastFrame(currbase, nextbase)) < distThd:
               blob1Index = blob1Index+2
               base = nextbase
@@ -71,14 +70,12 @@ def process(sortedRegions):
   #return Tuple.Create(blob1Index,len(leftmost))
 
   Component = ConnectedComponentCollection(sortedRegions.ImageSize)
-  # Order component list by vSortRegionList centroid
-  #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Centroid.Y))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
   if Single.IsNaN(blob1Index) == False:
     Component.Add(vSortRegionList[int(blob1Index)])
     if int(blob1Index)+1 <= len(vSortRegionList)-1:
       Component.Add(vSortRegionList[int(blob1Index)+1])
-    #if int(blob1Index)+2 <= len(vSortRegionList)-1:
-      #Component.Add(vSortRegionList[int(blob1Index)+2])
+    if int(blob1Index)+2 <= len(vSortRegionList)-1:
+      Component.Add(vSortRegionList[int(blob1Index)+2])
     
   return Component
