@@ -1,19 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
+<WorkflowBuilder Version="2.3.0">
   <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
     <Nodes>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Index</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="TriggeredBuffer">
+          <Count xsi:nil="true" />
+        </Combinator>
+      </Expression>
       <Expression xsi:type="q1:CsvWriter">
-        <q1:FileName>C:\Data\test\CamSyncTest1.csv</q1:FileName>
-        <q1:Delimiter>,</q1:Delimiter>
+        <q1:FileName>Z:\VMSharedFolder %\Dominic\vIRt20\vIRt20_0704_5119+_CutWhiskers_pole_20180704-134312HSCam_TTLOnset.csv</q1:FileName>
         <q1:Append>false</q1:Append>
         <q1:Overwrite>true</q1:Overwrite>
         <q1:Suffix>None</q1:Suffix>
         <q1:IncludeHeader>false</q1:IncludeHeader>
-        <q1:Selector />
       </Expression>
+      <Expression xsi:type="Accumulate" />
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:FileCapture">
-          <q2:FileName>C:\Data\test\CamSyncTest5.mp4</q2:FileName>
+          <q2:FileName>Z:\VMSharedFolder %\Dominic\vIRt20\vIRt20_0704_5119+_CutWhiskers_pole_20180704-134312HSCam.avi</q2:FileName>
           <q2:PlaybackRate>5000</q2:PlaybackRate>
           <q2:StartPosition>0</q2:StartPosition>
           <q2:PositionUnits>Frames</q2:PositionUnits>
@@ -21,47 +28,9 @@
           <q2:Playing>true</q2:Playing>
         </Combinator>
       </Expression>
-      <Expression xsi:type="GreaterThan">
-        <Operand xsi:type="DoubleProperty">
-          <Value>3000</Value>
-        </Operand>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:Sum" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="BooleanProperty">
-          <Value>true</Value>
-        </Combinator>
-      </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Val0</Selector>
+        <Selector>Source.Count</Selector>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Threshold">
-          <q2:ThresholdValue>110</q2:ThresholdValue>
-          <q2:MaxValue>255</q2:MaxValue>
-          <q2:ThresholdType>Binary</q2:ThresholdType>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Index</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="TriggeredBuffer">
-          <Count xsi:nil="true" />
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="ElementIndex" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Count</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
-      </Expression>
-      <Expression xsi:type="Accumulate" />
       <Expression xsi:type="TakeWhile">
         <Workflow>
           <Nodes>
@@ -78,6 +47,38 @@
             </Edge>
           </Edges>
         </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Take">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="GreaterThan">
+        <Operand xsi:type="DoubleProperty">
+          <Value>2000</Value>
+        </Operand>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:Sum" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="BooleanProperty">
+          <Value>true</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Subtract" />
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Val0</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:Threshold">
+          <q2:ThresholdValue>176</q2:ThresholdValue>
+          <q2:MaxValue>255</q2:MaxValue>
+          <q2:ThresholdType>Binary</q2:ThresholdType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Index" />
       </Expression>
       <Expression xsi:type="Condition">
         <Workflow>
@@ -96,6 +97,9 @@
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="CombineLatest" />
+      </Expression>
       <Expression xsi:type="NestedWorkflow">
         <Name>VideoProc</Name>
         <Description>VideoProc</Description>
@@ -107,10 +111,10 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:Crop">
                 <q2:RegionOfInterest>
-                  <q2:X>70</q2:X>
-                  <q2:Y>101</q2:Y>
-                  <q2:Width>12</q2:Width>
-                  <q2:Height>17</q2:Height>
+                  <q2:X>0</q2:X>
+                  <q2:Y>396</q2:Y>
+                  <q2:Width>130</q2:Width>
+                  <q2:Height>84</q2:Height>
                 </q2:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -141,83 +145,83 @@
     </Nodes>
     <Edges>
       <Edge>
-        <From>1</From>
-        <To>15</To>
+        <From>0</From>
+        <To>16</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>1</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>14</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>8</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
+        <From>0</From>
         <To>7</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>10</From>
-        <To>11</To>
+        <From>1</From>
+        <To>5</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>10</From>
+        <From>3</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>17</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>16</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>15</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
         <To>12</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
+        <From>10</From>
+        <To>1</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
         <From>11</From>
-        <To>0</To>
+        <To>1</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>12</From>
-        <To>11</To>
-        <Label>Source2</Label>
+        <To>8</To>
+        <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>13</From>
-        <To>4</To>
+        <To>9</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>14</From>
-        <To>13</To>
+        <To>0</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
@@ -225,22 +229,34 @@
         <To>6</To>
         <Label>Source1</Label>
       </Edge>
+      <Edge>
+        <From>16</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>17</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Sum, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.TriggeredBuffer, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.ElementIndex, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.AccumulateBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.TakeWhileBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.TriggeredBuffer, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.AccumulateBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.TakeWhileBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Sum, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Index, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
