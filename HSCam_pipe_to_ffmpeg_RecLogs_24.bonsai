@@ -8,43 +8,8 @@
           <Period>PT0S</Period>
         </Combinator>
       </Expression>
-      <Expression xsi:type="GroupWorkflow">
-        <Name>Name experiment</Name>
-        <Description />
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="XP name" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>test</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="Directory" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>D:\Data\Behav\Video\</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="4" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source2" />
-            <Edge From="4" To="5" Label="Source1" />
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Repeat" />
+      <Expression xsi:type="SubscribeSubject">
+        <Name>DirFileName</Name>
       </Expression>
       <Expression xsi:type="q1:PythonTransform">
         <q1:Name>avi filename</q1:Name>
@@ -82,7 +47,22 @@ def process(value):
   return True</q1:Script>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Repeat" />
+        <Combinator xsi:type="q2:VideoCaptureDevice">
+          <q2:Index>0</q2:Index>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:ImageWriter">
+          <q3:Path>\\.\pipe\video</q3:Path>
+          <q3:Suffix>None</q3:Suffix>
+          <q3:Overwrite>false</q3:Overwrite>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>DirFileName</Name>
       </Expression>
       <Expression xsi:type="q1:PythonTransform">
         <q1:Name>csv filename</q1:Name>
@@ -108,23 +88,8 @@ def process(value):
           <Property Name="FileName" />
         </PropertyMappings>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:VideoCaptureDevice">
-          <q2:Index>0</q2:Index>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:ImageWriter">
-          <q3:Path>\\.\pipe\video</q3:Path>
-          <q3:Suffix>None</q3:Suffix>
-          <q3:Overwrite>false</q3:Overwrite>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Timestamp" />
-      </Expression>
       <Expression xsi:type="q4:CsvWriter">
-        <q4:FileName>D:\Data\Behav\Video\test_20190711-175054_HSCam.csv</q4:FileName>
+        <q4:FileName>D:\Data\Behav\Video\bli_20190711-180000_HSCam.csv</q4:FileName>
         <q4:Delimiter>,</q4:Delimiter>
         <q4:Append>false</q4:Append>
         <q4:Overwrite>false</q4:Overwrite>
@@ -132,20 +97,62 @@ def process(value):
         <q4:IncludeHeader>false</q4:IncludeHeader>
         <q4:Selector>Timestamp.Day,Timestamp.Hour,Timestamp.Minute,Timestamp.Second,Timestamp.Millisecond</q4:Selector>
       </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Experiment name</Name>
+        <Description />
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="XP name" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>bli</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="Directory" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>D:\Data\Behav\Video\</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Repeat" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="4" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ReplaySubject">
+        <Name>DirFileName</Name>
+        <BufferSize xsi:nil="true" />
+      </Expression>
     </Nodes>
     <Edges>
-      <Edge From="0" To="4" Label="Source1" />
+      <Edge From="0" To="3" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
-      <Edge From="1" To="6" Label="Source1" />
-      <Edge From="2" To="3" Label="Source1" />
-      <Edge From="3" To="4" Label="Source2" />
-      <Edge From="4" To="5" Label="Source1" />
-      <Edge From="6" To="7" Label="Source1" />
-      <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="12" Label="Source2" />
+      <Edge From="2" To="3" Label="Source2" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="5" To="7" Label="Source1" />
+      <Edge From="7" To="11" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
-      <Edge From="9" To="11" Label="Source1" />
-      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="10" To="11" Label="Source2" />
+      <Edge From="12" To="13" Label="Source1" />
     </Edges>
   </Workflow>
   <ExtensionTypes>
