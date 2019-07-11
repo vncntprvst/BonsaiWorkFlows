@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://bonsai-rx.org/2018/workflow">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:SerialStringRead">
@@ -27,34 +27,51 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="Timestamp" />
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="q1:CsvWriter">
-          <q1:FileName>D:\Data\test\DistanceWheelRun.csv</q1:FileName>
-          <q1:Delimiter>,</q1:Delimiter>
-          <q1:Append>false</q1:Append>
-          <q1:Overwrite>true</q1:Overwrite>
-          <q1:Suffix>None</q1:Suffix>
-          <q1:IncludeHeader>true</q1:IncludeHeader>
-          <q1:Selector>Value,Timestamp.Hour,Timestamp.Minute,Timestamp.Second,Timestamp.Millisecond</q1:Selector>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="q2:ExpressionTransform">
-          <q2:Expression>new(
-Value as Distance,
-Timestamp as Time
-)</q2:Expression>
-        </Builder>
+      <Expression xsi:type="q1:CsvWriter">
+        <q1:FileName>D:\Data\vIRt39\vIRt39_0619\WheelRunDistance.csv</q1:FileName>
+        <q1:Delimiter>,</q1:Delimiter>
+        <q1:Append>false</q1:Append>
+        <q1:Overwrite>true</q1:Overwrite>
+        <q1:Suffix>None</q1:Suffix>
+        <q1:IncludeHeader>true</q1:IncludeHeader>
+        <q1:Selector>Value,Timestamp.Hour,Timestamp.Minute,Timestamp.Second,Timestamp.Millisecond</q1:Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:VideoCaptureDevice">
-          <q3:Index>1</q3:Index>
+        <Combinator xsi:type="q2:VideoCaptureDevice">
+          <q2:Index>1</q2:Index>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q4:Flip">
-          <q4:Mode>Both</q4:Mode>
+        <Combinator xsi:type="q3:Flip">
+          <q3:Mode>Both</q3:Mode>
         </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:VideoWriter">
+          <q3:FileName>D:\Data\vIRt39\vIRt39_0619\WheelTraining.avi</q3:FileName>
+          <q3:Suffix>None</q3:Suffix>
+          <q3:Buffered>true</q3:Buffered>
+          <q3:Overwrite>true</q3:Overwrite>
+          <q3:FourCC>FMP4</q3:FourCC>
+          <q3:FrameRate>30</q3:FrameRate>
+          <q3:FrameSize>
+            <q3:Width>0</q3:Width>
+            <q3:Height>0</q3:Height>
+          </q3:FrameSize>
+          <q3:ResizeInterpolation>NearestNeighbor</q3:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="q1:CsvWriter">
+        <q1:FileName>D:\Data\vIRt39\vIRt39_0619\WheelRunVideoTS.csv</q1:FileName>
+        <q1:Delimiter>,</q1:Delimiter>
+        <q1:Append>false</q1:Append>
+        <q1:Overwrite>true</q1:Overwrite>
+        <q1:Suffix>None</q1:Suffix>
+        <q1:IncludeHeader>true</q1:IncludeHeader>
+        <q1:Selector>Timestamp.Hour,Timestamp.Minute,Timestamp.Second,Timestamp.Millisecond</q1:Selector>
       </Expression>
     </Nodes>
     <Edges>
@@ -67,7 +84,10 @@ Timestamp as Time
       <Edge From="5" To="6" Label="Source1" />
       <Edge From="6" To="7" Label="Source1" />
       <Edge From="7" To="8" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
     </Edges>
   </Workflow>
   <ExtensionTypes>
@@ -80,8 +100,8 @@ Timestamp as Time
     <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Flip, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>

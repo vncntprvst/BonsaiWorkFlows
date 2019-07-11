@@ -5,7 +5,7 @@
       <Expression xsi:type="ExternalizedPropertyOfStringStringProperty">
         <MemberName>Value</MemberName>
         <Name>XP name</Name>
-        <Value>SpVi16_0213_WR</Value>
+        <Value>TestTrigger</Value>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="Zip" />
@@ -32,7 +32,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:CameraCapture">
-          <q1:Index>0</q1:Index>
+          <q1:Index>1</q1:Index>
           <q1:CaptureProperties />
         </Combinator>
       </Expression>
@@ -49,7 +49,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>SpVi16_0213_WR</Value>
+          <Value>TestTrigger</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
