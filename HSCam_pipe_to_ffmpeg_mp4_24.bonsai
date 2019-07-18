@@ -48,8 +48,8 @@
         </Workflow>
       </Expression>
       <Expression xsi:type="q1:PythonTransform">
-        <q1:Name>avi filename</q1:Name>
-        <q1:Description>avi filename</q1:Description>
+        <q1:Name>mp4 filename</q1:Name>
+        <q1:Description>mp4 filename</q1:Description>
         <q1:Script>import clr
 #clr.AddReference("Bonsai.System")
 #from System.IO import Path
@@ -62,7 +62,7 @@ def getOutputType():
 def process(value):
   timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
 #  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
-  path = value.Item2 + value.Item1 + "_" + timestamp + "HSCam.avi"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "HSCam.mp4"
   return path
 </q1:Script>
       </Expression>
@@ -79,12 +79,8 @@ pipename = r'\\.\pipe\video'
 @returns(bool)
 def process(value):
   fname=value.Item2;
-  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480  -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast {1}',pipename,fname))
-# option: 
-# force input frame rate (don't force output): -r 500
-# pixel format (output) -pix_fmt nv12
-# target bitrate : -b:v 20M (only some values work)
-# visual quality (encoding vs compression efficiency): -preset [fast/slow ...]
+  #os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -r 500 -s 640x480  -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 20M {1}',pipename,fname))
+  os.system(str.format(r'ffmpeg -f rawvideo -pix_fmt rgb24 -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
 
   return True</q1:Script>
       </Expression>
