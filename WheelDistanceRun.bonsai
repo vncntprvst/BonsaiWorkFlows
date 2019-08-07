@@ -12,19 +12,6 @@
         <Pattern>%d</Pattern>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="DistinctUntilChanged" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Skip">
-          <Count>1</Count>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
-      </Expression>
-      <Expression xsi:type="Subtract" />
-      <Expression xsi:type="Accumulate" />
-      <Expression xsi:type="Combinator">
         <Combinator xsi:type="Timestamp" />
       </Expression>
       <Expression xsi:type="Disable">
@@ -46,27 +33,53 @@ Timestamp as Time
 )</q2:Expression>
         </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:VideoCaptureDevice">
-          <q3:Index>1</q3:Index>
-        </Combinator>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="q3:VideoCaptureDevice">
+            <q3:Index>1</q3:Index>
+          </Combinator>
+        </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q4:Flip">
-          <q4:Mode>Both</q4:Mode>
-        </Combinator>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="q4:Flip">
+            <q4:Mode>Both</q4:Mode>
+          </Combinator>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="DistinctUntilChanged" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="Skip">
+            <Count>1</Count>
+          </Combinator>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="Zip" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Subtract" />
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Accumulate" />
       </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
-      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="1" To="2" Label="Source2" />
       <Edge From="2" To="3" Label="Source1" />
-      <Edge From="2" To="4" Label="Source2" />
-      <Edge From="3" To="4" Label="Source1" />
-      <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
-      <Edge From="6" To="7" Label="Source1" />
       <Edge From="7" To="8" Label="Source1" />
+      <Edge From="7" To="9" Label="Source2" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
     </Edges>
   </Workflow>
