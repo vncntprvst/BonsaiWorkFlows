@@ -4,7 +4,7 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:KeyDown">
-          <q1:Filter>Space</q1:Filter>
+          <q1:Filter>Pause</q1:Filter>
           <q1:SuppressRepetitions>false</q1:SuppressRepetitions>
         </Combinator>
       </Expression>

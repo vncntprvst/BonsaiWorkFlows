@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0-preview">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://bonsai-rx.org/2018/workflow">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:PylonCapture">
+          <q1:SerialNumber>22789615</q1:SerialNumber>
+          <q1:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</q1:ParameterFile>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Image</Selector>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Pylon.PylonCapture, Bonsai.Pylon, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

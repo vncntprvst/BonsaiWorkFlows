@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://bonsai-rx.org/2018/workflow">
     <Nodes>
       <Expression xsi:type="GroupWorkflow">
         <Name>Experiment name</Name>
@@ -12,7 +12,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="StringProperty">
-                <Value>test_vcd</Value>
+                <Value>vIRt41_0813_5000_10Hz_10ms_10mW</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
@@ -20,7 +20,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="StringProperty">
-                <Value>D:\Data\test\</Value>
+                <Value>D:\Data\vIRt41\vIRt41_0813\</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -44,12 +44,6 @@
       <Expression xsi:type="ReplaySubject">
         <Name>DirFileName</Name>
         <BufferSize xsi:nil="true" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Timer">
-          <DueTime>PT2S</DueTime>
-          <Period>PT0S</Period>
-        </Combinator>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
         <Name>VideoFileName</Name>
@@ -85,31 +79,13 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
-      </Expression>
-      <Expression xsi:type="q1:PythonTransform">
-        <q1:Name>ffmpeg call</q1:Name>
-        <q1:Script>import os
-
-#fname = 'D:\\Data\\Video\\video.avi'
-pipename = r'\\.\pipe\video'
-
-@returns(bool)
-def process(value):
-  fname=value.Item2;
-  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 4M {1}',pipename,fname))
-  # -r 500 -preset fast  -b:v 2M
-  # os.system(str.format(r'ffmpeg -f rawvideo -pix_fmt rgb24 -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
-  return True</q1:Script>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:VideoCaptureDevice">
-          <q2:Index>0</q2:Index>
-        </Combinator>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="FileName" />
+        </PropertyMappings>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
-        <Name>CSVFileName</Name>
+        <Name>VideoCSVFileName</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="SubscribeSubject">
@@ -130,7 +106,7 @@ def getOutputType():
 def process(value):
   timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
 #  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
-  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCam.csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCamFrameTime.csv"
   return path
 </q1:Script>
             </Expression>
@@ -149,36 +125,14 @@ def process(value):
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q3:DigitalInput">
-            <q3:PortName>COM11</q3:PortName>
-            <q3:Pin>6</q3:Pin>
+          <Combinator xsi:type="q2:DigitalInput">
+            <q2:PortName>COM11</q2:PortName>
+            <q2:Pin>6</q2:Pin>
           </Combinator>
         </Builder>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
-        <Name>VideoStart</Name>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="SkipUntil" />
-      </Expression>
-      <Expression xsi:type="SubscribeSubject">
         <Name>VideoEnd</Name>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="TakeUntil" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q4:ImageWriter">
-          <q4:Path>\\.\pipe\video</q4:Path>
-          <q4:Suffix>None</q4:Suffix>
-          <q4:Overwrite>false</q4:Overwrite>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Timestamp" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Timestamp</Selector>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
         <Name>VideoStart</Name>
@@ -189,9 +143,9 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DigitalOutput">
-          <q3:PortName>COM11</q3:PortName>
-          <q3:Pin>6</q3:Pin>
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>6</q2:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -205,109 +159,103 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DigitalOutput">
-          <q3:PortName>COM11</q3:PortName>
-          <q3:Pin>6</q3:Pin>
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>6</q2:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="Timestamp" />
       </Expression>
       <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Take">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:PylonCapture">
+          <q3:SerialNumber>22789615</q3:SerialNumber>
+          <q3:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</q3:ParameterFile>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Image</Selector>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoStart</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="SkipUntil" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="TakeUntil" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:VideoWriter">
+          <q4:FileName>D:\Data\vIRt41\vIRt41_0813\vIRt41_0813_5000_10Hz_10ms_10mW_20190813-211531_HSCam.avi</q4:FileName>
+          <q4:Suffix>None</q4:Suffix>
+          <q4:Buffered>true</q4:Buffered>
+          <q4:Overwrite>false</q4:Overwrite>
+          <q4:FourCC>FMP4</q4:FourCC>
+          <q4:FrameRate>500</q4:FrameRate>
+          <q4:FrameSize>
+            <q4:Width>0</q4:Width>
+            <q4:Height>0</q4:Height>
+          </q4:FrameSize>
+          <q4:ResizeInterpolation>NearestNeighbor</q4:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>TimeOfDay.TotalMilliseconds</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
         <Combinator xsi:type="CombineLatest" />
+      </Expression>
+      <Expression xsi:type="Subtract" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
       </Expression>
       <Expression xsi:type="q1:ExpressionTransform">
         <q1:Expression>new(
-Item1 as milli,
-Item2 as sync
+Item1 as RelativeFrameTime,
+Item2 as AbsoluteFrameTime
 )</q1:Expression>
       </Expression>
       <Expression xsi:type="q5:CsvWriter">
-        <q5:FileName>D:\Data\test\test_vcd_20190822-123516_HSCam.csv</q5:FileName>
+        <q5:FileName>D:\Data\vIRt41\vIRt41_0813\vIRt41_0813_5000_10Hz_10ms_10mW_20190813-211531_HSCamFrameTime.csv</q5:FileName>
         <q5:Delimiter>,</q5:Delimiter>
         <q5:Append>false</q5:Append>
         <q5:Overwrite>false</q5:Overwrite>
         <q5:Suffix>None</q5:Suffix>
         <q5:IncludeHeader>false</q5:IncludeHeader>
-        <q5:Selector>milli.TimeOfDay.TotalMilliseconds,sync.Timestamp.TimeOfDay.TotalMilliseconds</q5:Selector>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="DistinctUntilChanged" />
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="Skip">
-            <Count>1</Count>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="Zip" />
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Subtract" />
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="GreaterThan">
-          <Operand xsi:type="TimeSpanProperty">
-            <Value>-PT1M</Value>
-          </Operand>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Condition">
-          <Name>new timestamp</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="BooleanProperty">
-            <Value>true</Value>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q3:DigitalOutput">
-            <q3:PortName>COM11</q3:PortName>
-            <q3:Pin>6</q3:Pin>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="BitwiseNot" />
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q3:DigitalOutput">
-            <q3:PortName>COM11</q3:PortName>
-            <q3:Pin>6</q3:Pin>
-          </Combinator>
-        </Builder>
+        <q5:Selector>RelativeFrameTime,AbsoluteFrameTime</q5:Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q5:SerialStringRead">
-          <q5:PortName>COM15</q5:PortName>
-          <q5:NewLine>,</q5:NewLine>
+        <Combinator xsi:type="q2:DigitalInput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>4</q2:Pin>
         </Combinator>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
       <Expression xsi:type="GroupWorkflow">
-        <Name>CSVFileName</Name>
+        <Name>CamSyncCSVFileName</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="SubscribeSubject">
@@ -317,6 +265,90 @@ Item2 as sync
               <q1:Name>csv filename</q1:Name>
               <q1:Description>csv filename</q1:Description>
               <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCamSyncOutTime.csv"
+  return path
+</q1:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="FileName" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DigitalInput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>2</q2:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="CombineLatest" />
+      </Expression>
+      <Expression xsi:type="q1:ExpressionTransform">
+        <q1:Expression>new(
+Item1.Item1 as CamSyncOut ,
+Item1.Item2 as CamSyncOutTime,
+Item2.Item1 as StartRecState,
+Item2.Item2 as StartRecTime,
+Item3 as StartKeyPress
+)</q1:Expression>
+      </Expression>
+      <Expression xsi:type="q5:CsvWriter">
+        <q5:FileName>D:\Data\vIRt41\vIRt41_0813\vIRt41_0813_5000_10Hz_10ms_10mW_20190813-211531_HSCamSyncOutTime.csv</q5:FileName>
+        <q5:Delimiter>,</q5:Delimiter>
+        <q5:Append>false</q5:Append>
+        <q5:Overwrite>true</q5:Overwrite>
+        <q5:Suffix>None</q5:Suffix>
+        <q5:IncludeHeader>true</q5:IncludeHeader>
+        <q5:Selector>CamSyncOut,CamSyncOutTime,StartRecState,StartRecTime,StartKeyPress</q5:Selector>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="q5:SerialStringRead">
+            <q5:PortName>COM8</q5:PortName>
+            <q5:NewLine>,</q5:NewLine>
+          </Combinator>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="GroupWorkflow">
+          <Name>WheelDistanceCSVFileName</Name>
+          <Workflow>
+            <Nodes>
+              <Expression xsi:type="SubscribeSubject">
+                <Name>DirFileName</Name>
+              </Expression>
+              <Expression xsi:type="q1:PythonTransform">
+                <q1:Name>csv filename</q1:Name>
+                <q1:Description>csv filename</q1:Description>
+                <q1:Script>import clr
 #clr.AddReference("Bonsai.System")
 #from System.IO import Path
 #from Bonsai.IO import PathHelper, PathSuffix
@@ -331,55 +363,96 @@ def process(value):
   path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "WheelDistance.csv"
   return path
 </q1:Script>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
-          </Edges>
-        </Workflow>
+              </Expression>
+              <Expression xsi:type="WorkflowOutput" />
+            </Nodes>
+            <Edges>
+              <Edge From="0" To="1" Label="Source1" />
+              <Edge From="1" To="2" Label="Source1" />
+            </Edges>
+          </Workflow>
+        </Builder>
       </Expression>
-      <Expression xsi:type="PropertyMapping">
-        <PropertyMappings>
-          <Property Name="FileName" />
-        </PropertyMappings>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="PropertyMapping">
+          <PropertyMappings>
+            <Property Name="FileName" />
+          </PropertyMappings>
+        </Builder>
       </Expression>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>VideoStart</Name>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="SubscribeSubject">
+          <Name>VideoStart</Name>
+        </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="SkipUntil" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="SkipUntil" />
+        </Builder>
       </Expression>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>VideoEnd</Name>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="SubscribeSubject">
+          <Name>VideoEnd</Name>
+        </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="TakeUntil" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="TakeUntil" />
+        </Builder>
       </Expression>
-      <Expression xsi:type="Parse">
-        <Pattern>%d</Pattern>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Parse">
+          <Pattern>%d</Pattern>
+        </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Take">
-          <Count>1</Count>
-        </Combinator>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="Take">
+            <Count>1</Count>
+          </Combinator>
+        </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="CombineLatest" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="CombineLatest" />
+        </Builder>
       </Expression>
-      <Expression xsi:type="Subtract" />
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Timestamp" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Subtract" />
       </Expression>
-      <Expression xsi:type="q5:CsvWriter">
-        <q5:FileName>D:\Data\vIRt40\vIRt40_0808\vIRt40_0808_test_20190808-100222_WheelDistance.csv</q5:FileName>
-        <q5:Delimiter>,</q5:Delimiter>
-        <q5:Append>false</q5:Append>
-        <q5:Overwrite>true</q5:Overwrite>
-        <q5:Suffix>None</q5:Suffix>
-        <q5:IncludeHeader>true</q5:IncludeHeader>
-        <q5:Selector>Value,Timestamp.TimeOfDay.TotalMilliseconds</q5:Selector>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="Timestamp" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="MemberSelector">
+          <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="Zip" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="q1:ExpressionTransform">
+          <q1:Expression>new(
+Item1 as distance,
+Item2 as ms
+)</q1:Expression>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="q5:CsvWriter">
+          <q5:FileName>D:\Data\vIRt41\vIRt41_0813\vIRt41_0813_4400_20190813-180803_WheelDistance.csv</q5:FileName>
+          <q5:Delimiter>,</q5:Delimiter>
+          <q5:Append>false</q5:Append>
+          <q5:Overwrite>true</q5:Overwrite>
+          <q5:Suffix>None</q5:Suffix>
+          <q5:IncludeHeader>true</q5:IncludeHeader>
+          <q5:Selector>distance,ms</q5:Selector>
+        </Builder>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
         <Name>VideoStart</Name>
@@ -390,9 +463,9 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DigitalOutput">
-          <q3:PortName>COM11</q3:PortName>
-          <q3:Pin>8</q3:Pin>
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>8</q2:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
@@ -404,9 +477,9 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DigitalOutput">
-          <q3:PortName>COM11</q3:PortName>
-          <q3:Pin>8</q3:Pin>
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>8</q2:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
@@ -418,9 +491,9 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DigitalOutput">
-          <q3:PortName>COM11</q3:PortName>
-          <q3:Pin>6</q3:Pin>
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>6</q2:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -434,9 +507,9 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DigitalOutput">
-          <q3:PortName>COM11</q3:PortName>
-          <q3:Pin>6</q3:Pin>
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>6</q2:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -460,93 +533,101 @@ def process(value):
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
-      <Edge From="2" To="4" Label="Source1" />
-      <Edge From="3" To="4" Label="Source2" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="22" Label="Source2" />
       <Edge From="4" To="5" Label="Source1" />
-      <Edge From="6" To="11" Label="Source1" />
-      <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="26" Label="Source2" />
-      <Edge From="9" To="24" Label="Source2" />
-      <Edge From="10" To="11" Label="Source2" />
-      <Edge From="11" To="13" Label="Source1" />
-      <Edge From="12" To="13" Label="Source2" />
-      <Edge From="13" To="14" Label="Source1" />
-      <Edge From="13" To="15" Label="Source1" />
+      <Edge From="5" To="30" Label="Source2" />
+      <Edge From="6" To="26" Label="Source2" />
+      <Edge From="7" To="21" Label="Source2" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="10" To="14" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="14" To="15" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
-      <Edge From="16" To="24" Label="Source1" />
-      <Edge From="16" To="27" Label="Source1" />
+      <Edge From="16" To="26" Label="Source3" />
+      <Edge From="16" To="41" Label="Source3" />
       <Edge From="17" To="18" Label="Source1" />
-      <Edge From="18" To="19" Label="Source1" />
-      <Edge From="19" To="20" Label="Source1" />
-      <Edge From="19" To="23" Label="Source1" />
+      <Edge From="18" To="20" Label="Source1" />
+      <Edge From="19" To="20" Label="Source2" />
       <Edge From="20" To="21" Label="Source1" />
       <Edge From="21" To="22" Label="Source1" />
-      <Edge From="23" To="24" Label="Source3" />
+      <Edge From="21" To="23" Label="Source1" />
+      <Edge From="23" To="24" Label="Source1" />
       <Edge From="24" To="25" Label="Source1" />
       <Edge From="25" To="26" Label="Source1" />
+      <Edge From="25" To="28" Label="Source2" />
+      <Edge From="26" To="27" Label="Source1" />
       <Edge From="27" To="28" Label="Source1" />
-      <Edge From="27" To="29" Label="Source2" />
       <Edge From="28" To="29" Label="Source1" />
       <Edge From="29" To="30" Label="Source1" />
-      <Edge From="30" To="31" Label="Source1" />
+      <Edge From="31" To="34" Label="Source1" />
       <Edge From="31" To="32" Label="Source1" />
       <Edge From="32" To="33" Label="Source1" />
-      <Edge From="33" To="34" Label="Source1" />
-      <Edge From="34" To="35" Label="Source1" />
+      <Edge From="33" To="34" Label="Source2" />
+      <Edge From="34" To="41" Label="Source1" />
       <Edge From="35" To="36" Label="Source1" />
-      <Edge From="37" To="41" Label="Source1" />
+      <Edge From="36" To="43" Label="Source2" />
+      <Edge From="37" To="40" Label="Source1" />
+      <Edge From="37" To="38" Label="Source1" />
       <Edge From="38" To="39" Label="Source1" />
-      <Edge From="39" To="49" Label="Source2" />
+      <Edge From="39" To="40" Label="Source2" />
       <Edge From="40" To="41" Label="Source2" />
-      <Edge From="41" To="43" Label="Source1" />
-      <Edge From="42" To="43" Label="Source2" />
-      <Edge From="43" To="44" Label="Source1" />
-      <Edge From="44" To="46" Label="Source1" />
-      <Edge From="44" To="45" Label="Source1" />
-      <Edge From="45" To="46" Label="Source2" />
-      <Edge From="46" To="47" Label="Source1" />
-      <Edge From="47" To="48" Label="Source1" />
-      <Edge From="48" To="49" Label="Source1" />
+      <Edge From="41" To="42" Label="Source1" />
+      <Edge From="42" To="43" Label="Source1" />
+      <Edge From="44" To="48" Label="Source1" />
+      <Edge From="45" To="46" Label="Source1" />
+      <Edge From="46" To="59" Label="Source2" />
+      <Edge From="47" To="48" Label="Source2" />
+      <Edge From="48" To="50" Label="Source1" />
+      <Edge From="49" To="50" Label="Source2" />
       <Edge From="50" To="51" Label="Source1" />
+      <Edge From="51" To="53" Label="Source1" />
       <Edge From="51" To="52" Label="Source1" />
+      <Edge From="52" To="53" Label="Source2" />
       <Edge From="53" To="54" Label="Source1" />
+      <Edge From="54" To="57" Label="Source1" />
       <Edge From="54" To="55" Label="Source1" />
-      <Edge From="56" To="57" Label="Source1" />
+      <Edge From="55" To="56" Label="Source1" />
+      <Edge From="56" To="57" Label="Source2" />
       <Edge From="57" To="58" Label="Source1" />
       <Edge From="58" To="59" Label="Source1" />
-      <Edge From="59" To="60" Label="Source1" />
       <Edge From="60" To="61" Label="Source1" />
-      <Edge From="62" To="63" Label="Source1" />
+      <Edge From="61" To="62" Label="Source1" />
+      <Edge From="63" To="64" Label="Source1" />
       <Edge From="64" To="65" Label="Source1" />
+      <Edge From="66" To="67" Label="Source1" />
+      <Edge From="67" To="68" Label="Source1" />
+      <Edge From="68" To="69" Label="Source1" />
+      <Edge From="69" To="70" Label="Source1" />
+      <Edge From="70" To="71" Label="Source1" />
+      <Edge From="72" To="73" Label="Source1" />
+      <Edge From="74" To="75" Label="Source1" />
     </Edges>
   </Workflow>
   <ExtensionTypes>
     <Type>Bonsai.Arduino.DigitalInput, Bonsai.Arduino, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Arduino.DigitalOutput, Bonsai.Arduino, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.BitwiseNotBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.ParseBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.TimeSpanProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.SerialStringRead, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Pylon.PylonCapture, Bonsai.Pylon, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.DistinctUntilChanged, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.SkipUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.TakeUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.ImageWriter, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
