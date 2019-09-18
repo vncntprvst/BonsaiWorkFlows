@@ -4,7 +4,7 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:SerialStringRead">
-          <q1:PortName>COM8</q1:PortName>
+          <q1:PortName>COM15</q1:PortName>
           <q1:NewLine>,</q1:NewLine>
         </Combinator>
       </Expression>

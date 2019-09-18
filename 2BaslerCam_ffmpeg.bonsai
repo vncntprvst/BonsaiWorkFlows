@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://bonsai-rx.org/2018/workflow">
     <Nodes>
       <Expression xsi:type="GroupWorkflow">
         <Name>Experiment name</Name>
@@ -91,15 +91,12 @@ def process(value):
       <Expression xsi:type="q1:PythonTransform">
         <q1:Name>ffmpeg call</q1:Name>
         <q1:Script>import os
-
 pipename = r'\\.\pipe\video1'
 
 @returns(bool)
 def process(value):
   fname=value.Item2;
-  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 4M {1}',pipename,fname))
-  # -r 500 -preset fast  -b:v 2M
-  # os.system(str.format(r'ffmpeg -f rawvideo -pix_fmt rgb24 -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
+  os.system(str.format(r'ffmpeg -y -f rawvideo -pix_fmt gray -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
   return True</q1:Script>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
@@ -142,15 +139,12 @@ def process(value):
       <Expression xsi:type="q1:PythonTransform">
         <q1:Name>ffmpeg call</q1:Name>
         <q1:Script>import os
-
 pipename = r'\\.\pipe\video2'
 
 @returns(bool)
 def process(value):
   fname=value.Item2;
-  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 4M {1}',pipename,fname))
-  # -r 500 -preset fast  -b:v 2M
-  # os.system(str.format(r'ffmpeg -f rawvideo -pix_fmt rgb24 -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
+  os.system(str.format(r'ffmpeg -y -f rawvideo -pix_fmt gray -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
   return True</q1:Script>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
@@ -227,130 +221,6 @@ def process(value):
       <Expression xsi:type="PublishSubject">
         <Name>VideoEnd</Name>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="SubscribeSubject">
-          <Name>VideoStart</Name>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="BooleanProperty">
-            <Value>true</Value>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q5:DigitalOutput">
-            <q5:PortName>COM11</q5:PortName>
-            <q5:Pin>6</q5:Pin>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="Delay">
-            <DueTime>PT0.01S</DueTime>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="BooleanProperty">
-            <Value>false</Value>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q5:DigitalOutput">
-            <q5:PortName>COM11</q5:PortName>
-            <q5:Pin>6</q5:Pin>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="SubscribeSubject">
-          <Name>VideoStart</Name>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="BooleanProperty">
-            <Value>true</Value>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q5:DigitalOutput">
-            <q5:PortName>COM11</q5:PortName>
-            <q5:Pin>8</q5:Pin>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="SubscribeSubject">
-          <Name>VideoEnd</Name>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="BooleanProperty">
-            <Value>false</Value>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q5:DigitalOutput">
-            <q5:PortName>COM11</q5:PortName>
-            <q5:Pin>8</q5:Pin>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="SubscribeSubject">
-          <Name>VideoEnd</Name>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="BooleanProperty">
-            <Value>true</Value>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q5:DigitalOutput">
-            <q5:PortName>COM11</q5:PortName>
-            <q5:Pin>6</q5:Pin>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="Delay">
-            <DueTime>PT0.01S</DueTime>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="BooleanProperty">
-            <Value>false</Value>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q5:DigitalOutput">
-            <q5:PortName>COM11</q5:PortName>
-            <q5:Pin>6</q5:Pin>
-          </Combinator>
-        </Builder>
-      </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
@@ -374,28 +244,11 @@ def process(value):
       <Edge From="21" To="22" Label="Source1" />
       <Edge From="23" To="24" Label="Source1" />
       <Edge From="25" To="26" Label="Source1" />
-      <Edge From="27" To="28" Label="Source1" />
-      <Edge From="28" To="29" Label="Source1" />
-      <Edge From="29" To="30" Label="Source1" />
-      <Edge From="30" To="31" Label="Source1" />
-      <Edge From="31" To="32" Label="Source1" />
-      <Edge From="33" To="34" Label="Source1" />
-      <Edge From="34" To="35" Label="Source1" />
-      <Edge From="36" To="37" Label="Source1" />
-      <Edge From="37" To="38" Label="Source1" />
-      <Edge From="39" To="40" Label="Source1" />
-      <Edge From="40" To="41" Label="Source1" />
-      <Edge From="41" To="42" Label="Source1" />
-      <Edge From="42" To="43" Label="Source1" />
-      <Edge From="43" To="44" Label="Source1" />
     </Edges>
   </Workflow>
   <ExtensionTypes>
-    <Type>Bonsai.Arduino.DigitalOutput, Bonsai.Arduino, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Pylon.PylonCapture, Bonsai.Pylon, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.SkipUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.TakeUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
