@@ -1,0 +1,1024 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0-preview">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://bonsai-rx.org/2018/workflow">
+    <Nodes>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Experiment name</Name>
+        <Description />
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="XP name" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>test</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="Directory" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>D:\Data\test\</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Repeat" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="4" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ReplaySubject">
+        <Name>DirFileName</Name>
+        <BufferSize xsi:nil="true" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timer">
+          <DueTime>PT2S</DueTime>
+          <Period>PT0S</Period>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>VideoFileName</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>DirFileName</Name>
+            </Expression>
+            <Expression xsi:type="q1:PythonTransform">
+              <q1:Name>avi filename</q1:Name>
+              <q1:Description>avi filename</q1:Description>
+              <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCam.avi"
+  return path
+</q1:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="q1:PythonTransform">
+        <q1:Name>ffmpeg call</q1:Name>
+        <q1:Script>import os
+
+#fname = 'D:\\Data\\Video\\video.avi'
+pipename = r'\\.\pipe\video'
+
+@returns(bool)
+def process(value):
+  fname=value.Item2;
+  #os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 4M {1}',pipename,fname))
+  # -r 500 -preset fast  -b:v 2M
+  os.system(str.format(r'ffmpeg -y -f rawvideo -pix_fmt gray -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
+  return True</q1:Script>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>VideoCSVFileName</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>DirFileName</Name>
+            </Expression>
+            <Expression xsi:type="q1:PythonTransform">
+              <q1:Name>csv filename</q1:Name>
+              <q1:Description>csv filename</q1:Description>
+              <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCamFrameTime.csv"
+  return path
+</q1:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="FileName" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoEnd</Name>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoStart</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="BooleanProperty">
+          <Value>true</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>6</q2:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Delay">
+          <DueTime>PT0.01S</DueTime>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="BooleanProperty">
+          <Value>false</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>6</q2:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Take">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:PylonCapture">
+          <q3:SerialNumber>22789615</q3:SerialNumber>
+          <q3:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</q3:ParameterFile>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Image</Selector>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoStart</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="SkipUntil" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="TakeUntil" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:ImageWriter">
+          <q4:Path>\\.\pipe\video</q4:Path>
+          <q4:Suffix>None</q4:Suffix>
+          <q4:Overwrite>false</q4:Overwrite>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>WhiskerTracking</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q4:Crop">
+                <q4:RegionOfInterest>
+                  <q4:X>0</q4:X>
+                  <q4:Y>2</q4:Y>
+                  <q4:Width>594</q4:Width>
+                  <q4:Height>478</q4:Height>
+                </q4:RegionOfInterest>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q4:Grayscale" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q4:AdaptiveThreshold">
+                <q4:MaxValue>255</q4:MaxValue>
+                <q4:AdaptiveMethod>MeanC</q4:AdaptiveMethod>
+                <q4:ThresholdType>Binary</q4:ThresholdType>
+                <q4:BlockSize>87</q4:BlockSize>
+                <q4:Parameter>5</q4:Parameter>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q4:MaskPolygon">
+                <q4:Regions>
+                  <q4:ArrayOfPoint>
+                    <q4:Point>
+                      <q4:X>-21</q4:X>
+                      <q4:Y>517</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>0</q4:X>
+                      <q4:Y>481</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>55</q4:X>
+                      <q4:Y>477</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>57</q4:X>
+                      <q4:Y>287</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>95</q4:X>
+                      <q4:Y>287</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>110</q4:X>
+                      <q4:Y>256</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>131</q4:X>
+                      <q4:Y>235</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>152</q4:X>
+                      <q4:Y>225</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>158</q4:X>
+                      <q4:Y>210</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>165</q4:X>
+                      <q4:Y>184</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>167</q4:X>
+                      <q4:Y>160</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>178</q4:X>
+                      <q4:Y>125</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>196</q4:X>
+                      <q4:Y>92</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>246</q4:X>
+                      <q4:Y>71</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>304</q4:X>
+                      <q4:Y>9</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>473</q4:X>
+                      <q4:Y>73</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>593</q4:X>
+                      <q4:Y>117</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>708</q4:X>
+                      <q4:Y>29</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>633</q4:X>
+                      <q4:Y>-47</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>377</q4:X>
+                      <q4:Y>-85</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>-2</q4:X>
+                      <q4:Y>-85</q4:Y>
+                    </q4:Point>
+                  </q4:ArrayOfPoint>
+                  <q4:ArrayOfPoint>
+                    <q4:Point>
+                      <q4:X>593</q4:X>
+                      <q4:Y>471</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>56</q4:X>
+                      <q4:Y>472</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>55</q4:X>
+                      <q4:Y>477</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>618</q4:X>
+                      <q4:Y>497</q4:Y>
+                    </q4:Point>
+                  </q4:ArrayOfPoint>
+                  <q4:ArrayOfPoint>
+                    <q4:Point>
+                      <q4:X>554</q4:X>
+                      <q4:Y>471</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>593</q4:X>
+                      <q4:Y>471</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>593</q4:X>
+                      <q4:Y>117</q4:Y>
+                    </q4:Point>
+                    <q4:Point>
+                      <q4:X>562</q4:X>
+                      <q4:Y>107</q4:Y>
+                    </q4:Point>
+                  </q4:ArrayOfPoint>
+                </q4:Regions>
+                <q4:MaskType>ToZeroInv</q4:MaskType>
+                <q4:FillValue>
+                  <q4:Val0>255</q4:Val0>
+                  <q4:Val1>255</q4:Val1>
+                  <q4:Val2>255</q4:Val2>
+                  <q4:Val3>0</q4:Val3>
+                </q4:FillValue>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q4:BackgroundSubtraction">
+                <q4:BackgroundFrames>0</q4:BackgroundFrames>
+                <q4:AdaptationRate>0</q4:AdaptationRate>
+                <q4:ThresholdValue>0</q4:ThresholdValue>
+                <q4:ThresholdType>ToZero</q4:ThresholdType>
+                <q4:SubtractionMethod>Absolute</q4:SubtractionMethod>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q4:FindContours">
+                <q4:Mode>List</q4:Mode>
+                <q4:Method>ChainApproxSimple</q4:Method>
+                <q4:Offset>
+                  <q4:X>0</q4:X>
+                  <q4:Y>0</q4:Y>
+                </q4:Offset>
+                <q4:MinArea>250</q4:MinArea>
+                <q4:MaxArea>5000</q4:MaxArea>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q4:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q4:SortBinaryRegions" />
+            </Expression>
+            <Expression xsi:type="q1:PythonTransform">
+              <q1:Script>import clr
+clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+clr.AddReference("Bonsai.Vision")
+from System import Tuple, Math, Single, Array
+import math
+from System.Linq import Enumerable
+from OpenCV.Net import Point, Point2f
+from Bonsai.Vision import ConnectedComponentCollection
+
+base = None
+NaNPoint = Point2f(float.NaN,float.NaN)
+centroidLoc = NaNPoint
+centroidVel = NaNPoint
+distThd = 20
+
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
+
+def VDistFromLastFrame(pt1,pt2):
+  #dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return dy
+
+@returns(ConnectedComponentCollection) #(Tuple[float,float]) #ConnectedComponentCollection) #@returns(Tuple[float,int]) #@returns(Single)
+def process(sortedRegions):
+  global base, centroidLoc, centroidVel
+  # Order blob list by descending area
+  #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
+  #vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+
+  if len(vSortRegionList) &gt;= 1:
+    blob1Index = 0
+    currbase = base
+    newbase = FindBasePoint(vSortRegionList[blob1Index].Contour.ToArray[Point]()) #vSortRegionList[blob1Index].Contour.ToArray[Point]()[0]
+    if base is None:
+      base = newbase
+      #return float.NaN
+    elif abs(VDistFromLastFrame(currbase, newbase)) &lt; distThd:
+      base = newbase
+      #float(largest[0].Orientation)
+      #return distfromlastframe(currbase, base)  
+    else: # find which blob is which instead
+      if len(vSortRegionList) &gt;= blob1Index+2:
+        nextbase = FindBasePoint(vSortRegionList[blob1Index+1].Contour.ToArray[Point]())
+        if abs(VDistFromLastFrame(currbase, nextbase)) &lt; distThd:
+          blob1Index = blob1Index+1
+          base = nextbase
+        else:
+          if len(vSortRegionList) &gt;= blob1Index+3:
+            nextbase = FindBasePoint(vSortRegionList[blob1Index+2].Contour.ToArray[Point]())
+            if abs(VDistFromLastFrame(currbase, nextbase)) &lt; distThd:
+              blob1Index = blob1Index+2
+              base = nextbase
+            else: #keep previous value
+              blob1Index = float.NaN
+              base = base
+          else:
+            blob1Index = float.NaN
+      else:
+        blob1Index = float.NaN
+      #return distfromlastframe(currbase, base)  
+    blob1Index = float(blob1Index)
+  else:
+    # otherwise, return nan
+    base = None
+    blob1Index = float.NaN
+
+  #return Tuple.Create(blob1Index,len(leftmost))
+
+  Component = ConnectedComponentCollection(sortedRegions.ImageSize)
+  # Order component list by vSortRegionList centroid
+  #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
+  #vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+  if Single.IsNaN(blob1Index) == False:
+    Component.Add(vSortRegionList[int(blob1Index)])
+    if int(blob1Index)+1 &lt;= len(vSortRegionList)-1:
+      Component.Add(vSortRegionList[int(blob1Index)+1])
+    if int(blob1Index)+2 &lt;= len(vSortRegionList)-1:
+      Component.Add(vSortRegionList[int(blob1Index)+2])
+    
+  return Component</q1:Script>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="q1:PythonTransform">
+                <q1:Name>TODO</q1:Name>
+                <q1:Description>TODO</q1:Description>
+                <q1:Script>Should find closest base in x/y, instead of just using a threshold</q1:Script>
+              </Builder>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="q1:PythonTransform">
+          <q1:Name>OnCycleTrigger</q1:Name>
+          <q1:Script>cycleOn = False
+
+@returns(bool)
+def process(value):
+  global cycleOn
+
+  if value.Item1&gt;2 and value.Item2&gt;2:
+    onCycleTrig = True
+    offCycleTrig = False
+  elif value.Item1&lt;-2 and value.Item2&gt;2:
+    onCycleTrig = False
+    offCycleTrig = True
+  else:
+    onCycleTrig = False
+    offCycleTrig = False
+
+  if cycleOn == True:
+    if offCycleTrig == False:
+      cycleOn = True
+      return False
+    else:
+      cycleOn = False
+      return False
+
+  if cycleOn == False:
+    if onCycleTrig == True:
+      cycleOn = True
+      return True
+    else:
+      cycleOn = False
+      return False</q1:Script>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Condition">
+          <Workflow>
+            <Nodes>
+              <Expression xsi:type="WorkflowInput">
+                <Name>Source1</Name>
+              </Expression>
+              <Expression xsi:type="WorkflowOutput" />
+            </Nodes>
+            <Edges>
+              <Edge From="0" To="1" Label="Source1" />
+            </Edges>
+          </Workflow>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="q1:PythonTransform">
+          <q1:Name>OffCycleTrigger</q1:Name>
+          <q1:Script>cycleOn = False
+
+@returns(bool)
+def process(value):
+  global cycleOn
+
+  if value.Item1&lt;-2 and value.Item2&gt;2:
+    onCycleTrig = True
+    offCycleTrig = False
+  elif value.Item1&gt;2 and value.Item2&gt;2:
+    onCycleTrig = False
+    offCycleTrig = True
+  else:
+    onCycleTrig = False
+    offCycleTrig = False
+
+  if cycleOn == True:
+    if offCycleTrig == False:
+      cycleOn = True
+      return False
+    else:
+      cycleOn = False
+      return False
+
+  if cycleOn == False:
+    if onCycleTrig == True:
+      cycleOn = True
+      return True
+    else:
+      cycleOn = False
+      return False</q1:Script>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Condition">
+          <Workflow>
+            <Nodes>
+              <Expression xsi:type="WorkflowInput">
+                <Name>Source1</Name>
+              </Expression>
+              <Expression xsi:type="WorkflowOutput" />
+            </Nodes>
+            <Edges>
+              <Edge From="0" To="1" Label="Source1" />
+            </Edges>
+          </Workflow>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="GroupWorkflow">
+          <Name>SaveWhiskerData</Name>
+          <Workflow>
+            <Nodes>
+              <Expression xsi:type="WorkflowInput">
+                <Name>Source1</Name>
+              </Expression>
+              <Expression xsi:type="q1:PythonTransform">
+                <q1:Script>#return x,y values for base, center, tip of three central whiskers
+import clr
+clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+from System import Tuple
+from System.Linq import Enumerable
+from OpenCV.Net import Point, Point2f
+
+NaNPoint = Point2f(float.NaN,float.NaN)
+
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
+
+def FindTipPoint(inputPointArray):
+  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.X)
+  lastPoint = Enumerable.First(pointList)
+  return lastPoint
+
+@returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
+def process(sortedRegions):
+  #vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+  if len(vSortRegionList) &gt;=3:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[2].Contour.ToArray[Point]())))
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y))
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())))
+  elif len(vSortRegionList) ==2:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),NaNPoint)
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
+  elif len(vSortRegionList) == 1:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),NaNPoint,NaNPoint) 
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
+  else:
+    baseList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+    centroidList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+    tipList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+
+  return Tuple.Create(baseList, centroidList, tipList)
+</q1:Script>
+              </Expression>
+              <Expression xsi:type="Disable">
+                <Builder xsi:type="q1:ExpressionTransform">
+                  <q1:Expression>new(
+Item1.Item1 as Whisker1_Base,
+Item1.Item2 as Whisker2_Base,
+Item1.Item3 as Whisker3_Base,
+Item2.Item1 as Whisker1_Centroid,
+Item2.Item2 as Whisker2_Centroid,
+Item2.Item3 as Whisker3_Centroid,
+Item3.Item1 as Whisker1_Tip,
+Item3.Item2 as Whisker2_Tip,
+Item3.Item3 as Whisker3_Tip
+)</q1:Expression>
+                </Builder>
+              </Expression>
+              <Expression xsi:type="Disable">
+                <Builder xsi:type="q5:CsvWriter">
+                  <q5:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt34_0515_4988\WhiskerCoordinates_Bonsai.csv</q5:FileName>
+                  <q5:Delimiter>,</q5:Delimiter>
+                  <q5:Append>true</q5:Append>
+                  <q5:Overwrite>true</q5:Overwrite>
+                  <q5:Suffix>None</q5:Suffix>
+                  <q5:IncludeHeader>false</q5:IncludeHeader>
+                  <q5:Selector>Whisker1_Base.X,Whisker1_Base.Y,Whisker1_Centroid.X,Whisker1_Centroid.Y,Whisker1_Tip.X,Whisker1_Tip.Y,Whisker2_Base.X,Whisker2_Base.Y,Whisker2_Centroid.X,Whisker2_Centroid.Y,Whisker2_Tip.X,Whisker2_Tip.Y,Whisker3_Base.X,Whisker3_Base.Y,Whisker3_Centroid.X,Whisker3_Centroid.Y,Whisker3_Tip.X,Whisker3_Tip.Y</q5:Selector>
+                </Builder>
+              </Expression>
+              <Expression xsi:type="WorkflowOutput" />
+            </Nodes>
+            <Edges>
+              <Edge From="0" To="1" Label="Source1" />
+              <Edge From="1" To="2" Label="Source1" />
+              <Edge From="2" To="3" Label="Source1" />
+              <Edge From="3" To="4" Label="Source1" />
+            </Edges>
+          </Workflow>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>TimeOfDay.TotalMilliseconds</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="CombineLatest" />
+      </Expression>
+      <Expression xsi:type="Subtract" />
+      <Expression xsi:type="MemberSelector">
+        <Selector>GrabResult.Timestamp</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Take">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="CombineLatest" />
+      </Expression>
+      <Expression xsi:type="Subtract" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="q1:ExpressionTransform">
+        <q1:Expression>new(
+Item1 as RelativeSoftwareFrameTime,
+Item2 as AbsoluteSoftwareFrameTime,
+Item3 as RelativeCameraFrameTime
+)</q1:Expression>
+      </Expression>
+      <Expression xsi:type="q5:CsvWriter">
+        <q5:FileName>D:\Data\test\test_20190823-195807_HSCamFrameTime.csv</q5:FileName>
+        <q5:Delimiter>,</q5:Delimiter>
+        <q5:Append>false</q5:Append>
+        <q5:Overwrite>false</q5:Overwrite>
+        <q5:Suffix>None</q5:Suffix>
+        <q5:IncludeHeader>true</q5:IncludeHeader>
+        <q5:Selector>RelativeSoftwareFrameTime,AbsoluteSoftwareFrameTime,RelativeCameraFrameTime</q5:Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q5:SerialStringRead">
+          <q5:PortName>COM16</q5:PortName>
+          <q5:NewLine>,</q5:NewLine>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>WheelDistanceCSVFileName</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>DirFileName</Name>
+            </Expression>
+            <Expression xsi:type="q1:PythonTransform">
+              <q1:Name>csv filename</q1:Name>
+              <q1:Description>csv filename</q1:Description>
+              <q1:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "WheelDistance.csv"
+  return path
+</q1:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="FileName" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoStart</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="SkipUntil" />
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoEnd</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="TakeUntil" />
+      </Expression>
+      <Expression xsi:type="Parse">
+        <Pattern>%d</Pattern>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Take">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="CombineLatest" />
+      </Expression>
+      <Expression xsi:type="Subtract" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timestamp" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="q1:ExpressionTransform">
+        <q1:Expression>new(
+Item1 as distance,
+Item2 as ms
+)</q1:Expression>
+      </Expression>
+      <Expression xsi:type="q5:CsvWriter">
+        <q5:FileName>D:\Data\test\test_20190823-195807_WheelDistance.csv</q5:FileName>
+        <q5:Delimiter>,</q5:Delimiter>
+        <q5:Append>false</q5:Append>
+        <q5:Overwrite>true</q5:Overwrite>
+        <q5:Suffix>None</q5:Suffix>
+        <q5:IncludeHeader>true</q5:IncludeHeader>
+        <q5:Selector>distance,ms</q5:Selector>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoStart</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="BooleanProperty">
+          <Value>true</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>8</q2:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoEnd</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="BooleanProperty">
+          <Value>false</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>8</q2:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoEnd</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="BooleanProperty">
+          <Value>true</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>6</q2:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Delay">
+          <DueTime>PT0.01S</DueTime>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="BooleanProperty">
+          <Value>false</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DigitalOutput">
+          <q2:PortName>COM11</q2:PortName>
+          <q2:Pin>6</q2:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q6:KeyDown">
+          <q6:Filter>Pause</q6:Filter>
+          <q6:SuppressRepetitions>false</q6:SuppressRepetitions>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="PublishSubject">
+        <Name>VideoStart</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q6:KeyDown">
+          <q6:Filter>End</q6:Filter>
+          <q6:SuppressRepetitions>false</q6:SuppressRepetitions>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="PublishSubject">
+        <Name>VideoEnd</Name>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="2" To="4" Label="Source1" />
+      <Edge From="3" To="4" Label="Source2" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="41" Label="Source2" />
+      <Edge From="8" To="22" Label="Source2" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="11" To="15" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="13" To="14" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="33" Label="Source2" />
+      <Edge From="18" To="19" Label="Source1" />
+      <Edge From="18" To="35" Label="Source1" />
+      <Edge From="19" To="21" Label="Source1" />
+      <Edge From="20" To="21" Label="Source2" />
+      <Edge From="21" To="22" Label="Source1" />
+      <Edge From="22" To="23" Label="Source1" />
+      <Edge From="22" To="30" Label="Source1" />
+      <Edge From="23" To="24" Label="Source1" />
+      <Edge From="24" To="25" Label="Source1" />
+      <Edge From="24" To="27" Label="Source1" />
+      <Edge From="24" To="29" Label="Source1" />
+      <Edge From="25" To="26" Label="Source1" />
+      <Edge From="27" To="28" Label="Source1" />
+      <Edge From="30" To="31" Label="Source1" />
+      <Edge From="31" To="32" Label="Source1" />
+      <Edge From="32" To="33" Label="Source1" />
+      <Edge From="32" To="39" Label="Source2" />
+      <Edge From="33" To="34" Label="Source1" />
+      <Edge From="34" To="39" Label="Source1" />
+      <Edge From="35" To="37" Label="Source1" />
+      <Edge From="35" To="36" Label="Source1" />
+      <Edge From="36" To="37" Label="Source2" />
+      <Edge From="37" To="38" Label="Source1" />
+      <Edge From="38" To="39" Label="Source3" />
+      <Edge From="39" To="40" Label="Source1" />
+      <Edge From="40" To="41" Label="Source1" />
+      <Edge From="42" To="46" Label="Source1" />
+      <Edge From="43" To="44" Label="Source1" />
+      <Edge From="44" To="57" Label="Source2" />
+      <Edge From="45" To="46" Label="Source2" />
+      <Edge From="46" To="48" Label="Source1" />
+      <Edge From="47" To="48" Label="Source2" />
+      <Edge From="48" To="49" Label="Source1" />
+      <Edge From="49" To="51" Label="Source1" />
+      <Edge From="49" To="50" Label="Source1" />
+      <Edge From="50" To="51" Label="Source2" />
+      <Edge From="51" To="52" Label="Source1" />
+      <Edge From="52" To="55" Label="Source1" />
+      <Edge From="52" To="53" Label="Source1" />
+      <Edge From="53" To="54" Label="Source1" />
+      <Edge From="54" To="55" Label="Source2" />
+      <Edge From="55" To="56" Label="Source1" />
+      <Edge From="56" To="57" Label="Source1" />
+      <Edge From="58" To="59" Label="Source1" />
+      <Edge From="59" To="60" Label="Source1" />
+      <Edge From="61" To="62" Label="Source1" />
+      <Edge From="62" To="63" Label="Source1" />
+      <Edge From="64" To="65" Label="Source1" />
+      <Edge From="65" To="66" Label="Source1" />
+      <Edge From="66" To="67" Label="Source1" />
+      <Edge From="67" To="68" Label="Source1" />
+      <Edge From="68" To="69" Label="Source1" />
+      <Edge From="70" To="71" Label="Source1" />
+      <Edge From="72" To="73" Label="Source1" />
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Arduino.DigitalOutput, Bonsai.Arduino, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ParseBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.SerialStringRead, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Pylon.PylonCapture, Bonsai.Pylon, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.SkipUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.TakeUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.ImageWriter, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

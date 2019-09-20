@@ -257,7 +257,7 @@ Item3 as RelativeCameraFrameTime
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q5:SerialStringRead">
-          <q5:PortName>COM15</q5:PortName>
+          <q5:PortName>COM16</q5:PortName>
           <q5:NewLine>,</q5:NewLine>
         </Combinator>
       </Expression>
