@@ -30,7 +30,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:DigitalOutput">
-          <q2:PortName>COM11</q2:PortName>
+          <q2:PortName>COM4</q2:PortName>
           <q2:Pin>6</q2:Pin>
         </Combinator>
       </Expression>
@@ -46,7 +46,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:DigitalOutput">
-          <q2:PortName>COM11</q2:PortName>
+          <q2:PortName>COM4</q2:PortName>
           <q2:Pin>6</q2:Pin>
         </Combinator>
       </Expression>
@@ -60,7 +60,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:DigitalOutput">
-          <q2:PortName>COM11</q2:PortName>
+          <q2:PortName>COM4</q2:PortName>
           <q2:Pin>6</q2:Pin>
         </Combinator>
       </Expression>
@@ -76,7 +76,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:DigitalOutput">
-          <q2:PortName>COM11</q2:PortName>
+          <q2:PortName>COM4</q2:PortName>
           <q2:Pin>6</q2:Pin>
         </Combinator>
       </Expression>
@@ -90,7 +90,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:DigitalOutput">
-          <q2:PortName>COM11</q2:PortName>
+          <q2:PortName>COM4</q2:PortName>
           <q2:Pin>8</q2:Pin>
         </Combinator>
       </Expression>
@@ -104,7 +104,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:DigitalOutput">
-          <q2:PortName>COM11</q2:PortName>
+          <q2:PortName>COM4</q2:PortName>
           <q2:Pin>8</q2:Pin>
         </Combinator>
       </Expression>
