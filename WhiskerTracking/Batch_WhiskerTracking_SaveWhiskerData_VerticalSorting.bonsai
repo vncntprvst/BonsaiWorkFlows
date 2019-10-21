@@ -4,8 +4,8 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>D:\Data\vIRt33\vIRt33_0424</q1:Path>
-          <q1:SearchPattern>*.mp4</q1:SearchPattern>
+          <q1:Path>D:\Vincent\vIRt41\vIRt41_0815</q1:Path>
+          <q1:SearchPattern>*.avi</q1:SearchPattern>
           <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
         </Combinator>
       </Expression>
@@ -44,7 +44,7 @@
             <Expression xsi:type="q2:PythonTransform">
               <q2:Script>@returns(str)
 def process(value):
-  return value.replace('.mp4', '_WhiskersBaseCentroids.csv')</q2:Script>
+  return value.replace('.avi', '_WhiskersBaseCentroidTip.csv')</q2:Script>
             </Expression>
             <Expression xsi:type="ExternalizedProperty">
               <MemberName>FileName</MemberName>
@@ -59,7 +59,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q3:FileCapture">
-                <q3:FileName>D:\Data\vIRt33\vIRt33_0424\vIRt33_0424_4940.mp4</q3:FileName>
+                <q3:FileName>D:\Vincent\vIRt41\vIRt41_0815\vIRt41_0815_4910_10Hz_10ms_20mW_20190815-170653_HSCam.avi</q3:FileName>
                 <q3:PlaybackRate>5000</q3:PlaybackRate>
                 <q3:StartPosition>0</q3:StartPosition>
                 <q3:PositionUnits>Frames</q3:PositionUnits>
@@ -102,40 +102,40 @@ def process(value):
                       <q3:Y>489</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>93</q3:X>
-                      <q3:Y>291</q3:Y>
+                      <q3:X>256</q3:X>
+                      <q3:Y>477</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>127</q3:X>
-                      <q3:Y>305</q3:Y>
+                      <q3:X>168</q3:X>
+                      <q3:Y>386</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>160</q3:X>
-                      <q3:Y>299</q3:Y>
+                      <q3:X>193</q3:X>
+                      <q3:Y>364</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>186</q3:X>
-                      <q3:Y>249</q3:Y>
+                      <q3:X>194</q3:X>
+                      <q3:Y>320</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>214</q3:X>
-                      <q3:Y>228</q3:Y>
+                      <q3:X>220</q3:X>
+                      <q3:Y>276</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>191</q3:X>
+                      <q3:Y>187</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>198</q3:X>
+                      <q3:Y>151</q3:Y>
                     </q3:Point>
                     <q3:Point>
                       <q3:X>224</q3:X>
-                      <q3:Y>173</q3:Y>
+                      <q3:Y>65</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>271</q3:X>
-                      <q3:Y>106</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>311</q3:X>
-                      <q3:Y>88</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>372</q3:X>
-                      <q3:Y>30</q3:Y>
+                      <q3:X>230</q3:X>
+                      <q3:Y>11</q3:Y>
                     </q3:Point>
                     <q3:Point>
                       <q3:X>473</q3:X>
@@ -168,8 +168,8 @@ def process(value):
                       <q3:Y>444</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>85</q3:X>
-                      <q3:Y>444</q3:Y>
+                      <q3:X>271</q3:X>
+                      <q3:Y>477</q3:Y>
                     </q3:Point>
                     <q3:Point>
                       <q3:X>83</q3:X>
@@ -182,12 +182,16 @@ def process(value):
                   </q3:ArrayOfPoint>
                   <q3:ArrayOfPoint>
                     <q3:Point>
-                      <q3:X>549</q3:X>
-                      <q3:Y>444</q3:Y>
+                      <q3:X>458</q3:X>
+                      <q3:Y>324</q3:Y>
                     </q3:Point>
                     <q3:Point>
-                      <q3:X>606</q3:X>
-                      <q3:Y>444</q3:Y>
+                      <q3:X>404</q3:X>
+                      <q3:Y>462</q3:Y>
+                    </q3:Point>
+                    <q3:Point>
+                      <q3:X>593</q3:X>
+                      <q3:Y>442</q3:Y>
                     </q3:Point>
                     <q3:Point>
                       <q3:X>612</q3:X>
@@ -234,6 +238,94 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q3:SortBinaryRegions" />
+            </Expression>
+            <Expression xsi:type="q2:PythonTransform">
+              <q2:Script>import clr
+clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+clr.AddReference("Bonsai.Vision")
+from System import Tuple, Math, Single, Array
+import math
+from System.Linq import Enumerable
+from OpenCV.Net import Point, Point2f
+from Bonsai.Vision import ConnectedComponentCollection
+
+base = None
+NaNPoint = Point2f(float.NaN,float.NaN)
+centroidLoc = NaNPoint
+centroidVel = NaNPoint
+distThd = 20
+
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
+
+def VDistFromLastFrame(pt1,pt2):
+  #dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return dy
+
+@returns(ConnectedComponentCollection) #(Tuple[float,float]) #ConnectedComponentCollection) #@returns(Tuple[float,int]) #@returns(Single)
+def process(sortedRegions):
+  global base, centroidLoc, centroidVel
+  # Order blob list by descending area
+  #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
+  #vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+
+  if len(vSortRegionList) &gt;= 1:
+    blob1Index = 0
+    currbase = base
+    newbase = FindBasePoint(vSortRegionList[blob1Index].Contour.ToArray[Point]()) #vSortRegionList[blob1Index].Contour.ToArray[Point]()[0]
+    if base is None:
+      base = newbase
+      #return float.NaN
+    elif abs(VDistFromLastFrame(currbase, newbase)) &lt; distThd:
+      base = newbase
+      #float(largest[0].Orientation)
+      #return distfromlastframe(currbase, base)  
+    else: # find which blob is which instead
+      if len(vSortRegionList) &gt;= blob1Index+2:
+        nextbase = FindBasePoint(vSortRegionList[blob1Index+1].Contour.ToArray[Point]())
+        if abs(VDistFromLastFrame(currbase, nextbase)) &lt; distThd:
+          blob1Index = blob1Index+1
+          base = nextbase
+        else:
+          if len(vSortRegionList) &gt;= blob1Index+3:
+            nextbase = FindBasePoint(vSortRegionList[blob1Index+2].Contour.ToArray[Point]())
+            if abs(VDistFromLastFrame(currbase, nextbase)) &lt; distThd:
+              blob1Index = blob1Index+2
+              base = nextbase
+            else: #keep previous value
+              blob1Index = float.NaN
+              base = base
+          else:
+            blob1Index = float.NaN
+      else:
+        blob1Index = float.NaN
+      #return distfromlastframe(currbase, base)  
+    blob1Index = float(blob1Index)
+  else:
+    # otherwise, return nan
+    base = None
+    blob1Index = float.NaN
+
+  #return Tuple.Create(blob1Index,len(leftmost))
+
+  Component = ConnectedComponentCollection(sortedRegions.ImageSize)
+  # Order component list by vSortRegionList centroid
+  #leftmost = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Centroid.X))
+  #vSortRegionList = list(Enumerable.OrderBy(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+  if Single.IsNaN(blob1Index) == False:
+    Component.Add(vSortRegionList[int(blob1Index)])
+    if int(blob1Index)+1 &lt;= len(vSortRegionList)-1:
+      Component.Add(vSortRegionList[int(blob1Index)+1])
+    if int(blob1Index)+2 &lt;= len(vSortRegionList)-1:
+      Component.Add(vSortRegionList[int(blob1Index)+2])
+    
+  return Component</q2:Script>
             </Expression>
             <Expression xsi:type="q2:PythonTransform">
               <q2:Script>#return x,y values for base, center, tip of three central whiskers
@@ -294,20 +386,67 @@ Item3.Item3 as Whisker3_Tip
 )</q2:Expression>
             </Expression>
             <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>D:\Data\vIRt33\vIRt33_0424\vIRt33_0424_4940_WhiskersBaseCentroids.csv</q1:FileName>
+              <q1:FileName>D:\Vincent\vIRt41\vIRt41_0815\vIRt41_0815_4910_10Hz_10ms_20mW_20190815-170653_HSCam_WhiskersBaseCentroidTip.csv</q1:FileName>
               <q1:Delimiter>,</q1:Delimiter>
               <q1:Append>false</q1:Append>
               <q1:Overwrite>true</q1:Overwrite>
               <q1:Suffix>None</q1:Suffix>
               <q1:IncludeHeader>true</q1:IncludeHeader>
-              <q1:Selector>Whisker1_Base,Whisker1_Centroid,Whisker2_Base,Whisker2_Centroid,Whisker3_Base,Whisker3_Centroid,Whisker4_Base,Whisker4_Centroid,Whisker5_Base,Whisker5_Centroid,Whisker6_Base,Whisker6_Centroid</q1:Selector>
+              <q1:Selector>Whisker1_Base,Whisker1_Centroid,Whisker1_Tip,Whisker2_Base,Whisker2_Centroid,Whisker2_Tip,Whisker3_Base,Whisker3_Centroid,Whisker3_Tip</q1:Selector>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="q2:PythonTransform">
+                <q2:Script>#return x,y values for base, center, tip of three central whiskers
+import clr
+clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+from System import Tuple
+from System.Linq import Enumerable
+from OpenCV.Net import Point, Point2f
+
+NaNPoint = Point2f(float.NaN,float.NaN)
+
+def FindBasePoint(inputPointArray):
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  firstPoint = Enumerable.First(pointList)
+  return firstPoint
+
+def FindTipPoint(inputPointArray):
+  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.X)
+  lastPoint = Enumerable.First(pointList)
+  return lastPoint
+
+@returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
+def process(sortedRegions):
+  #vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+  if len(vSortRegionList) &gt;=3:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[2].Contour.ToArray[Point]())))
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y))
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[2].Contour.ToArray[Point]())))
+  elif len(vSortRegionList) ==2:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),NaNPoint)
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindTipPoint(vSortRegionList[1].Contour.ToArray[Point]())),NaNPoint)
+  elif len(vSortRegionList) == 1:
+    baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
+    centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),NaNPoint,NaNPoint) 
+    tipList=Tuple.Create(Point2f(FindTipPoint(vSortRegionList[0].Contour.ToArray[Point]())),NaNPoint,NaNPoint)
+  else:
+    baseList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+    centroidList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+    tipList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
+
+  return Tuple.Create(baseList, centroidList, tipList)
+</q2:Script>
+              </Builder>
             </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="18" Label="Source2" />
+            <Edge From="4" To="19" Label="Source2" />
             <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
@@ -319,8 +458,10 @@ Item3.Item3 as Whisker3_Tip
             <Edge From="13" To="14" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />
+            <Edge From="15" To="20" Label="Source1" />
             <Edge From="16" To="17" Label="Source1" />
             <Edge From="17" To="18" Label="Source1" />
+            <Edge From="18" To="19" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
