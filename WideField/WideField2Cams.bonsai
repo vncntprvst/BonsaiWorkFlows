@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:q1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="StringProperty">
+          <Value>F:\WF\Manuel\test2\run1\</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ReplaySubject">
+        <Name>DirFileName</Name>
+        <BufferSize xsi:nil="true" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:PylonCapture">
+          <q1:SerialNumber>23106925</q1:SerialNumber>
+          <q1:ParameterFile>C:\Code\WideField\BaslerConfig\WideFieldCam.pfs</q1:ParameterFile>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Image</Selector>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>DirFileName</Name>
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Name>filename</scr:Name>
+        <scr:Description>image dir and  filename</scr:Description>
+        <scr:Script>import clr
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  path = value + "\\" + "WideFieldCam_"+ ".tiff"
+  return path
+</scr:Script>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="FileName" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:SaveImage">
+          <cv:FileName>F:\WF\Manuel\test2\run1\\WideFieldCam_.tiff</cv:FileName>
+          <cv:Suffix>FileCount</cv:Suffix>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:PylonCapture">
+          <q1:SerialNumber>40030319</q1:SerialNumber>
+          <q1:ParameterFile>C:\Code\WideField\BaslerConfig\BehaviorCam.pfs</q1:ParameterFile>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Image</Selector>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>DirFileName</Name>
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Name>filename</scr:Name>
+        <scr:Description>image dir and  filename</scr:Description>
+        <scr:Script>import clr
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  path = value + "\\" + "BehaviorCam_"+ ".tiff"
+  return path
+</scr:Script>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="FileName" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:SaveImage">
+          <cv:FileName>F:\WF\Manuel\test2\run1\\BehaviorCam_.tiff</cv:FileName>
+          <cv:Suffix>FileCount</cv:Suffix>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="7" Label="Source2" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source2" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="13" Label="Source2" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source2" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>

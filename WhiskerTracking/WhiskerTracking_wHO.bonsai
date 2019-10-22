@@ -2,6 +2,7 @@
 <WorkflowBuilder Version="2.4.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
@@ -10,11 +11,11 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:FileCapture">
-          <cv:FileName>D:\Vincent\vIRt41\vIRt41_0815\vIRt41_0815_5100_10Hz_10ms_20mW_20190815-174017_HSCam.avi</cv:FileName>
+          <cv:FileName>D:\Vincent\vIRt42\vIRt42_1016\vIRt42_1016_5400_10Hz_10ms_10mW_20191016-132936_HSCam.avi</cv:FileName>
           <cv:PlaybackRate>5000</cv:PlaybackRate>
           <cv:StartPosition>0</cv:StartPosition>
           <cv:PositionUnits>Frames</cv:PositionUnits>
-          <cv:Loop>false</cv:Loop>
+          <cv:Loop>true</cv:Loop>
           <cv:Playing>true</cv:Playing>
         </Combinator>
       </Expression>
@@ -31,13 +32,81 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:Grayscale" />
       </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="cv:Threshold">
+            <cv:ThresholdValue>83</cv:ThresholdValue>
+            <cv:MaxValue>255</cv:MaxValue>
+            <cv:ThresholdType>BinaryInv</cv:ThresholdType>
+          </Combinator>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="InputMapping">
+          <PropertyMappings>
+            <Property Name="Size" Selector="Size" />
+          </PropertyMappings>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="cv:SolidColor">
+            <cv:Size>
+              <cv:Width>594</cv:Width>
+              <cv:Height>478</cv:Height>
+            </cv:Size>
+            <cv:Depth>U8</cv:Depth>
+            <cv:Channels>3</cv:Channels>
+            <cv:Color>
+              <cv:Val0>255</cv:Val0>
+              <cv:Val1>255</cv:Val1>
+              <cv:Val2>255</cv:Val2>
+              <cv:Val3>0</cv:Val3>
+            </cv:Color>
+          </Combinator>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="BitwiseNot" />
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="rx:Zip" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="cv:Mask">
+            <cv:FillValue>
+              <cv:Val0>0</cv:Val0>
+              <cv:Val1>0</cv:Val1>
+              <cv:Val2>0</cv:Val2>
+              <cv:Val3>0</cv:Val3>
+            </cv:FillValue>
+          </Combinator>
+        </Builder>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:AdaptiveThreshold">
           <cv:MaxValue>255</cv:MaxValue>
           <cv:AdaptiveMethod>MeanC</cv:AdaptiveMethod>
           <cv:ThresholdType>Binary</cv:ThresholdType>
           <cv:BlockSize>87</cv:BlockSize>
-          <cv:Parameter>5</cv:Parameter>
+          <cv:Parameter>3</cv:Parameter>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\HeadMask.bonsai" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:Mask">
+          <cv:FillValue>
+            <cv:Val0>255</cv:Val0>
+            <cv:Val1>0</cv:Val1>
+            <cv:Val2>0</cv:Val2>
+            <cv:Val3>0</cv:Val3>
+          </cv:FillValue>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -45,116 +114,28 @@
           <cv:Regions>
             <cv:ArrayOfPoint>
               <cv:Point>
-                <cv:X>-21</cv:X>
-                <cv:Y>517</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>81</cv:X>
-                <cv:Y>489</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>256</cv:X>
-                <cv:Y>477</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>168</cv:X>
-                <cv:Y>386</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>193</cv:X>
-                <cv:Y>364</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>194</cv:X>
-                <cv:Y>320</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>220</cv:X>
-                <cv:Y>276</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>191</cv:X>
-                <cv:Y>187</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>198</cv:X>
-                <cv:Y>151</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>224</cv:X>
-                <cv:Y>65</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>230</cv:X>
-                <cv:Y>11</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>473</cv:X>
-                <cv:Y>73</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>613</cv:X>
-                <cv:Y>139</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>708</cv:X>
-                <cv:Y>29</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>633</cv:X>
-                <cv:Y>-47</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>377</cv:X>
-                <cv:Y>-85</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>-2</cv:X>
-                <cv:Y>-85</cv:Y>
-              </cv:Point>
-            </cv:ArrayOfPoint>
-            <cv:ArrayOfPoint>
-              <cv:Point>
-                <cv:X>597</cv:X>
-                <cv:Y>444</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>271</cv:X>
-                <cv:Y>477</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>83</cv:X>
-                <cv:Y>487</cv:Y>
-              </cv:Point>
-              <cv:Point>
-                <cv:X>618</cv:X>
-                <cv:Y>497</cv:Y>
-              </cv:Point>
-            </cv:ArrayOfPoint>
-            <cv:ArrayOfPoint>
-              <cv:Point>
                 <cv:X>458</cv:X>
-                <cv:Y>324</cv:Y>
+                <cv:Y>101</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>404</cv:X>
-                <cv:Y>462</cv:Y>
+                <cv:X>449</cv:X>
+                <cv:Y>388</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>593</cv:X>
-                <cv:Y>442</cv:Y>
+                <cv:X>200</cv:X>
+                <cv:Y>454</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>612</cv:X>
-                <cv:Y>139</cv:Y>
+                <cv:X>76</cv:X>
+                <cv:Y>87</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>558</cv:X>
-                <cv:Y>115</cv:Y>
+                <cv:X>176</cv:X>
+                <cv:Y>7</cv:Y>
               </cv:Point>
             </cv:ArrayOfPoint>
           </cv:Regions>
-          <cv:MaskType>ToZeroInv</cv:MaskType>
+          <cv:MaskType>ToZero</cv:MaskType>
           <cv:FillValue>
             <cv:Val0>255</cv:Val0>
             <cv:Val1>255</cv:Val1>
@@ -175,13 +156,13 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:FindContours">
           <cv:Mode>List</cv:Mode>
-          <cv:Method>ChainApproxSimple</cv:Method>
+          <cv:Method>ChainApproxNone</cv:Method>
           <cv:Offset>
             <cv:X>0</cv:X>
             <cv:Y>0</cv:Y>
           </cv:Offset>
-          <cv:MinArea>250</cv:MinArea>
-          <cv:MaxArea>5000</cv:MaxArea>
+          <cv:MinArea>500</cv:MinArea>
+          <cv:MaxArea>3000</cv:MaxArea>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -366,18 +347,29 @@ def process(value):
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
       <Edge From="2" To="3" Label="Source1" />
+      <Edge From="2" To="9" Label="Source1" />
+      <Edge From="2" To="10" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />
+      <Edge From="3" To="6" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
-      <Edge From="5" To="6" Label="Source1" />
-      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="5" To="7" Label="Source1" />
+      <Edge From="6" To="7" Label="Source2" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="9" Label="Source1" />
-      <Edge From="9" To="10" Label="Source1" />
-      <Edge From="10" To="11" Label="Source1" />
-      <Edge From="11" To="15" Label="Source1" />
+      <Edge From="9" To="11" Label="Source1" />
+      <Edge From="10" To="11" Label="Source2" />
+      <Edge From="11" To="12" Label="Source1" />
       <Edge From="12" To="13" Label="Source1" />
       <Edge From="13" To="14" Label="Source1" />
-      <Edge From="14" To="15" Label="Source2" />
+      <Edge From="14" To="15" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="18" Label="Source1" />
+      <Edge From="18" To="19" Label="Source1" />
+      <Edge From="19" To="20" Label="Source1" />
+      <Edge From="20" To="24" Label="Source1" />
+      <Edge From="21" To="22" Label="Source1" />
+      <Edge From="22" To="23" Label="Source1" />
+      <Edge From="23" To="24" Label="Source2" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
