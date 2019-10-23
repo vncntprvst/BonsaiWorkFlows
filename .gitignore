@@ -53,3 +53,5 @@ Bonsai.Examples.ImageProcessing
 Bonsai\.Examples\.OscReceive/
 
 Bonsai\.Examples\.OscSend/
+
+Bonsai.Examples.FiducialTracking/
