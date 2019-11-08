@@ -1,41 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:q1="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:VideoCaptureDevice">
           <q1:Index>4</q1:Index>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Crop">
-          <q2:RegionOfInterest>
-            <q2:X>455</q2:X>
-            <q2:Y>110</q2:Y>
-            <q2:Width>83</q2:Width>
-            <q2:Height>116</q2:Height>
-          </q2:RegionOfInterest>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Smooth">
-          <q2:SmoothType>Gaussian</q2:SmoothType>
-          <q2:Size1>3</q2:Size1>
-          <q2:Size2>0</q2:Size2>
-          <q2:Sigma1>0</q2:Sigma1>
-          <q2:Sigma2>0</q2:Sigma2>
+          <q1:CaptureProperties />
         </Combinator>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q2:Flip">
-            <q2:Mode>Both</q2:Mode>
+          <Combinator xsi:type="cv:Crop">
+            <cv:RegionOfInterest>
+              <cv:X>88</cv:X>
+              <cv:Y>132</cv:Y>
+              <cv:Width>222</cv:Width>
+              <cv:Height>186</cv:Height>
+            </cv:RegionOfInterest>
           </Combinator>
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q2:Grayscale" />
+          <Combinator xsi:type="cv:Smooth">
+            <cv:SmoothType>Gaussian</cv:SmoothType>
+            <cv:Size1>3</cv:Size1>
+            <cv:Size2>0</cv:Size2>
+            <cv:Sigma1>0</cv:Sigma1>
+            <cv:Sigma2>0</cv:Sigma2>
+          </Combinator>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="cv:Flip">
+            <cv:Mode>Both</cv:Mode>
+          </Combinator>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="cv:Grayscale" />
         </Builder>
       </Expression>
     </Nodes>
@@ -46,11 +55,4 @@
       <Edge From="3" To="4" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Flip, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Smooth, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>
