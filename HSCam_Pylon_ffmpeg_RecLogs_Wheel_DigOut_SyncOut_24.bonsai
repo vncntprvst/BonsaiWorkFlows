@@ -21,7 +21,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="StringProperty">
-                <Value>test</Value>
+                <Value>vIRt44_1107_wheeltraining</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
@@ -29,7 +29,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="StringProperty">
-                <Value>D:\Data\test\</Value>
+                <Value>D:\Data\vIRt44\vIRt44_1107\</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -107,9 +107,9 @@ pipename = r'\\.\pipe\video'
 @returns(bool)
 def process(value):
   fname=value.Item2;
-  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 4M {1}',pipename,fname))
+  #os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 4M {1}',pipename,fname))
   # -r 500 -preset fast  -b:v 2M
-  #os.system(str.format(r'ffmpeg -y -f rawvideo -pix_fmt gray -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
+  os.system(str.format(r'ffmpeg -y -f rawvideo -pix_fmt gray -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
   return True</scr:Script>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
@@ -256,7 +256,7 @@ Item3 as RelativeCameraFrameTime
 )</scr:Expression>
       </Expression>
       <Expression xsi:type="io:CsvWriter">
-        <io:FileName>D:\Data\test\test_20191008-094155_HSCamFrameTime.csv</io:FileName>
+        <io:FileName>D:\Data\vIRt43\vIRt43_1107\vIRt43_1107_wheeltraining_20191107-102953_HSCamFrameTime.csv</io:FileName>
         <io:Delimiter>,</io:Delimiter>
         <io:Append>false</io:Append>
         <io:Overwrite>false</io:Overwrite>
@@ -266,7 +266,7 @@ Item3 as RelativeCameraFrameTime
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="io:SerialStringRead">
-          <io:PortName>COM5</io:PortName>
+          <io:PortName>COM8</io:PortName>
           <io:NewLine>,</io:NewLine>
         </Combinator>
       </Expression>
@@ -349,7 +349,7 @@ Item2 as ms
 )</scr:Expression>
       </Expression>
       <Expression xsi:type="io:CsvWriter">
-        <io:FileName>D:\Data\test\test_20191008-094155_WheelDistance.csv</io:FileName>
+        <io:FileName>D:\Data\vIRt43\vIRt43_1107\vIRt43_1107_wheeltraining_20191107-102953_WheelDistance.csv</io:FileName>
         <io:Delimiter>,</io:Delimiter>
         <io:Append>false</io:Append>
         <io:Overwrite>true</io:Overwrite>
