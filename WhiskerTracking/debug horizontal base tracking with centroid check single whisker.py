@@ -27,38 +27,43 @@ def DistBetweenPoints(pt1,pt2):
 def process(sortedRegions):
   global noWhisker, whiskerIndex, currBase
   # Order whisker components list by base point, bottom to top
-  vSortWhiskers = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+  hSortWhiskers = list(Enumerable.OrderBy(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).X))
 
   if noWhisker is True: #on first pass, mostly
-    whiskerIndex = 0
-    currBase = FindBasePoint(vSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
-    #print("init")
+    whiskerIndex = 1
+    currBase = FindBasePoint(hSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
+    print("no whisker present")
 
   # Compare base points and find closest base, within spatial treshold limits (typically, either index 0 or 1)
   # ToDo: need to find what to do when tracked whisker has jumped to a neigboring one.  
-  # Try and prevent these limit cases by comparing centroids. Or take direction / velocity into account
-  if len(vSortWhiskers) >= 1:
+  if len(hSortWhiskers) >= 1:
+    print("number of whisker is", len(hSortWhiskers))
     baseDist=distThd
     bestIdx=whiskerIndex
-    for wIdx, wCComp in enumerate(vSortWhiskers):
+    for wIdx, wCComp in enumerate(hSortWhiskers):
       thatBase = FindBasePoint(wCComp.Contour.ToArray[Point]())
       if DistBetweenPoints(currBase, thatBase) < baseDist:
+        print(wIdx, "has base distance under threshold ",  baseDist)
         baseDist = DistBetweenPoints(currBase, thatBase)
         bestIdx = wIdx 
     if baseDist < distThd:
+      print("selected base", bestIdx, "distance is below threshold: ", baseDist)
       whiskerIndex = bestIdx
-      currBase = FindBasePoint(vSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
+      currBase = FindBasePoint(hSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
     else:
+      print("selected base", bestIdx, "distance is above threshold: ", baseDist)
       whiskerIndex = float.NaN
     noWhisker = False
   else:
     # if no whisker components, return nan
+    print("no whisker component")
     noWhisker = True
     whiskerIndex = float.NaN
 
  
   Component = ConnectedComponentCollection(sortedRegions.ImageSize)
   if Single.IsNaN(whiskerIndex) == False:
-    Component.Add(vSortWhiskers[int(whiskerIndex)])
+    print("whisker",  whiskerIndex, "selected")
+    Component.Add(hSortWhiskers[int(whiskerIndex)])
     
   return Component
