@@ -1,19 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
-  <Workflow>
-    <Nodes>
-      <Expression xsi:type="WorkflowInput">
-        <Name>Source1</Name>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
-      </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>import clr
+import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 clr.AddReference("Bonsai.Vision")
@@ -30,7 +15,7 @@ baseDistThd = 20
 centroidDistThd = 100
 
 def FindBasePoint(inputPointArray):
-	pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.Y) #Y point for horizontal head position
+	pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X) #X point for vertical head position
 	firstPoint = Enumerable.First(pointList)
 	return firstPoint
 
@@ -45,40 +30,40 @@ def process(sortedRegions):
 	global noWhisker, whiskerIndex, currBase, currCentroid, firstPass
 	# Order whisker components list by base point, bottom to top
 	#vSortWhiskers = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
-	hSortWhiskers = list(Enumerable.OrderBy(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).X))
+	vSortWhiskers = list(Enumerable.OrderBy(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
 
 	if noWhisker is True: #on first pass
-		if len(hSortWhiskers) &gt;= 2 and firstPass == True:
+		if len(vSortWhiskers) >= 2 and firstPass == True:
 			print("init")
 			whiskerIndex = 1
-			currBase = FindBasePoint(hSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
-			currCentroid = hSortWhiskers[whiskerIndex].Centroid
+			currBase = FindBasePoint(vSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
+			currCentroid = vSortWhiskers[whiskerIndex].Centroid
 			firstPass = False
 		else:
 			print("still no whiskers")
 		
 	# Compare base points and find closest base, within spatial treshold limits (typically, either index 0 or 1)
 	# ToDo: need to find what to do when tracked whisker has jumped to a neigboring one.  
-	if len(hSortWhiskers) &gt;= 1:
+	if len(vSortWhiskers) >= 1:
 		baseDist=baseDistThd
 		centroidDist=centroidDistThd
 		#bestIdx=whiskerIndex
 		baseDistList = [] 
-		for wIdx, wCComp in enumerate(hSortWhiskers):
+		for wIdx, wCComp in enumerate(vSortWhiskers):
 			thatBase = FindBasePoint(wCComp.Contour.ToArray[Point]())
 			baseDistList.append(DistBetweenPoints(currBase, thatBase))
 			#print("whisker", wIdx, "baseX", thatBase.X, "distance", DistBetweenPoints(currBase, thatBase))
 		bestBaseIdx = baseDistList.index(min(baseDistList)) 
-		print("bestBaseIdx", bestBaseIdx)
+		#print("bestBaseIdx", bestBaseIdx)
 		# check that nothing is amiss for big base jumps or changes in index
-		thatBase = FindBasePoint(hSortWhiskers[bestBaseIdx].Contour.ToArray[Point]())
-		if DistBetweenPoints(currBase, thatBase) &gt; baseDist or bestBaseIdx!=whiskerIndex: #check if centroid is also compatible
+		thatBase = FindBasePoint(vSortWhiskers[bestBaseIdx].Contour.ToArray[Point]())
+		if DistBetweenPoints(currBase, thatBase) > baseDist or bestBaseIdx!=whiskerIndex: #check if centroid is also compatible
 			print("centroid based check")
 			centroidDistList = [] 
-			for wIdx, wCComp in enumerate(hSortWhiskers):
+			for wIdx, wCComp in enumerate(vSortWhiskers):
 				thatCentroid = wCComp.Centroid
 				centroidDistList.append(DistBetweenPoints(currCentroid, thatCentroid))
-				print("whisker", wIdx, "centroidX", thatCentroid.X, "distance", DistBetweenPoints(currCentroid, thatCentroid))
+				#print("whisker", wIdx, "centroidX", thatCentroid.X, "distance", DistBetweenPoints(currCentroid, thatCentroid))
 			bestCentroidIdx = centroidDistList.index(min(centroidDistList))
 			print("Jump! Best centroid is whisker", bestCentroidIdx)	
 			# But careful: could be that the whisker has disappeared
@@ -91,20 +76,20 @@ def process(sortedRegions):
 		else:
 			bestIdx = bestBaseIdx
 		#print("whisker Index is now", bestIdx)
-		thatBase = FindBasePoint(hSortWhiskers[bestIdx].Contour.ToArray[Point]())
+		thatBase = FindBasePoint(vSortWhiskers[bestIdx].Contour.ToArray[Point]())
 		baseDist = DistBetweenPoints(currBase, thatBase)
-		if baseDist &lt; 2*baseDistThd:
-			print("selected whisker is ", bestIdx)
+		if baseDist < 2*baseDistThd:
+			#print("selected whisker is ", bestIdx)
 			whiskerIndex = bestIdx
 			currBase = thatBase
-			currCentroid = hSortWhiskers[whiskerIndex].Centroid
+			currCentroid = vSortWhiskers[whiskerIndex].Centroid
 		else:
-			print("no whisker selected")
+			#print("no whisker selected")
 			whiskerIndex = float.NaN
 		noWhisker = False
 	else:
 		# if no whisker components, return nan
-		print("no whisker present")
+		#print("no whisker present")
 		noWhisker = True
 		whiskerIndex = float.NaN
 
@@ -112,16 +97,6 @@ def process(sortedRegions):
 	Component = ConnectedComponentCollection(sortedRegions.ImageSize)
 	if Single.IsNaN(whiskerIndex) == False:
 		#print("creating component")
-		Component.Add(hSortWhiskers[int(whiskerIndex)])
+		Component.Add(vSortWhiskers[int(whiskerIndex)])
 		
-	return Component</scr:Script>
-      </Expression>
-      <Expression xsi:type="WorkflowOutput" />
-    </Nodes>
-    <Edges>
-      <Edge From="0" To="1" Label="Source1" />
-      <Edge From="1" To="2" Label="Source1" />
-      <Edge From="2" To="3" Label="Source1" />
-    </Edges>
-  </Workflow>
-</WorkflowBuilder>
+	return Component
