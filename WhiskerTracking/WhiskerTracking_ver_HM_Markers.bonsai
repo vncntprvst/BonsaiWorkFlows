@@ -12,8 +12,8 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:FileCapture">
           <cv:FileName>D:\Vincent\vIRt43\vIRt43_1119\vIRt43_1119_wheeltraining_20191119-175457_HSCam.avi</cv:FileName>
-          <cv:PlaybackRate>10</cv:PlaybackRate>
-          <cv:StartPosition>2610</cv:StartPosition>
+          <cv:PlaybackRate>500</cv:PlaybackRate>
+          <cv:StartPosition>1500000</cv:StartPosition>
           <cv:PositionUnits>Frames</cv:PositionUnits>
           <cv:Loop>false</cv:Loop>
           <cv:Playing>true</cv:Playing>
@@ -49,7 +49,7 @@
           <cv:MaxValue>255</cv:MaxValue>
           <cv:AdaptiveMethod>MeanC</cv:AdaptiveMethod>
           <cv:ThresholdType>Binary</cv:ThresholdType>
-          <cv:BlockSize>53</cv:BlockSize>
+          <cv:BlockSize>55</cv:BlockSize>
           <cv:Parameter>3</cv:Parameter>
         </Combinator>
       </Expression>
@@ -76,20 +76,20 @@
                 <cv:Y>0</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>593</cv:X>
-                <cv:Y>312</cv:Y>
+                <cv:X>380</cv:X>
+                <cv:Y>474</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>185</cv:X>
-                <cv:Y>370</cv:Y>
+                <cv:X>59</cv:X>
+                <cv:Y>470</cv:Y>
               </cv:Point>
               <cv:Point>
                 <cv:X>129</cv:X>
                 <cv:Y>95</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>263</cv:X>
-                <cv:Y>25</cv:Y>
+                <cv:X>183</cv:X>
+                <cv:Y>0</cv:Y>
               </cv:Point>
             </cv:ArrayOfPoint>
           </cv:Regions>
@@ -119,11 +119,11 @@
             <cv:X>0</cv:X>
             <cv:Y>0</cv:Y>
           </cv:Offset>
-          <cv:MinArea>300</cv:MinArea>
-          <cv:MaxArea>3000</cv:MaxArea>
+          <cv:MinArea>500</cv:MinArea>
+          <cv:MaxArea>2000</cv:MaxArea>
         </Combinator>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\TrackWhisker_Single_VerticalHeadPosition.bonsai" />
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\TrackWhisker_Multiple_VerticalHeadPosition.bonsai" />
       <Expression xsi:type="scr:PythonTransform">
         <scr:Script>#return x,y values for base, center, tip of three central whiskers
 import clr
@@ -196,7 +196,7 @@ def process(value):
         </PropertyMappings>
       </Expression>
       <Expression xsi:type="io:CsvWriter">
-        <io:FileName>D:\Vincent\vIRt35\vIRt35_0724\vIRt35_0724_3850_20190724-134208_HSCam_WhiskersBaseCentroidTip.csv</io:FileName>
+        <io:FileName>D:\Vincent\vIRt43\vIRt43_1119\vIRt43_1119_wheeltraining_20191119-175457_HSCam_WhiskersBaseCentroidTip.csv</io:FileName>
         <io:Delimiter>,</io:Delimiter>
         <io:Append>false</io:Append>
         <io:Overwrite>true</io:Overwrite>
