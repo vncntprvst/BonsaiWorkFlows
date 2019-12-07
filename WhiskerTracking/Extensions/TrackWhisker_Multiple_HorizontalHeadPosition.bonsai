@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="WorkflowInput">
+        <Name>Source1</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Script>import clr
+clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+clr.AddReference("Bonsai.Vision")
+from System import Tuple, Math, Single, Array
+import math
+from System.Linq import Enumerable
+from OpenCV.Net import Point, Point2f
+from Bonsai.Vision import ConnectedComponentCollection
+
+noWhisker = True
+firstPass = True
+#NaNPoint = Point2f(float.NaN,float.NaN)
+baseDistThd = 20
+targetWhisker = 1
+baseDistList = []
+
+def FindBasePoint(inputPointArray):
+	pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.Y) #Y point for horizontal head position
+	firstPoint = Enumerable.First(pointList)
+	return firstPoint
+
+def DistBetweenPoints(pt1,pt2):
+	dx = abs(pt2.X - pt1.X)
+	dy = abs(pt2.Y - pt1.Y)
+	# distance vector
+	return math.sqrt(dx**2 + dy**2)
+
+@returns(ConnectedComponentCollection)
+def process(sortedRegions):
+	global noWhisker, whiskerIndex, initialBase, firstPass, baseDistList  #, currCentroid
+	# Order whisker components list by base point, bottom to top
+	#vSortWhiskers = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+	vSortWhiskers = list(Enumerable.OrderBy(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).X))
+
+	if noWhisker is True: #on first pass
+		if len(vSortWhiskers) &gt;= (1 + targetWhisker) and firstPass == True:
+			print("init")
+			whiskerIndex = targetWhisker
+			initialBase = FindBasePoint(vSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
+			firstPass = False
+		elif len(vSortWhiskers) &lt; 1:
+			print("still no whiskers")
+			
+	# Compare base points and find closest base, within spatial treshold limits (typically, either index 0 or 1)
+	# ToDo: need to find what to do when tracked whisker has jumped to a neigboring one.  
+	if len(vSortWhiskers) &gt;= 1:
+		baseDistList[:] = [] 
+		for wIdx, wCComp in enumerate(vSortWhiskers):
+			thatBase = FindBasePoint(wCComp.Contour.ToArray[Point]())
+			baseDist = DistBetweenPoints(initialBase, thatBase)
+			if baseDist &lt; baseDistThd: # add it
+				baseDistList.append(baseDist)
+			else:
+				baseDistList.append(None)
+		listNotNones = [i for i, item in enumerate(baseDistList) if item is not None]
+		#print("baseDistList", baseDistList, "isnotnone", listNotNones)
+		if len(listNotNones) &gt; 0:
+			baseDistList = [baseDistList[i] for i in listNotNones]
+			whiskerIndex = baseDistList.index(min(baseDistList))
+		else:
+			noWhisker = True
+			whiskerIndex = float.NaN
+	else:
+		noWhisker = True
+		whiskerIndex = float.NaN
+
+	# Create whisker component
+	Component = ConnectedComponentCollection(sortedRegions.ImageSize)
+	if Single.IsNaN(whiskerIndex) == False:
+		#print("creating component")
+		Component.Add(vSortWhiskers[int(listNotNones[0])])
+		if len(listNotNones)&gt;1:
+			Component.Add(vSortWhiskers[int(listNotNones[1])])
+		if len(listNotNones)&gt;2:
+				Component.Add(vSortWhiskers[int(listNotNones[2])])
+
+	return Component</scr:Script>
+      </Expression>
+      <Expression xsi:type="WorkflowOutput" />
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
