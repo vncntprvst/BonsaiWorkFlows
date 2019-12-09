@@ -138,42 +138,40 @@ def process(value):
                       <cv:Playing>true</cv:Playing>
                     </Combinator>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="Combinator">
-                      <Combinator xsi:type="cv:MaskPolygon">
-                        <cv:Regions>
-                          <cv:ArrayOfPoint>
-                            <cv:Point>
-                              <cv:X>0</cv:X>
-                              <cv:Y>0</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>64</cv:X>
-                              <cv:Y>0</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>64</cv:X>
-                              <cv:Y>150</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>181</cv:X>
-                              <cv:Y>479</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>0</cv:X>
-                              <cv:Y>479</cv:Y>
-                            </cv:Point>
-                          </cv:ArrayOfPoint>
-                        </cv:Regions>
-                        <cv:MaskType>ToZeroInv</cv:MaskType>
-                        <cv:FillValue>
-                          <cv:Val0>0</cv:Val0>
-                          <cv:Val1>0</cv:Val1>
-                          <cv:Val2>0</cv:Val2>
-                          <cv:Val3>0</cv:Val3>
-                        </cv:FillValue>
-                      </Combinator>
-                    </Builder>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:MaskPolygon">
+                      <cv:Regions>
+                        <cv:ArrayOfPoint>
+                          <cv:Point>
+                            <cv:X>0</cv:X>
+                            <cv:Y>0</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>64</cv:X>
+                            <cv:Y>0</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>64</cv:X>
+                            <cv:Y>150</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>181</cv:X>
+                            <cv:Y>479</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>0</cv:X>
+                            <cv:Y>479</cv:Y>
+                          </cv:Point>
+                        </cv:ArrayOfPoint>
+                      </cv:Regions>
+                      <cv:MaskType>ToZeroInv</cv:MaskType>
+                      <cv:FillValue>
+                        <cv:Val0>0</cv:Val0>
+                        <cv:Val1>0</cv:Val1>
+                        <cv:Val2>0</cv:Val2>
+                        <cv:Val3>0</cv:Val3>
+                      </cv:FillValue>
+                    </Combinator>
                   </Expression>
                   <Expression xsi:type="Disable">
                     <Builder xsi:type="Combinator">

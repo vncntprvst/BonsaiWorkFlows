@@ -13,7 +13,7 @@ NaNPoint = Point2f(float.NaN,float.NaN)
 distThd = 20
 
 def FindBasePoint(inputPointArray):
-  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.Y) #For horizontal head position
   firstPoint = Enumerable.First(pointList)
   return firstPoint
 
@@ -37,7 +37,7 @@ def process(sortedRegions):
   # Compare base points and find closest base, within spatial treshold limits (typically, either index 0 or 1)
   # ToDo: need to find what to do when tracked whisker has jumped to a neigboring one.  
   if len(hSortWhiskers) >= 1:
-    print("number of whisker is", len(hSortWhiskers))
+    #print("number of whisker is", len(hSortWhiskers))
     baseDist=distThd
     bestIdx=whiskerIndex
     for wIdx, wCComp in enumerate(hSortWhiskers):
@@ -47,11 +47,11 @@ def process(sortedRegions):
         baseDist = DistBetweenPoints(currBase, thatBase)
         bestIdx = wIdx 
     if baseDist < distThd:
-      print("selected base", bestIdx, "distance is below threshold: ", baseDist)
+      #print("selected base", bestIdx, "distance is below threshold: ", baseDist)
       whiskerIndex = bestIdx
       currBase = FindBasePoint(hSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
     else:
-      print("selected base", bestIdx, "distance is above threshold: ", baseDist)
+      #print("selected base", bestIdx, "distance", DistBetweenPoints(currBase, thatBase), "is above threshold: ", baseDist)
       whiskerIndex = float.NaN
     noWhisker = False
   else:
