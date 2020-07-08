@@ -38,11 +38,10 @@ def process(sortedRegions):
 			print("init")
 			whiskerIndex = targetWhisker
 			initialBase = FindBasePoint(vSortWhiskers[whiskerIndex].Contour.ToArray[Point]())
-			#currCentroid = vSortWhiskers[whiskerIndex].Centroid
 			firstPass = False
 		elif len(vSortWhiskers) < 1:
 			print("still no whiskers")
-		
+			
 	# Compare base points and find closest base, within spatial treshold limits (typically, either index 0 or 1)
 	# ToDo: need to find what to do when tracked whisker has jumped to a neigboring one.  
 	if len(vSortWhiskers) >= 1:
@@ -66,14 +65,14 @@ def process(sortedRegions):
 		noWhisker = True
 		whiskerIndex = float.NaN
 
- 	# Create whisker component
+	# Create whisker component
 	Component = ConnectedComponentCollection(sortedRegions.ImageSize)
 	if Single.IsNaN(whiskerIndex) == False:
 		#print("creating component")
 		Component.Add(vSortWhiskers[int(listNotNones[0])])
 		if len(listNotNones)>1:
-      		Component.Add(vSortWhiskers[int(listNotNones[1])])
-    	if len(listNotNones)>2:
-      		Component.Add(vSortWhiskers[int(listNotNones[2])])
-		
+			Component.Add(vSortWhiskers[int(listNotNones[1])])
+		if len(listNotNones)>2:
+				Component.Add(vSortWhiskers[int(listNotNones[2])])
+
 	return Component

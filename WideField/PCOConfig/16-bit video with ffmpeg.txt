@@ -1,0 +1,42 @@
+16-Bit Video Encoding with ffmpeg
+
+Are there any video codecs that support lossless 16-bit RGB compression? In other words, if I have a sequence of PNG images that are RGB 16 bits per channel (48 bits total), and I want to encode them, I should be able to get the exact same PNG sequence, pixel for pixel, when I decode the file. If so, please list all of them that you know of.
+
+If not lossless, are there 16-bit lossy codecs (so that it would produce 16-bit pngs when decoded)?
+9 comments
+100% Upvoted
+Log in or sign up to leave a comment
+log in
+sign up
+Sort by
+level 1
+Anton1699
+2 points ·
+19 days ago
+
+Yup, ffv1 supports both interleaved rgb48le and planar gbrp16le.
+level 2
+SunnyBadgr
+1 point ·
+19 days ago
+· edited 19 days ago
+
+Thanks, I would like to use FFV1. When piping raw frames from my program into a ffmpeg child-process using FFV1 encoder, I get:
+
+    [rawvideo @ 00000052e964dac0] Thread message queue blocking; consider raising the thread_queue_size option (current value: 8)
+
+Does that mean it drops frames when recording the video file to disk?
+
+The reason I'm asking is because ffmpeg is already at high CPU and RAM usage, and if this message means it won't drop frames, I prefer not to raise thread_queue_size, to leave more resources for my parent process (which needs it, because it's generating the frames procedurally).
+
+The command (called by my program) was:
+
+    ffmpeg -loglevel warning -y -f rawvideo -vcodec rawvideo -s 1920x1080 -pix_fmt rgb24 -r 24 -i - -i <audio-file> -c:a copy -vf vflip -c:v ffv1 -level 3 -threads 8 -coder 1 -context 1 -g 1 -slices 24 -slicecrc 1 out.mkv
+
+(Also, for some weird reason, VLC shows Frame rate: 24.000384 for this mkv file, even though I specified exactly 24.)
+
+When I use h264 as encoder, I don't get this error. That command was:
+
+    ffmpeg -loglevel warning -y -f rawvideo -vcodec rawvideo -s 1920x1080 -pix_fmt rgb24 -r 24 -i - -an -vf vflip -pix_fmt yuv420p -c:v libx264 -crf 18 -force_key_frames expr:gte(tn_forced/2) -bf 2 out.mp4
+
+(My problem with h264 encoding is that I run out of RAM at high resolutions like 8k.)
