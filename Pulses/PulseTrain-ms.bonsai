@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.5.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>PulseTrain</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="SampleRate" />
+            </Expression>
+            <Expression xsi:type="PropertySource" TypeArguments="dsp:FunctionGenerator,sys:Int32">
+              <MemberName>SampleRate</MemberName>
+              <Value>1000</Value>
+            </Expression>
+            <Expression xsi:type="Divide">
+              <Operand xsi:type="DoubleProperty">
+                <Value>1000</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="Count" Description="The number of pulses in the pulse train." />
+            </Expression>
+            <Expression xsi:type="PropertySource" TypeArguments="rx:Range,sys:Int32">
+              <MemberName>Count</MemberName>
+              <Value>5</Value>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="PulseDuration" Description="The duration of each pulse, in milliseconds." />
+            </Expression>
+            <Expression xsi:type="PropertySource" TypeArguments="dsp:FunctionGenerator,sys:Int32">
+              <MemberName>BufferLength</MemberName>
+              <Value>100</Value>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:CombineLatest" />
+            </Expression>
+            <Expression xsi:type="Multiply" />
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="BufferLength" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="PropertySource" TypeArguments="dsp:FunctionGenerator,sys:Int32">
+              <MemberName>SampleRate</MemberName>
+              <Value>1000</Value>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="SampleRate" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="PropertySource" TypeArguments="dsp:FunctionGenerator,sys:Int32">
+              <MemberName>BufferLength</MemberName>
+              <Value>100</Value>
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Expression>1000.0 / it</scr:Expression>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Frequency" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:FunctionGenerator">
+                <dsp:BufferLength>500</dsp:BufferLength>
+                <dsp:Frequency>10</dsp:Frequency>
+                <dsp:Waveform>Square</dsp:Waveform>
+                <dsp:SampleRate>1000</dsp:SampleRate>
+                <dsp:Amplitude>1</dsp:Amplitude>
+                <dsp:Offset>0</dsp:Offset>
+                <dsp:Phase>0</dsp:Phase>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>1</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="10" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="7" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="7" Label="Source2" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="5" To="12" Label="Source1" />
+            <Edge From="6" To="7" Label="Source3" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="15" Label="Source2" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="15" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="14" To="15" Label="Source3" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Delay">
+          <rx:DueTime>PT5S</rx:DueTime>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
