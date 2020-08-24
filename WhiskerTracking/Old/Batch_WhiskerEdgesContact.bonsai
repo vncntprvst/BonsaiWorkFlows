@@ -1,0 +1,1123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.2.1">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="SelectMany">
+        <Name>FileNames</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Concat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:GetFiles">
+          <q1:Path>E:\Data\Video\PrV77_108__HSCamClips</q1:Path>
+          <q1:SearchPattern>*.avi</q1:SearchPattern>
+          <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="WindowWorkflow">
+        <Name>ProcessVideo</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedPropertyOfStringFileCapture">
+              <MemberName>FileName</MemberName>
+              <Name>FileName</Name>
+              <Value>C:\Data\Video\VidExports\PrV77_108__HSCamClips5.avi</Value>
+            </Expression>
+            <Expression xsi:type="NestedWorkflow">
+              <Name>ROIs</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>0</q2:Index>
+                      <q2:Threshold>150</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>1</q2:Index>
+                      <q2:Threshold>150</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>2</q2:Index>
+                      <q2:Threshold>150</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>3</q2:Index>
+                      <q2:Threshold>150</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>4</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>5</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>6</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>7</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>8</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>9</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>10</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>11</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>12</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>13</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>14</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>15</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>16</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>17</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivityDetected">
+                      <q2:Index>18</q2:Index>
+                      <q2:Threshold>100</q2:Threshold>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:RoiActivity">
+                      <q2:Regions>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>469</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>545</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>134</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>553</q2:X>
+                            <q2:Y>87</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>408</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>484</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>561</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>561</q2:X>
+                            <q2:Y>134</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>526</q2:X>
+                            <q2:Y>110</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>509</q2:X>
+                            <q2:Y>98</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>492</q2:X>
+                            <q2:Y>87</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>425</q2:X>
+                            <q2:Y>79</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>349</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>134</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>288</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>441</q2:X>
+                            <q2:Y>25</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>441</q2:X>
+                            <q2:Y>134</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>372</q2:X>
+                            <q2:Y>87</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>592</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>622</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>562</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>472</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>472</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>502</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>382</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>382</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>382</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>382</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>382</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>382</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>442</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>382</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>322</q2:X>
+                            <q2:Y>43</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>322</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>352</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>382</q2:X>
+                            <q2:Y>37</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>381</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>321</q2:X>
+                            <q2:Y>36</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>321</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>381</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                        <q2:ArrayOfPoint>
+                          <q2:Point>
+                            <q2:X>381</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>321</q2:X>
+                            <q2:Y>30</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>321</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                          <q2:Point>
+                            <q2:X>381</q2:X>
+                            <q2:Y>24</q2:Y>
+                          </q2:Point>
+                        </q2:ArrayOfPoint>
+                      </q2:Regions>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>28</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>0</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>0</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>0</To>
+                    <Label>Source3</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>0</To>
+                    <Label>Source4</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>0</To>
+                    <Label>Source5</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>0</To>
+                    <Label>Source6</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>1</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>9</From>
+                    <To>1</To>
+                    <Label>Source3</Label>
+                  </Edge>
+                  <Edge>
+                    <From>10</From>
+                    <To>1</To>
+                    <Label>Source4</Label>
+                  </Edge>
+                  <Edge>
+                    <From>11</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>12</From>
+                    <To>2</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>13</From>
+                    <To>2</To>
+                    <Label>Source3</Label>
+                  </Edge>
+                  <Edge>
+                    <From>14</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>15</From>
+                    <To>3</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>16</From>
+                    <To>3</To>
+                    <Label>Source3</Label>
+                  </Edge>
+                  <Edge>
+                    <From>17</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>18</From>
+                    <To>4</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>19</From>
+                    <To>4</To>
+                    <Label>Source3</Label>
+                  </Edge>
+                  <Edge>
+                    <From>20</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>21</From>
+                    <To>5</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>22</From>
+                    <To>5</To>
+                    <Label>Source3</Label>
+                  </Edge>
+                  <Edge>
+                    <From>23</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>24</From>
+                    <To>6</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>25</From>
+                    <To>6</To>
+                    <Label>Source3</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>8</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>10</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>25</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>24</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>23</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>22</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>21</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>20</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>19</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>18</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>17</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>16</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>15</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>14</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>13</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>12</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>26</From>
+                    <To>11</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>27</From>
+                    <To>26</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:Canny">
+                <q2:Threshold1>200</q2:Threshold1>
+                <q2:Threshold2>300</q2:Threshold2>
+                <q2:ApertureSize>3</q2:ApertureSize>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:Threshold">
+                <q2:ThresholdValue>9</q2:ThresholdValue>
+                <q2:MaxValue>255</q2:MaxValue>
+                <q2:ThresholdType>Binary</q2:ThresholdType>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="NestedWorkflow">
+              <Name>WhiskerFilter</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="q2:Smooth">
+                      <q2:SmoothType>Gaussian</q2:SmoothType>
+                      <q2:Size1>37</q2:Size1>
+                      <q2:Size2>37</q2:Size2>
+                      <q2:Sigma1>100</q2:Sigma1>
+                      <q2:Sigma2>100</q2:Sigma2>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Subtract" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Add" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Add" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Skip">
+                      <Count>1</Count>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Add" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Skip">
+                      <Count>0</Count>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Subtract" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="Skip">
+                      <Count>1</Count>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>1</From>
+                    <To>4</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>3</From>
+                    <To>15</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>4</From>
+                    <To>3</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>5</From>
+                    <To>4</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>6</From>
+                    <To>5</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>7</From>
+                    <To>6</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>7</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>8</From>
+                    <To>6</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>9</From>
+                    <To>8</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>10</From>
+                    <To>9</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>11</From>
+                    <To>10</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>11</From>
+                    <To>9</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>12</From>
+                    <To>11</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>13</From>
+                    <To>12</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>14</From>
+                    <To>13</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>14</From>
+                    <To>12</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                  <Edge>
+                    <From>14</From>
+                    <To>0</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>14</From>
+                    <To>2</To>
+                    <Label>Source2</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="q1:CsvWriter">
+              <q1:FileName>E:\Data\Video\PrV77_108__HSCamClips\PrV77_108__HSCamClips0_ROIs.csv</q1:FileName>
+              <q1:Append>false</q1:Append>
+              <q1:Overwrite>true</q1:Overwrite>
+              <q1:Suffix>None</q1:Suffix>
+              <q1:IncludeHeader>false</q1:IncludeHeader>
+              <q1:Selector>Source.Item1,Source.Item2,Source.Item3,Source.Item4,Source.Item5,Source.Item6</q1:Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Delay">
+                <DueTime>PT0.1S</DueTime>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ReplaySubject">
+              <Name>FileName</Name>
+              <BufferSize xsi:nil="true" />
+            </Expression>
+            <Expression xsi:type="ExternalizedPropertyOfStringCsvWriter">
+              <MemberName>FileName</MemberName>
+              <Name>CSVFileName</Name>
+              <Value>E:\Data\Video\VidExports\ROIWhiskerContact.csv</Value>
+            </Expression>
+            <Expression xsi:type="q3:PythonTransform">
+              <q3:Script>@returns(str)
+def process(value):
+  return value.replace('.avi', '_ROIs.csv')</q3:Script>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:Grayscale" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:FileCapture">
+                <q2:FileName>C:\Data\Video\VidExports\PrV77_108__HSCamClips5.avi</q2:FileName>
+                <q2:PlaybackRate>1000</q2:PlaybackRate>
+                <q2:StartPosition>0</q2:StartPosition>
+                <q2:PositionUnits>Frames</q2:PositionUnits>
+                <q2:Loop>false</q2:Loop>
+                <q2:Playing>true</q2:Playing>
+              </Combinator>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>8</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>1</From>
+              <To>12</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>10</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>9</From>
+              <To>6</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>10</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>12</From>
+              <To>11</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.GetFiles, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.RoiActivityDetected, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.RoiActivity, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Canny, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Smooth, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.AddBuilder, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvWriter, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

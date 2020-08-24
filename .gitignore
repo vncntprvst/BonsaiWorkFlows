@@ -59,3 +59,7 @@ Bonsai.Examples.TimeLapse/
 Bonsai.Examples.ColorSegmentation/
 
 Bonsai.Examples.FiducialTracking/
+
+LOCAL STORAGE/
+
+*.avi

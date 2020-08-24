@@ -1,74 +1,82 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:q1="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:SerialStringRead">
-          <q1:PortName>COM15</q1:PortName>
-          <q1:NewLine>,</q1:NewLine>
+        <Combinator xsi:type="io:SerialStringRead">
+          <io:PortName>COM8</io:PortName>
+          <io:NewLine>,</io:NewLine>
         </Combinator>
       </Expression>
       <Expression xsi:type="Parse">
         <Pattern>%d</Pattern>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Timestamp" />
+        <Combinator xsi:type="rx:Timestamp" />
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="q1:CsvWriter">
-          <q1:FileName>D:\Data\test\DistanceWheelRun.csv</q1:FileName>
-          <q1:Delimiter>,</q1:Delimiter>
-          <q1:Append>false</q1:Append>
-          <q1:Overwrite>true</q1:Overwrite>
-          <q1:Suffix>None</q1:Suffix>
-          <q1:IncludeHeader>true</q1:IncludeHeader>
-          <q1:Selector>Value,Timestamp.Hour,Timestamp.Minute,Timestamp.Second,Timestamp.Millisecond</q1:Selector>
+        <Builder xsi:type="io:CsvWriter">
+          <io:FileName>D:\Data\test\DistanceWheelRun.csv</io:FileName>
+          <io:Delimiter>,</io:Delimiter>
+          <io:Append>false</io:Append>
+          <io:Overwrite>true</io:Overwrite>
+          <io:Suffix>None</io:Suffix>
+          <io:IncludeHeader>true</io:IncludeHeader>
+          <io:Selector>Value,Timestamp.Hour,Timestamp.Minute,Timestamp.Second,Timestamp.Millisecond</io:Selector>
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="q2:ExpressionTransform">
-          <q2:Expression>new(
+        <Builder xsi:type="scr:ExpressionTransform">
+          <scr:Expression>new(
 Value as Distance,
 Timestamp as Time
-)</q2:Expression>
+)</scr:Expression>
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q3:VideoCaptureDevice">
-            <q3:Index>1</q3:Index>
+          <Combinator xsi:type="q1:VideoCaptureDevice">
+            <q1:Index>1</q1:Index>
+            <q1:CaptureProperties />
           </Combinator>
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q4:Flip">
-            <q4:Mode>Both</q4:Mode>
+          <Combinator xsi:type="cv:Flip">
+            <cv:Mode>Both</cv:Mode>
           </Combinator>
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
-          <Combinator xsi:type="DistinctUntilChanged" />
+          <Combinator xsi:type="rx:DistinctUntilChanged" />
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
-          <Combinator xsi:type="Skip">
-            <Count>1</Count>
+          <Combinator xsi:type="rx:Skip">
+            <rx:Count>1</rx:Count>
           </Combinator>
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
-          <Combinator xsi:type="Zip" />
+          <Combinator xsi:type="rx:Zip" />
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Subtract" />
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="Accumulate" />
+        <Builder xsi:type="rx:Accumulate" />
       </Expression>
     </Nodes>
     <Edges>
@@ -83,18 +91,4 @@ Timestamp as Time
       <Edge From="10" To="11" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Expressions.ParseBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.SerialStringRead, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.AccumulateBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.DistinctUntilChanged, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Flip, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

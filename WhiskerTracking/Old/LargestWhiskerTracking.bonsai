@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.2.0-ctp">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q2="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FindContours">
+          <q1:Mode>List</q1:Mode>
+          <q1:Method>ChainApproxSimple</q1:Method>
+          <q1:Offset>
+            <q1:X>0</q1:X>
+            <q1:Y>0</q1:Y>
+          </q1:Offset>
+          <q1:MinArea>150</q1:MinArea>
+          <q1:MaxArea>10000</q1:MaxArea>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>0</q1:X>
+            <q1:Y>0</q1:Y>
+            <q1:Width>0</q1:Width>
+            <q1:Height>0</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Grayscale" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FileCapture">
+          <q1:FileName>C:\Data\Video\vIRt12_Acute_KAionto_5100_cutWhiskers_HSCam2018-01-18T15_53_03.avi</q1:FileName>
+          <q1:PlaybackRate>500</q1:PlaybackRate>
+          <q1:StartPosition>0</q1:StartPosition>
+          <q1:PositionUnits>Frames</q1:PositionUnits>
+          <q1:Loop>false</q1:Loop>
+          <q1:Playing>true</q1:Playing>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q2:CsvWriter">
+        <q2:FileName>C:\Data\Video\WhiskerAngle_vIRt12_Acute_KAionto_5100_cutWhisker.csv</q2:FileName>
+        <q2:Append>false</q2:Append>
+        <q2:Overwrite>false</q2:Overwrite>
+        <q2:Suffix>FileCount</q2:Suffix>
+        <q2:IncludeHeader>false</q2:IncludeHeader>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:AdaptiveThreshold">
+          <q1:MaxValue>255</q1:MaxValue>
+          <q1:AdaptiveMethod>MeanC</q1:AdaptiveMethod>
+          <q1:ThresholdType>Binary</q1:ThresholdType>
+          <q1:BlockSize>7</q1:BlockSize>
+          <q1:Parameter>3</q1:Parameter>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:BackgroundSubtraction">
+          <q1:BackgroundFrames>0</q1:BackgroundFrames>
+          <q1:AdaptationRate>0</q1:AdaptationRate>
+          <q1:ThresholdValue>0</q1:ThresholdValue>
+          <q1:ThresholdType>Binary</q1:ThresholdType>
+          <q1:SubtractionMethod>Absolute</q1:SubtractionMethod>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:DrawConnectedComponents" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:SortBinaryRegions" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:SortBinaryRegions" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:BinaryRegionAnalysis" />
+      </Expression>
+      <Expression xsi:type="q3:PythonTransform">
+        <q3:Script>import clr
+clr.AddReference("System.Core")
+from System.Linq import Enumerable
+
+@returns(float)
+def process(value):
+  # Order blob list by descending area
+  #largest = list(Enumerable.OrderByDescending(value, lambda x:x.Area))
+
+  # Order blob list by leftmost centroid
+  leftmost = list(Enumerable.OrderBy(value, lambda x:x.Centroid.X))
+
+  if len(leftmost) &gt;= 1:
+    return float(leftmost[0].Orientation)
+  #elif len(largest) &gt;= 2:
+  #  a1 = largest[0].Orientation
+  #  a2 = largest[1].Orientation
+  #  return (a1+a2)/2
+  #elif len(largest) &gt;= 2:
+  #  a1 = largest[0].Orientation
+  #  a2 = largest[1].Orientation
+  #  a3 = largest[2].Orientation
+  #  return (a1+a2+a3)/3
+  else:
+    # otherwise, return nan
+    return float.NaN</q3:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:BinaryRegionAnalysis" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FindContours">
+          <q1:Mode>List</q1:Mode>
+          <q1:Method>ChainApproxSimple</q1:Method>
+          <q1:Offset>
+            <q1:X>0</q1:X>
+            <q1:Y>0</q1:Y>
+          </q1:Offset>
+          <q1:MinArea>500</q1:MinArea>
+          <q1:MaxArea>10000</q1:MaxArea>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:BackgroundSubtraction">
+          <q1:BackgroundFrames>0</q1:BackgroundFrames>
+          <q1:AdaptationRate>0</q1:AdaptationRate>
+          <q1:ThresholdValue>0</q1:ThresholdValue>
+          <q1:ThresholdType>Binary</q1:ThresholdType>
+          <q1:SubtractionMethod>Absolute</q1:SubtractionMethod>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:MaskPolygon">
+          <q1:Regions>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>-8</q1:X>
+                <q1:Y>334</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>92</q1:X>
+                <q1:Y>341</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>268</q1:X>
+                <q1:Y>90</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>0</q1:X>
+                <q1:Y>2</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>114</q1:X>
+                <q1:Y>63</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>114</q1:X>
+                <q1:Y>63</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>114</q1:X>
+                <q1:Y>63</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>114</q1:X>
+                <q1:Y>63</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>633</q1:X>
+                <q1:Y>142</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>154</q1:X>
+                <q1:Y>93</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>0</q1:X>
+                <q1:Y>6</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>635</q1:X>
+                <q1:Y>10</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>156</q1:X>
+                <q1:Y>472</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>-3</q1:X>
+                <q1:Y>472</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>0</q1:X>
+                <q1:Y>339</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>152</q1:X>
+                <q1:Y>352</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>416</q1:X>
+                <q1:Y>302</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>608</q1:X>
+                <q1:Y>432</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>678</q1:X>
+                <q1:Y>92</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>526</q1:X>
+                <q1:Y>94</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+          </q1:Regions>
+          <q1:MaskType>ToZeroInv</q1:MaskType>
+          <q1:FillValue>
+            <q1:Val0>255</q1:Val0>
+            <q1:Val1>255</q1:Val1>
+            <q1:Val2>255</q1:Val2>
+            <q1:Val3>255</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:AdaptiveThreshold">
+          <q1:MaxValue>255</q1:MaxValue>
+          <q1:AdaptiveMethod>MeanC</q1:AdaptiveMethod>
+          <q1:ThresholdType>Binary</q1:ThresholdType>
+          <q1:BlockSize>7</q1:BlockSize>
+          <q1:Parameter>3</q1:Parameter>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Grayscale" />
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>17</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>16</From>
+        <To>15</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>17</From>
+        <To>16</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.DrawConnectedComponents, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>0</q1:X>
+            <q1:Y>82</q1:Y>
+            <q1:Width>630</q1:Width>
+            <q1:Height>388</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FileCapture">
+          <q1:FileName>D:\Data\Ephys\vIRt21\vIRt21_1005\vIRt21_1005_4500_multi_5ms10Hz10mW.mp4</q1:FileName>
+          <q1:PlaybackRate>500</q1:PlaybackRate>
+          <q1:StartPosition>90000</q1:StartPosition>
+          <q1:PositionUnits>Frames</q1:PositionUnits>
+          <q1:Loop>false</q1:Loop>
+          <q1:Playing>true</q1:Playing>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:DrawConnectedComponents" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:FrequencyFilter">
+          <q2:SamplingFrequency>500</q2:SamplingFrequency>
+          <q2:Cutoff1>10</q2:Cutoff1>
+          <q2:Cutoff2>1</q2:Cutoff2>
+          <q2:KernelLength>50</q2:KernelLength>
+          <q2:FilterType>LowPass</q2:FilterType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:SortBinaryRegions" />
+      </Expression>
+      <Expression xsi:type="q3:PythonTransform">
+        <q3:Script>import clr
+clr.AddReference("System.Core")
+from System.Linq import Enumerable
+
+@returns(float)
+def process(value):
+  # Order blob list by descending area
+  largest = list(Enumerable.OrderByDescending(value, lambda x:x.Area))
+
+  # Order blob list by leftmost centroid
+  #leftmost = list(Enumerable.OrderBy(value, lambda x:x.Centroid.X))
+
+  if len(largest) &gt;= 1:
+    return float(-largest[0].Orientation)
+  #elif len(largest) &gt;= 2:
+  #  a1 = largest[0].Orientation
+  #  a2 = largest[1].Orientation
+  #  return (a1+a2)/2
+  #elif len(largest) &gt;= 2:
+  #  a1 = largest[0].Orientation
+  #  a2 = largest[1].Orientation
+  #  a3 = largest[2].Orientation
+  #  return (a1+a2+a3)/3
+  else:
+    # otherwise, return nan
+    return float.NaN</q3:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:BinaryRegionAnalysis" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FindContours">
+          <q1:Mode>List</q1:Mode>
+          <q1:Method>ChainApproxSimple</q1:Method>
+          <q1:Offset>
+            <q1:X>0</q1:X>
+            <q1:Y>0</q1:Y>
+          </q1:Offset>
+          <q1:MinArea>300</q1:MinArea>
+          <q1:MaxArea>10000</q1:MaxArea>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:BackgroundSubtraction">
+          <q1:BackgroundFrames>0</q1:BackgroundFrames>
+          <q1:AdaptationRate>0</q1:AdaptationRate>
+          <q1:ThresholdValue>0</q1:ThresholdValue>
+          <q1:ThresholdType>Binary</q1:ThresholdType>
+          <q1:SubtractionMethod>Absolute</q1:SubtractionMethod>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:MaskPolygon">
+          <q1:Regions>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>220</q1:X>
+                <q1:Y>51</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>220</q1:X>
+                <q1:Y>51</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>220</q1:X>
+                <q1:Y>52</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>220</q1:X>
+                <q1:Y>52</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+            <q1:ArrayOfPoint>
+              <q1:Point>
+                <q1:X>627</q1:X>
+                <q1:Y>-1</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>559</q1:X>
+                <q1:Y>-1</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>421</q1:X>
+                <q1:Y>0</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>283</q1:X>
+                <q1:Y>0</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>301</q1:X>
+                <q1:Y>4</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>314</q1:X>
+                <q1:Y>14</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>372</q1:X>
+                <q1:Y>16</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>396</q1:X>
+                <q1:Y>33</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>425</q1:X>
+                <q1:Y>60</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>516</q1:X>
+                <q1:Y>92</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>535</q1:X>
+                <q1:Y>127</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>609</q1:X>
+                <q1:Y>185</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>582</q1:X>
+                <q1:Y>261</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>588</q1:X>
+                <q1:Y>344</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>577</q1:X>
+                <q1:Y>375</q1:Y>
+              </q1:Point>
+              <q1:Point>
+                <q1:X>626</q1:X>
+                <q1:Y>382</q1:Y>
+              </q1:Point>
+            </q1:ArrayOfPoint>
+          </q1:Regions>
+          <q1:MaskType>ToZeroInv</q1:MaskType>
+          <q1:FillValue>
+            <q1:Val0>255</q1:Val0>
+            <q1:Val1>255</q1:Val1>
+            <q1:Val2>255</q1:Val2>
+            <q1:Val3>0</q1:Val3>
+          </q1:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:AdaptiveThreshold">
+          <q1:MaxValue>255</q1:MaxValue>
+          <q1:AdaptiveMethod>MeanC</q1:AdaptiveMethod>
+          <q1:ThresholdType>Binary</q1:ThresholdType>
+          <q1:BlockSize>25</q1:BlockSize>
+          <q1:Parameter>3</q1:Parameter>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Grayscale" />
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>ComputePhase</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:Phase" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:Submatrix">
+                <q2:StartRow>0</q2:StartRow>
+                <q2:EndRow xsi:nil="true" />
+                <q2:StartCol>0</q2:StartCol>
+                <q2:EndCol>256</q2:EndCol>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:DiscreteFourierTransform">
+                <q2:OperationFlags>Forward</q2:OperationFlags>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedPropertyOfNullableOfInt32Submatrix">
+              <MemberName>EndCol</MemberName>
+              <Name />
+              <Value>256</Value>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q2:Buffer">
+                <q2:Count>512</q2:Count>
+                <q2:Skip xsi:nil="true" />
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Divide">
+              <Operand xsi:type="IntProperty">
+                <Value>2</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="ExternalizedPropertyOfInt32ElementCountBuffer">
+              <MemberName>Count</MemberName>
+              <Name />
+              <Value>1024</Value>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>512</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedPropertyOfInt32IntProperty">
+              <MemberName>Value</MemberName>
+              <Name>BufferSize</Name>
+              <Value>512</Value>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>1</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>1</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>9</From>
+              <To>4</To>
+              <Label>Source2</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>11</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.DrawConnectedComponents, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Phase, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Submatrix, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.DiscreteFourierTransform, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Dsp.Submatrix, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.Buffer, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.DivideBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Dsp.ElementCountBuffer, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

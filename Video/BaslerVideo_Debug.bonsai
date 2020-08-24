@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.5.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:p1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\Video_ArduCtl.bonsai" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="p1:PylonCapture">
+          <p1:SerialNumber>22789615</p1:SerialNumber>
+          <p1:ParameterFile>VideoSettings\acA640-750um_trig500Hz_400usExp_f8_335rig.pfs</p1:ParameterFile>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Image</Selector>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="1" To="2" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
