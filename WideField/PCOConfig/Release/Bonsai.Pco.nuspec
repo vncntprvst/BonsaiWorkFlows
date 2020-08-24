@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Bonsai.Pco</id>
+    <version>0.2.0</version>
+    <title>Bonsai - PCO Library</title>
+    <authors>Gonçalo Lopes</authors>
+    <owners>Gonçalo Lopes</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://bonsai-rx.org/license</licenseUrl>
+    <iconUrl>https://bonsai-rx.org/assets/images/bonsai.png</iconUrl>
+    <description>Bonsai Library for interfacing and acquiring images from PCO cameras.</description>
+    <copyright>Copyright © Gonçalo Lopes 2020</copyright>
+    <tags>Bonsai Rx PCO</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="Bonsai.Core" version="2.5.0" exclude="Build,Analyzers" />
+        <dependency id="OpenCV.Net" version="3.3.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

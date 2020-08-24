@@ -11,9 +11,9 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:FileCapture">
-          <cv:FileName>D:\Vincent\vIRt35\vIRt35_0724\vIRt35_0724_4400_20190724-141417_HSCam.avi</cv:FileName>
+          <cv:FileName>D:\Vincent\vIRt43\vIRt43_1204\vIRt43_1204_4400_20191204-171925_HSCam.avi</cv:FileName>
           <cv:PlaybackRate>500</cv:PlaybackRate>
-          <cv:StartPosition>0</cv:StartPosition>
+          <cv:StartPosition>1</cv:StartPosition>
           <cv:PositionUnits>Frames</cv:PositionUnits>
           <cv:Loop>false</cv:Loop>
           <cv:Playing>true</cv:Playing>
@@ -32,25 +32,13 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:Grayscale" />
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="cv:Threshold">
-            <cv:ThresholdValue>110</cv:ThresholdValue>
-            <cv:MaxValue>255</cv:MaxValue>
-            <cv:ThresholdType>BinaryInv</cv:ThresholdType>
-          </Combinator>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="IncludeWorkflow" Path="Extensions\ColorMask_Magenta.bonsai" />
-      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:AdaptiveThreshold">
           <cv:MaxValue>255</cv:MaxValue>
           <cv:AdaptiveMethod>MeanC</cv:AdaptiveMethod>
           <cv:ThresholdType>Binary</cv:ThresholdType>
-          <cv:BlockSize>87</cv:BlockSize>
-          <cv:Parameter>3</cv:Parameter>
+          <cv:BlockSize>33</cv:BlockSize>
+          <cv:Parameter>5</cv:Parameter>
         </Combinator>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="Extensions\HeadMask.bonsai" />
@@ -77,19 +65,19 @@
               </cv:Point>
               <cv:Point>
                 <cv:X>593</cv:X>
-                <cv:Y>312</cv:Y>
+                <cv:Y>424</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>200</cv:X>
-                <cv:Y>448</cv:Y>
+                <cv:X>90</cv:X>
+                <cv:Y>460</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>57</cv:X>
-                <cv:Y>79</cv:Y>
+                <cv:X>0</cv:X>
+                <cv:Y>0</cv:Y>
               </cv:Point>
               <cv:Point>
-                <cv:X>176</cv:X>
-                <cv:Y>1</cv:Y>
+                <cv:X>183</cv:X>
+                <cv:Y>0</cv:Y>
               </cv:Point>
             </cv:ArrayOfPoint>
           </cv:Regions>
@@ -120,10 +108,15 @@
             <cv:Y>0</cv:Y>
           </cv:Offset>
           <cv:MinArea>500</cv:MinArea>
-          <cv:MaxArea>3000</cv:MaxArea>
+          <cv:MaxArea>2000</cv:MaxArea>
         </Combinator>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\TrackWhisker_Single_Bottom.bonsai" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="IncludeWorkflow" Path="Extensions\TrackWhisker_Multiple_HorizontalHeadPosition.bonsai" />
+      </Expression>
       <Expression xsi:type="scr:PythonTransform">
         <scr:Script>#return x,y values for base, center, tip of three central whiskers
 import clr
@@ -136,19 +129,18 @@ from OpenCV.Net import Point, Point2f
 NaNPoint = Point2f(float.NaN,float.NaN)
 
 def FindBasePoint(inputPointArray):
-  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.X)
+  pointList = Enumerable.OrderBy(inputPointArray, lambda x:x.Y)
   firstPoint = Enumerable.First(pointList)
   return firstPoint
 
 def FindTipPoint(inputPointArray):
-  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.X)
+  pointList = Enumerable.OrderByDescending(inputPointArray, lambda x:x.Y)
   lastPoint = Enumerable.First(pointList)
   return lastPoint
 
 @returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
 def process(sortedRegions):
-  #vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:x.Orientation))
-  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).Y))
+  vSortRegionList = list(Enumerable.OrderByDescending(sortedRegions, lambda x:FindBasePoint(x.Contour.ToArray[Point]()).X))
   if len(vSortRegionList) &gt;=3:
     baseList=Tuple.Create(Point2f(FindBasePoint(vSortRegionList[0].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[1].Contour.ToArray[Point]())),Point2f(FindBasePoint(vSortRegionList[2].Contour.ToArray[Point]())))
     centroidList=Tuple.Create(Point2f(vSortRegionList[0].Centroid.X,vSortRegionList[0].Centroid.Y),Point2f(vSortRegionList[1].Centroid.X,vSortRegionList[1].Centroid.Y),Point2f(vSortRegionList[2].Centroid.X,vSortRegionList[2].Centroid.Y))
@@ -182,23 +174,29 @@ Item3.Item2 as Whisker2_Tip,
 Item3.Item3 as Whisker3_Tip
 )</scr:Expression>
       </Expression>
-      <Expression xsi:type="PropertySource" TypeArguments="cv:FileCapture,sys:String">
-        <MemberName>FileName</MemberName>
-        <Value>D:\Vincent\vIRt42\vIRt42_1016\vIRt42_1016_5000_10Hz_10ms_10mW_20191016-122553_HSCam.avi</Value>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="PropertySource" TypeArguments="cv:FileCapture,sys:String">
+          <MemberName>FileName</MemberName>
+          <Value>D:\Vincent\vIRt43\vIRt43_1119\vIRt43_1119_wheeltraining_20191119-175457_HSCam.avi</Value>
+        </Builder>
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>@returns(str)
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="scr:PythonTransform">
+          <scr:Script>@returns(str)
 def process(value):
   return value.replace('.avi', '_WhiskersBaseCentroidTip.csv')</scr:Script>
+        </Builder>
       </Expression>
-      <Expression xsi:type="PropertyMapping">
-        <PropertyMappings>
-          <Property Name="FileName" Selector="it" />
-        </PropertyMappings>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="PropertyMapping">
+          <PropertyMappings>
+            <Property Name="FileName" Selector="it" />
+          </PropertyMappings>
+        </Builder>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="io:CsvWriter">
-          <io:FileName>D:\Vincent\vIRt42\vIRt42_1016\vIRt42_1016_5000_10Hz_10ms_10mW_20191016-122553_HSCam_WhiskersBaseCentroidTip.csv</io:FileName>
+          <io:FileName>D:\Vincent\vIRt43\vIRt43_1119\vIRt43_1119_wheeltraining_20191119-175457_HSCam_WhiskersBaseCentroidTip.csv</io:FileName>
           <io:Delimiter>,</io:Delimiter>
           <io:Append>false</io:Append>
           <io:Overwrite>true</io:Overwrite>
@@ -207,15 +205,18 @@ def process(value):
           <io:Selector>Whisker1_Base,Whisker1_Centroid,Whisker1_Tip,Whisker2_Base,Whisker2_Centroid,Whisker2_Tip,Whisker3_Base,Whisker3_Centroid,Whisker3_Tip</io:Selector>
         </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Zip" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="rx:Zip" />
+        </Builder>
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Name>DrawMarkers</scr:Name>
-        <scr:Description>Draws whiskers' base, centroid and tip on video
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="scr:PythonTransform">
+          <scr:Name>DrawMarkers</scr:Name>
+          <scr:Description>Draws whiskers' base, centroid and tip on video
 
 </scr:Description>
-        <scr:Script>import clr
+          <scr:Script>import clr
 #clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 #from System import Tuple
@@ -244,68 +245,29 @@ def process(value):
     CV.Circle(output, Point(markerCoordinates.Item3.Item3), 10, Scalar.Rgb(127,80, 255), -1)
 
   return output</scr:Script>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="scr:PythonTransform">
-          <scr:Name>DrawMarkers</scr:Name>
-          <scr:Description>Draws whiskers' base, centroid and tip on video
-
-</scr:Description>
-          <scr:Script>import clr
-#clr.AddReference("System.Core")
-clr.AddReference("OpenCV.Net")
-#from System import Tuple
-#from System.Linq import Enumerable
-from OpenCV.Net import *
-
-@returns(IplImage)
-def process(value):
-  image = value.Item2
-  markerCoordinates = value.Item1
-  #vSortMarkersList = list(Enumerable.OrderByDescending(markerCoordinates, lambda x:x.Item1.X))
-  output = image.Clone()
-  if markerCoordinates is not None:
-  #    if len(markerCoordinates.Item1) &gt;=1:
-    CV.Circle(output, Point(markerCoordinates.Item1.Item1), 10, Scalar.Rgb(255, 0, 0), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item1), 10, Scalar.Rgb(255,99,71), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item1), 10, Scalar.Rgb(255,127,80), -1)
-
-    CV.Circle(output, Point(markerCoordinates.Item1.Item2), 10, Scalar.Rgb(0, 255, 0), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item2), 10, Scalar.Rgb(99, 255,71), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item2), 10, Scalar.Rgb(127, 255,80), -1)
-
-    CV.Circle(output, Point(markerCoordinates.Item1.Item3), 10, Scalar.Rgb(0, 0, 255), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item3), 10, Scalar.Rgb(99,71, 255), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item3), 10, Scalar.Rgb(127,80, 255), -1)
-
-  return output</scr:Script>
         </Builder>
       </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
-      <Edge From="1" To="19" Label="Source2" />
       <Edge From="2" To="3" Label="Source1" />
-      <Edge From="2" To="5" Label="Source1" />
-      <Edge From="2" To="6" Label="Source1" />
-      <Edge From="3" To="4" Label="Source1" />
-      <Edge From="5" To="7" Label="Source1" />
-      <Edge From="6" To="7" Label="Source2" />
+      <Edge From="2" To="4" Label="Source1" />
+      <Edge From="3" To="5" Label="Source1" />
+      <Edge From="4" To="5" Label="Source2" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
       <Edge From="7" To="8" Label="Source1" />
       <Edge From="8" To="9" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
       <Edge From="11" To="12" Label="Source1" />
       <Edge From="12" To="13" Label="Source1" />
-      <Edge From="13" To="14" Label="Source1" />
-      <Edge From="13" To="19" Label="Source1" />
-      <Edge From="14" To="18" Label="Source1" />
+      <Edge From="13" To="17" Label="Source1" />
+      <Edge From="14" To="15" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
-      <Edge From="16" To="17" Label="Source1" />
-      <Edge From="17" To="18" Label="Source2" />
-      <Edge From="19" To="20" Label="Source1" />
-      <Edge From="19" To="21" Label="Source1" />
+      <Edge From="16" To="17" Label="Source2" />
+      <Edge From="18" To="19" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

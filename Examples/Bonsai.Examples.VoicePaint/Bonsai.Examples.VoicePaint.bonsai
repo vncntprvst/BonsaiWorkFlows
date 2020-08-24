@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:AudioCapture">
+          <al:SampleRate>22050</al:SampleRate>
+          <al:SampleFormat>Mono16</al:SampleFormat>
+          <al:BufferLength>10</al:BufferLength>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:ConvertScale">
+          <dsp:Depth>F32</dsp:Depth>
+          <dsp:Scale>1</dsp:Scale>
+          <dsp:Shift>0</dsp:Shift>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:RunningAverage">
+          <dsp:Alpha>0.5</dsp:Alpha>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>PowerSpectrum</Name>
+        <Description>Computes the power spectrum of the audio signal using a discrete Fourier transform.</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="BufferSize" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>512</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Divide">
+              <Operand xsi:type="IntProperty">
+                <Value>2</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="EndCol" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Count" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:Buffer">
+                <dsp:Count>512</dsp:Count>
+                <dsp:Skip xsi:nil="true" />
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:DiscreteFourierTransform">
+                <dsp:OperationFlags>Forward</dsp:OperationFlags>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:Submatrix">
+                <dsp:StartRow>0</dsp:StartRow>
+                <dsp:EndRow xsi:nil="true" />
+                <dsp:StartCol>0</dsp:StartCol>
+                <dsp:EndCol>256</dsp:EndCol>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:Magnitude" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="6" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="2" To="5" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="8" Label="Source2" />
+            <Edge From="5" To="6" Label="Source2" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Extrema" />
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Value" DisplayName="MinPitch" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="FloatProperty">
+          <Value>35</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Value" DisplayName="PitchRange" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="FloatProperty">
+          <Value>50</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Value" DisplayName="MagnitudeScale" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="FloatProperty">
+          <Value>50000</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:CombineLatest" />
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Name>UpdateCanvas</scr:Name>
+        <scr:Description>Iteratively paints a canvas by moving a particle controlled by the input pitch and magnitude.</scr:Description>
+        <scr:Script>import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import *
+from math import sin, cos, pi
+
+particle = None
+output = None
+width = 640
+height = 480
+
+def load():
+  global particle, output
+  particle = Point(width / 2, height / 2)
+  output = IplImage(Size(width, height), IplDepth.U8, 3)
+  output.SetZero()
+
+@returns(IplImage)
+def process(value):
+  global particle, output
+  extrema = value.Item1
+  minpitch = value.Item2
+  pitchrange = value.Item3
+  magnitudescale = value.Item4
+  magnitude = extrema.MaxValue / magnitudescale
+  if magnitude &gt; 1:
+      angle = ((extrema.MaxLocation.X - minpitch) / pitchrange) * 2 * pi
+      particle = Point((particle.X + magnitude * cos(angle)) % width, (particle.Y + magnitude * sin(angle)) % height)
+  CV.Circle(output, particle, 4, Scalar.Rgb(255, 0, 0), -1)
+  return output.Clone()
+
+def unload():
+  global particle, output
+  output.Close()
+  output = None
+  particle = None
+</scr:Script>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="11" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="11" Label="Source2" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="11" Label="Source3" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source4" />
+      <Edge From="11" To="12" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>

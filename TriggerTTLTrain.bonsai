@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.5.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>Space</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:FunctionGenerator">
+          <dsp:BufferLength>1000</dsp:BufferLength>
+          <dsp:Frequency>15</dsp:Frequency>
+          <dsp:Waveform>Sawtooth</dsp:Waveform>
+          <dsp:SampleRate>1000</dsp:SampleRate>
+          <dsp:Depth>F32</dsp:Depth>
+          <dsp:Amplitude>0.5</dsp:Amplitude>
+          <dsp:Offset>0.5</dsp:Offset>
+          <dsp:Phase>0</dsp:Phase>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Threshold">
+          <dsp:ThresholdValue>0.7558139534883721</dsp:ThresholdValue>
+          <dsp:MaxValue>1</dsp:MaxValue>
+          <dsp:ThresholdType>Binary</dsp:ThresholdType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:SkipUntil" />
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="3" Label="Source2" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>

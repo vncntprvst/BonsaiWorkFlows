@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.5.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Timer">
+          <rx:DueTime>PT1S</rx:DueTime>
+          <rx:Period>PT0S</rx:Period>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Name>ffmpeg call</scr:Name>
+        <scr:Script>import os
+
+fname = 'D:\\Data\\tests\\test.tiff' #%03d
+pipename = r'\\.\pipe\video'
+
+@returns(bool)
+def process(value):
+  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -pix_fmt gray -s 640x480  -i {0} -copy {1} ',pipename,fname))
+  return True</scr:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="vid:VideoCaptureDevice">
+          <vid:Index>4</vid:Index>
+          <vid:CaptureProperties />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:ImageWriter">
+          <cv:Path>\\.\pipe\video</cv:Path>
+          <cv:Suffix>None</cv:Suffix>
+          <cv:Overwrite>false</cv:Overwrite>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
