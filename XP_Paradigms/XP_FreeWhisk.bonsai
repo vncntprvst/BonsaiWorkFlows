@@ -1,0 +1,634 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.5.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino"
+                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
+                 xmlns:p1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Experiment name</Name>
+        <Description />
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="XP name" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>test5</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="Directory" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>D:\Data\test\</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Repeat" />
+            </Expression>
+            <Expression xsi:type="ReplaySubject">
+              <Name>DirFileName</Name>
+              <BufferSize xsi:nil="true" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="4" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Triggers</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoStart</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="BooleanProperty">
+                <Value>true</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:DigitalOutput">
+                <ard:PortName>COM4</ard:PortName>
+                <ard:Pin>8</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoEnd</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="BooleanProperty">
+                <Value>false</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:DigitalOutput">
+                <ard:PortName>COM4</ard:PortName>
+                <ard:Pin>8</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoEnd</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="BooleanProperty">
+                <Value>true</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:DigitalOutput">
+                <ard:PortName>COM4</ard:PortName>
+                <ard:Pin>6</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Delay">
+                <rx:DueTime>PT0.01S</rx:DueTime>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="BooleanProperty">
+                <Value>false</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:DigitalOutput">
+                <ard:PortName>COM4</ard:PortName>
+                <ard:Pin>6</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="wie:KeyDown">
+                <wie:Filter>F12</wie:Filter>
+                <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="PublishSubject">
+              <Name>VideoStart</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="wie:KeyDown">
+                <wie:Filter>End</wie:Filter>
+                <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="PublishSubject">
+              <Name>VideoEnd</Name>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="14" To="15" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Rotary Encoder</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>WheelDistanceCSVFileName</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>DirFileName</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:PythonTransform">
+                    <scr:Name>csv filename</scr:Name>
+                    <scr:Description>csv filename</scr:Description>
+                    <scr:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "WheelDistance.csv"
+  return path
+</scr:Script>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoEnd</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:DigitalInput">
+                <ard:PortName>COM7</ard:PortName>
+                <ard:Pin>2</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:DigitalInput">
+                <ard:PortName>COM7</ard:PortName>
+                <ard:Pin>3</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\RotaryEncoderRunCCW.bonsai" />
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoStart</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:SkipUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TakeUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Timestamp" />
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Expression>new(
+Item1 as ms,
+Item2 as distance
+)</scr:Expression>
+            </Expression>
+            <Expression xsi:type="io:CsvWriter">
+              <io:FileName>D:\Data\test\test5_20200825-181749_WheelDistance.csv</io:FileName>
+              <io:Delimiter>,</io:Delimiter>
+              <io:Append>false</io:Append>
+              <io:Overwrite>true</io:Overwrite>
+              <io:Suffix>None</io:Suffix>
+              <io:IncludeHeader>true</io:IncludeHeader>
+              <io:Selector>distance,ms</io:Selector>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="13" Label="Source2" />
+            <Edge From="2" To="8" Label="Source2" />
+            <Edge From="3" To="5" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="7" Label="Source1" />
+            <Edge From="6" To="7" Label="Source2" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="11" Label="Source2" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Breathing</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:AnalogInput">
+                <ard:PortName>COM7</ard:PortName>
+                <ard:Pin>1</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>BreathingMeasureCSVFileName</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>DirFileName</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:PythonTransform">
+                    <scr:Name>csv filename</scr:Name>
+                    <scr:Description>csv filename</scr:Description>
+                    <scr:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "Breathing.csv"
+  return path
+</scr:Script>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoStart</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:SkipUntil" />
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoEnd</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TakeUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Timestamp" />
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Expression>new(
+Item1 as ms,
+Item2 as airflow
+)</scr:Expression>
+            </Expression>
+            <Expression xsi:type="io:CsvWriter">
+              <io:FileName>D:\Data\test\test5_20200825-181749_Breathing.csv</io:FileName>
+              <io:Delimiter>,</io:Delimiter>
+              <io:Append>false</io:Append>
+              <io:Overwrite>true</io:Overwrite>
+              <io:Suffix>None</io:Suffix>
+              <io:IncludeHeader>true</io:IncludeHeader>
+              <io:Selector>airflow,ms</io:Selector>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="4" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="11" Label="Source2" />
+            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="4" To="6" Label="Source1" />
+            <Edge From="5" To="6" Label="Source2" />
+            <Edge From="6" To="9" Label="Source2" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>HighSpeed Video</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Timer">
+                <rx:DueTime>PT2S</rx:DueTime>
+                <rx:Period>PT0S</rx:Period>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>VideoFileName</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>DirFileName</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:PythonTransform">
+                    <scr:Name>avi filename</scr:Name>
+                    <scr:Description>avi filename</scr:Description>
+                    <scr:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCam.avi"
+  return path
+</scr:Script>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="scr:PythonTransform">
+              <scr:Name>ffmpeg call</scr:Name>
+              <scr:Script>import os
+
+#fname = 'D:\\Data\\Video\\video.avi'
+pipename = r'\\.\pipe\video'
+
+@returns(bool)
+def process(value):
+  fname=value.Item2;
+  #os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 4M {1}',pipename,fname))
+  # -r 500 -preset fast  -b:v 2M
+  os.system(str.format(r'ffmpeg -y -f rawvideo -pix_fmt gray -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
+  return True</scr:Script>
+            </Expression>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>VideoCSVFileName</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>DirFileName</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:PythonTransform">
+                    <scr:Name>csv filename</scr:Name>
+                    <scr:Description>csv filename</scr:Description>
+                    <scr:Script>import clr
+#clr.AddReference("Bonsai.System")
+#from System.IO import Path
+#from Bonsai.IO import PathHelper, PathSuffix
+from datetime import datetime
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+#  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
+  path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCamFrameTime.csv"
+  return path
+</scr:Script>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoEnd</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Delay">
+                <rx:DueTime>PT0.1S</rx:DueTime>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoStart</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="BooleanProperty">
+                <Value>true</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:DigitalOutput">
+                <ard:PortName>COM4</ard:PortName>
+                <ard:Pin>6</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Delay">
+                <rx:DueTime>PT0.01S</rx:DueTime>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="BooleanProperty">
+                <Value>false</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="ard:DigitalOutput">
+                <ard:PortName>COM4</ard:PortName>
+                <ard:Pin>6</ard:Pin>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Timestamp" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>1</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Timestamp.TimeOfDay.TotalMilliseconds</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:PylonCapture">
+                <p1:SerialNumber>22789615</p1:SerialNumber>
+                <p1:ParameterFile>C:\Code\BonsaiWorkFlows\Video\VideoSettings\acA640-750um_trig500Hz_400usExp_f8_335rig.pfs</p1:ParameterFile>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Image</Selector>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>VideoStart</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:SkipUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TakeUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:ImageWriter">
+                <cv:Path>\\.\pipe\video</cv:Path>
+                <cv:Suffix>None</cv:Suffix>
+                <cv:Overwrite>false</cv:Overwrite>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Timestamp" />
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Timestamp</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>TimeOfDay.TotalMilliseconds</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:CombineLatest" />
+            </Expression>
+            <Expression xsi:type="Subtract" />
+            <Expression xsi:type="MemberSelector">
+              <Selector>GrabResult.Timestamp</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>1</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:CombineLatest" />
+            </Expression>
+            <Expression xsi:type="Subtract" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Expression>new(
+Item1 as RelativeSoftwareFrameTime,
+Item2 as AbsoluteSoftwareFrameTime,
+Item3 as RelativeCameraFrameTime
+)</scr:Expression>
+            </Expression>
+            <Expression xsi:type="io:CsvWriter">
+              <io:FileName>D:\Data\test\test5_20200825-181749_HSCamFrameTime.csv</io:FileName>
+              <io:Delimiter>,</io:Delimiter>
+              <io:Append>false</io:Append>
+              <io:Overwrite>false</io:Overwrite>
+              <io:Suffix>None</io:Suffix>
+              <io:IncludeHeader>true</io:IncludeHeader>
+              <io:Selector>RelativeSoftwareFrameTime,AbsoluteSoftwareFrameTime,RelativeCameraFrameTime</io:Selector>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="2" Label="Source2" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="34" Label="Source2" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="21" Label="Source2" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="10" To="14" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="26" Label="Source2" />
+            <Edge From="17" To="18" Label="Source1" />
+            <Edge From="17" To="28" Label="Source1" />
+            <Edge From="18" To="20" Label="Source1" />
+            <Edge From="19" To="20" Label="Source2" />
+            <Edge From="20" To="21" Label="Source1" />
+            <Edge From="21" To="22" Label="Source1" />
+            <Edge From="21" To="23" Label="Source1" />
+            <Edge From="23" To="24" Label="Source1" />
+            <Edge From="24" To="25" Label="Source1" />
+            <Edge From="25" To="26" Label="Source1" />
+            <Edge From="25" To="32" Label="Source2" />
+            <Edge From="26" To="27" Label="Source1" />
+            <Edge From="27" To="32" Label="Source1" />
+            <Edge From="28" To="30" Label="Source1" />
+            <Edge From="28" To="29" Label="Source1" />
+            <Edge From="29" To="30" Label="Source2" />
+            <Edge From="30" To="31" Label="Source1" />
+            <Edge From="31" To="32" Label="Source3" />
+            <Edge From="32" To="33" Label="Source1" />
+            <Edge From="33" To="34" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+    </Nodes>
+    <Edges />
+  </Workflow>
+</WorkflowBuilder>
