@@ -587,6 +587,7 @@ Item3 as RelativeCameraFrameTime
               <io:IncludeHeader>true</io:IncludeHeader>
               <io:Selector>RelativeSoftwareFrameTime,AbsoluteSoftwareFrameTime,RelativeCameraFrameTime</io:Selector>
             </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
             <Edge From="0" To="2" Label="Source1" />
@@ -625,6 +626,7 @@ Item3 as RelativeCameraFrameTime
             <Edge From="31" To="32" Label="Source3" />
             <Edge From="32" To="33" Label="Source1" />
             <Edge From="33" To="34" Label="Source1" />
+            <Edge From="34" To="35" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
