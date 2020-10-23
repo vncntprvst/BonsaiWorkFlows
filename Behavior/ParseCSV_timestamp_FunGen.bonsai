@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="io:CsvReader">
+        <io:FileName>D:\Vincent\vIRt16\vIRt16_0403\vIRt16_0403_WR_4970_20180403-163009HSCam.csv</io:FileName>
+        <io:ScanPattern>%s</io:ScanPattern>
+        <io:SkipRows>0</io:SkipRows>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:FunctionGenerator">
+          <dsp:BufferLength>10</dsp:BufferLength>
+          <dsp:Frequency>1700</dsp:Frequency>
+          <dsp:Waveform>Sine</dsp:Waveform>
+          <dsp:SampleRate>17000</dsp:SampleRate>
+          <dsp:Amplitude>1</dsp:Amplitude>
+          <dsp:Offset>0</dsp:Offset>
+          <dsp:Phase>0</dsp:Phase>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="Parse">
+        <Pattern>%i-%i-%iT%i:%i:%f-%i:%i</Pattern>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Take">
+          <rx:Count>1</rx:Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Parse">
+        <Pattern>%i-%i-%iT%i:%i:%f-%i:%i</Pattern>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:CombineLatest" />
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Script>import math
+from System import Tuple
+countFrames=0;
+
+@returns(Tuple[int,int])
+def process(values):
+  global countFrames
+  if countFrames==500:
+    countFrames=0
+  countFrames += 1
+  # get time values
+  initTime=values.Item1
+  presentTime=values.Item2
+  initHrs= initTime.Item4
+  initMns= initTime.Item5
+  initSec_float= initTime.Item6
+  initMillis=round(initSec_float*1000)
+  #calculate initial time
+  initMilliTime=int((initHrs*3600 + initMns*60)*1000 + initMillis)
+  #calculate present time
+  hrs= presentTime.Item4
+  if hrs==0:
+    hrs=24
+  mns= presentTime.Item5
+  sec_float= presentTime.Item6
+  millis=round(sec_float*1000)
+  milliTime=int((hrs*3600 + mns*60)*1000 + millis)
+  elapsedTime=milliTime-initMilliTime
+  
+  return Tuple.Create(elapsedTime,countFrames)
+</scr:Script>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item2</Selector>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="2" Label="Source1" />
+      <Edge From="0" To="5" Label="Source1" />
+      <Edge From="1" To="2" Label="Source2" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="7" Label="Source2" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="8" To="10" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
