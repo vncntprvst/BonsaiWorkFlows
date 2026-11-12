@@ -62,4 +62,12 @@ Bonsai.Examples.FiducialTracking/
 
 LOCAL STORAGE/
 
+
+# various file types
 *.avi
+*.py
+Arduino/*.txt
+Arduino/*.csv
+BPod/*.config
+Video/**/*.pdf
+Video/**/*.csv
