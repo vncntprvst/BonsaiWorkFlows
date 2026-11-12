@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.9.1"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:ffmpeg="clr-namespace:Bonsai.FFmpeg;assembly=Bonsai.FFmpeg"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="vid:ScreenCaptureStream">
+          <vid:HideCursor>false</vid:HideCursor>
+          <vid:CaptureRegion>
+            <vid:X>0</vid:X>
+            <vid:Y>0</vid:Y>
+            <vid:Width>0</vid:Width>
+            <vid:Height>0</vid:Height>
+          </vid:CaptureRegion>
+          <vid:FrameInterval>0</vid:FrameInterval>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:Crop">
+          <cv:RegionOfInterest>
+            <cv:X>373</cv:X>
+            <cv:Y>25</cv:Y>
+            <cv:Width>1957</cv:Width>
+            <cv:Height>1074</cv:Height>
+          </cv:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="ffmpeg:VideoWriter">
+          <ffmpeg:FileName>C:\Code\ephys\spikeviz\docs\img\demo.mp4</ffmpeg:FileName>
+          <ffmpeg:Suffix>None</ffmpeg:Suffix>
+          <ffmpeg:Overwrite>true</ffmpeg:Overwrite>
+          <ffmpeg:FrameRate>30</ffmpeg:FrameRate>
+          <ffmpeg:OutputArguments>-vf crop=trunc(iw/2)*2:trunc(ih/2)*2 -c:v libx264 -pix_fmt yuv420p -movflags +faststart</ffmpeg:OutputArguments>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>

@@ -1,154 +1,81 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.1.2">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q2="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q1="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.7.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
-      <Expression xsi:type="Source">
-        <PropertyMappings />
-        <Generator xsi:type="q1:KeyDown">
-          <q1:Filter>D1</q1:Filter>
-        </Generator>
-      </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Timestamp" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Sample" />
-      </Expression>
-      <Expression xsi:type="Source">
-        <PropertyMappings />
-        <Generator xsi:type="q1:MouseMove" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Zip" />
-      </Expression>
-      <Expression xsi:type="Source">
-        <PropertyMappings />
-        <Generator xsi:type="q1:KeyDown">
-          <q1:Filter>D2</q1:Filter>
-        </Generator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Timestamp" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.Timestamp</Selector>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.Timestamp</Selector>
-      </Expression>
-      <Expression xsi:type="Subtract">
-        <PropertyMappings />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Zip" />
-      </Expression>
-      <Expression xsi:type="q2:CsvWriter">
-        <q2:PropertyMappings />
-        <q2:FileName>trials.csv</q2:FileName>
-        <q2:Append>false</q2:Append>
-        <q2:Overwrite>false</q2:Overwrite>
-        <q2:Suffix>None</q2:Suffix>
-        <q2:IncludeHeader>true</q2:IncludeHeader>
-        <q2:Selector>Source.Item1.TotalMilliseconds,Source.Item2.X,Source.Item2.Y</q2:Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Take">
-          <Count>1</Count>
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>D1</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Repeat" />
+        <Combinator xsi:type="rx:Timestamp" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="wie:MouseMove" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>D2</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Timestamp" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="Subtract" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Sample" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Take">
+          <rx:Count>1</rx:Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Repeat" />
+      </Expression>
+      <Expression xsi:type="io:CsvWriter">
+        <io:FileName>trials.csv</io:FileName>
+        <io:Append>false</io:Append>
+        <io:Overwrite>false</io:Overwrite>
+        <io:Suffix>None</io:Suffix>
+        <io:IncludeHeader>true</io:IncludeHeader>
+        <io:Selector>Item1.TotalMilliseconds,Item2.X,Item2.Y</io:Selector>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>10</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>4</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>2</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>12</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>12</From>
-        <To>13</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>13</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="7" Label="Source2" />
+      <Edge From="2" To="9" Label="Source2" />
+      <Edge From="3" To="9" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="10" Label="Source1" />
+      <Edge From="9" To="10" Label="Source2" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Sample, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Windows.Input.MouseMove, Bonsai.Windows.Input, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.SubtractBuilder, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

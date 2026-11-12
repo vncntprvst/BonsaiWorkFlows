@@ -3,10 +3,10 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  >
   <DialogSettings>
-    <Visible>true</Visible>
+    <Visible>false</Visible>
     <Location>
-      <X>633</X>
-      <Y>643</Y>
+      <X>297</X>
+      <Y>622</Y>
     </Location>
     <Size>
       <Width>336</Width>

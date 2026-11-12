@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VisualizerLayout Version="2.9.1">
+  <WindowSettings Index="0">
+    <Location>
+      <X>660</X>
+      <Y>338</Y>
+    </Location>
+    <Size>
+      <Width>856</Width>
+      <Height>725</Height>
+    </Size>
+    <VisualizerTypeName>Bonsai.Vision.Design.FileCaptureVisualizer</VisualizerTypeName>
+    <VisualizerSettings>
+      <FileCaptureVisualizer />
+    </VisualizerSettings>
+  </WindowSettings>
+</VisualizerLayout>

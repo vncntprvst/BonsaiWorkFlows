@@ -1,18 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.8.5"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:q1="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
+                 xmlns:port="clr-namespace:Bonsai.IO.Ports;assembly=Bonsai.System"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="io:SerialStringRead">
-          <io:PortName>COM8</io:PortName>
-          <io:NewLine>,</io:NewLine>
+        <Combinator xsi:type="port:SerialReadLine">
+          <port:PortName>COM8</port:PortName>
+          <port:NewLine>,</port:NewLine>
         </Combinator>
       </Expression>
       <Expression xsi:type="Parse">
@@ -22,14 +23,8 @@
         <Combinator xsi:type="rx:Timestamp" />
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="io:CsvWriter">
-          <io:FileName>D:\Data\test\DistanceWheelRun.csv</io:FileName>
-          <io:Delimiter>,</io:Delimiter>
-          <io:Append>false</io:Append>
-          <io:Overwrite>true</io:Overwrite>
-          <io:Suffix>None</io:Suffix>
-          <io:IncludeHeader>true</io:IncludeHeader>
-          <io:Selector>Value,Timestamp.Hour,Timestamp.Minute,Timestamp.Second,Timestamp.Millisecond</io:Selector>
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="rx:Zip" />
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
@@ -40,55 +35,53 @@ Timestamp as Time
 )</scr:Expression>
         </Builder>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="q1:VideoCaptureDevice">
-            <q1:Index>1</q1:Index>
-            <q1:CaptureProperties />
-          </Combinator>
-        </Builder>
+      <Expression xsi:type="io:CsvWriter">
+        <io:FileName>D:\Data\test\DistanceWheelRun.csv</io:FileName>
+        <io:Delimiter>,</io:Delimiter>
+        <io:Append>false</io:Append>
+        <io:Overwrite>true</io:Overwrite>
+        <io:Suffix>None</io:Suffix>
+        <io:IncludeHeader>true</io:IncludeHeader>
+        <io:Selector>Value,Timestamp.Hour,Timestamp.Minute,Timestamp.Second,Timestamp.Millisecond</io:Selector>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="cv:Flip">
-            <cv:Mode>Both</cv:Mode>
-          </Combinator>
-        </Builder>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:DistinctUntilChanged" />
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="rx:DistinctUntilChanged" />
-        </Builder>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Skip">
+          <rx:Count>1</rx:Count>
+        </Combinator>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="rx:Skip">
-            <rx:Count>1</rx:Count>
-          </Combinator>
-        </Builder>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="rx:Zip" />
-        </Builder>
+      <Expression xsi:type="Subtract" />
+      <Expression xsi:type="rx:Accumulate" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="vid:VideoCaptureDevice">
+          <vid:Index>1</vid:Index>
+          <vid:CaptureProperties />
+        </Combinator>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Subtract" />
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:Accumulate" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:Flip">
+          <cv:Mode>Both</cv:Mode>
+        </Combinator>
       </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source2" />
+      <Edge From="1" To="6" Label="Source1" />
       <Edge From="2" To="3" Label="Source1" />
-      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="6" To="8" Label="Source2" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="7" To="9" Label="Source2" />
       <Edge From="8" To="9" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
-      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

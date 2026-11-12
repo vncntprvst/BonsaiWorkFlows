@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.8.5"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Timer">
+          <rx:DueTime>PT2S</rx:DueTime>
+          <rx:Period>PT2S</rx:Period>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="GreaterThanOrEqual">
+        <Operand xsi:type="WorkflowProperty" TypeArguments="sys:Int64">
+          <Value>0</Value>
+        </Operand>
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Script>import clr
+clr.AddReference('System.Windows.Forms')
+from System.Windows.Forms import SendKeys
+
+def process(value):
+    if value:
+        # Send Ctl 3
+        # SendKeys.SendWait("^3")
+        # Send Ctl Shift 8 
+        SendKeys.SendWait("^+8")
+    return value</scr:Script>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>

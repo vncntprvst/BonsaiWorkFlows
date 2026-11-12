@@ -24,7 +24,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="io:StartProcess">
           <io:FileName>ffmpeg</io:FileName>
-          <io:Arguments>-y -f rawvideo -s 640x480 -i \\.\pipe\video D:\Data\tests\test.avi</io:Arguments>
+          <io:Arguments>-y -framerate 25 -f rawvideo -s 640x480 -i \\.\pipe\video -c:v libx264 -r 20D:\Data\tests\test.mp4</io:Arguments>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
