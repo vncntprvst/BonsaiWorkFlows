@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos</q1:Path>
-          <q1:SearchPattern>*.mp4</q1:SearchPattern>
-          <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
+        <Combinator xsi:type="io:GetFiles">
+          <io:Path>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos</io:Path>
+          <io:SearchPattern>*.mp4</io:SearchPattern>
+          <io:SearchOption>TopDirectoryOnly</io:SearchOption>
         </Combinator>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>FileNames</Name>
         <Workflow>
           <Nodes>
@@ -17,7 +17,7 @@
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Concat" />
+              <Combinator xsi:type="rx:Concat" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -27,220 +27,221 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="CreateObservable">
+      <Expression xsi:type="rx:CreateObservable">
         <Name>ProcessVideo</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="ReplaySubject">
+            <Expression xsi:type="rx:ReplaySubject">
               <Name>FileName</Name>
-              <BufferSize xsi:nil="true" />
+              <rx:BufferSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>FileName</Name>
             </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>FileName</MemberName>
-              <Name>FileName</Name>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:FileCapture">
-                <q2:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos\vIRt32_0410_4910.mp4</q2:FileName>
-                <q2:PlaybackRate>1000</q2:PlaybackRate>
-                <q2:StartPosition>0</q2:StartPosition>
-                <q2:PositionUnits>Frames</q2:PositionUnits>
-                <q2:Loop>false</q2:Loop>
-                <q2:Playing>true</q2:Playing>
+              <Combinator xsi:type="cv:FileCapture">
+                <cv:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\videos\vIRt32_0410_4910.mp4</cv:FileName>
+                <cv:PlaybackRate>1000</cv:PlaybackRate>
+                <cv:StartPosition>0</cv:StartPosition>
+                <cv:PositionUnits>Frames</cv:PositionUnits>
+                <cv:Loop>false</cv:Loop>
+                <cv:Playing>true</cv:Playing>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:Crop">
-                <q2:RegionOfInterest>
-                  <q2:X>0</q2:X>
-                  <q2:Y>2</q2:Y>
-                  <q2:Width>594</q2:Width>
-                  <q2:Height>478</q2:Height>
-                </q2:RegionOfInterest>
+              <Combinator xsi:type="cv:Crop">
+                <cv:RegionOfInterest>
+                  <cv:X>0</cv:X>
+                  <cv:Y>2</cv:Y>
+                  <cv:Width>594</cv:Width>
+                  <cv:Height>478</cv:Height>
+                </cv:RegionOfInterest>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:Grayscale" />
+              <Combinator xsi:type="cv:Grayscale" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:AdaptiveThreshold">
-                <q2:MaxValue>255</q2:MaxValue>
-                <q2:AdaptiveMethod>MeanC</q2:AdaptiveMethod>
-                <q2:ThresholdType>Binary</q2:ThresholdType>
-                <q2:BlockSize>87</q2:BlockSize>
-                <q2:Parameter>5</q2:Parameter>
+              <Combinator xsi:type="cv:AdaptiveThreshold">
+                <cv:MaxValue>255</cv:MaxValue>
+                <cv:AdaptiveMethod>MeanC</cv:AdaptiveMethod>
+                <cv:ThresholdType>Binary</cv:ThresholdType>
+                <cv:BlockSize>87</cv:BlockSize>
+                <cv:Parameter>5</cv:Parameter>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:MaskPolygon">
-                <q2:Regions>
-                  <q2:ArrayOfPoint>
-                    <q2:Point>
-                      <q2:X>-21</q2:X>
-                      <q2:Y>517</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>0</q2:X>
-                      <q2:Y>481</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>55</q2:X>
-                      <q2:Y>477</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>57</q2:X>
-                      <q2:Y>287</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>95</q2:X>
-                      <q2:Y>287</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>110</q2:X>
-                      <q2:Y>256</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>131</q2:X>
-                      <q2:Y>235</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>152</q2:X>
-                      <q2:Y>225</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>158</q2:X>
-                      <q2:Y>210</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>165</q2:X>
-                      <q2:Y>184</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>167</q2:X>
-                      <q2:Y>160</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>178</q2:X>
-                      <q2:Y>125</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>196</q2:X>
-                      <q2:Y>92</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>246</q2:X>
-                      <q2:Y>71</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>304</q2:X>
-                      <q2:Y>9</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>473</q2:X>
-                      <q2:Y>73</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>593</q2:X>
-                      <q2:Y>117</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>708</q2:X>
-                      <q2:Y>29</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>633</q2:X>
-                      <q2:Y>-47</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>377</q2:X>
-                      <q2:Y>-85</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>-2</q2:X>
-                      <q2:Y>-85</q2:Y>
-                    </q2:Point>
-                  </q2:ArrayOfPoint>
-                  <q2:ArrayOfPoint>
-                    <q2:Point>
-                      <q2:X>593</q2:X>
-                      <q2:Y>471</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>56</q2:X>
-                      <q2:Y>472</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>55</q2:X>
-                      <q2:Y>477</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>618</q2:X>
-                      <q2:Y>497</q2:Y>
-                    </q2:Point>
-                  </q2:ArrayOfPoint>
-                  <q2:ArrayOfPoint>
-                    <q2:Point>
-                      <q2:X>554</q2:X>
-                      <q2:Y>471</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>593</q2:X>
-                      <q2:Y>471</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>593</q2:X>
-                      <q2:Y>117</q2:Y>
-                    </q2:Point>
-                    <q2:Point>
-                      <q2:X>562</q2:X>
-                      <q2:Y>107</q2:Y>
-                    </q2:Point>
-                  </q2:ArrayOfPoint>
-                </q2:Regions>
-                <q2:MaskType>ToZeroInv</q2:MaskType>
-                <q2:FillValue>
-                  <q2:Val0>255</q2:Val0>
-                  <q2:Val1>255</q2:Val1>
-                  <q2:Val2>255</q2:Val2>
-                  <q2:Val3>0</q2:Val3>
-                </q2:FillValue>
+              <Combinator xsi:type="cv:MaskPolygon">
+                <cv:Regions>
+                  <cv:ArrayOfPoint>
+                    <cv:Point>
+                      <cv:X>-21</cv:X>
+                      <cv:Y>517</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>0</cv:X>
+                      <cv:Y>481</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>55</cv:X>
+                      <cv:Y>477</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>57</cv:X>
+                      <cv:Y>287</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>95</cv:X>
+                      <cv:Y>287</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>110</cv:X>
+                      <cv:Y>256</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>131</cv:X>
+                      <cv:Y>235</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>152</cv:X>
+                      <cv:Y>225</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>158</cv:X>
+                      <cv:Y>210</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>165</cv:X>
+                      <cv:Y>184</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>167</cv:X>
+                      <cv:Y>160</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>178</cv:X>
+                      <cv:Y>125</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>196</cv:X>
+                      <cv:Y>92</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>246</cv:X>
+                      <cv:Y>71</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>304</cv:X>
+                      <cv:Y>9</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>473</cv:X>
+                      <cv:Y>73</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>593</cv:X>
+                      <cv:Y>117</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>708</cv:X>
+                      <cv:Y>29</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>633</cv:X>
+                      <cv:Y>-47</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>377</cv:X>
+                      <cv:Y>-85</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>-2</cv:X>
+                      <cv:Y>-85</cv:Y>
+                    </cv:Point>
+                  </cv:ArrayOfPoint>
+                  <cv:ArrayOfPoint>
+                    <cv:Point>
+                      <cv:X>593</cv:X>
+                      <cv:Y>471</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>56</cv:X>
+                      <cv:Y>472</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>55</cv:X>
+                      <cv:Y>477</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>618</cv:X>
+                      <cv:Y>497</cv:Y>
+                    </cv:Point>
+                  </cv:ArrayOfPoint>
+                  <cv:ArrayOfPoint>
+                    <cv:Point>
+                      <cv:X>554</cv:X>
+                      <cv:Y>471</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>593</cv:X>
+                      <cv:Y>471</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>593</cv:X>
+                      <cv:Y>117</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>562</cv:X>
+                      <cv:Y>107</cv:Y>
+                    </cv:Point>
+                  </cv:ArrayOfPoint>
+                </cv:Regions>
+                <cv:MaskType>ToZeroInv</cv:MaskType>
+                <cv:FillValue>
+                  <cv:Val0>255</cv:Val0>
+                  <cv:Val1>255</cv:Val1>
+                  <cv:Val2>255</cv:Val2>
+                  <cv:Val3>0</cv:Val3>
+                </cv:FillValue>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:BackgroundSubtraction">
-                <q2:BackgroundFrames>0</q2:BackgroundFrames>
-                <q2:AdaptationRate>0</q2:AdaptationRate>
-                <q2:ThresholdValue>0</q2:ThresholdValue>
-                <q2:ThresholdType>ToZero</q2:ThresholdType>
-                <q2:SubtractionMethod>Absolute</q2:SubtractionMethod>
+              <Combinator xsi:type="cv:BackgroundSubtraction">
+                <cv:BackgroundFrames>0</cv:BackgroundFrames>
+                <cv:AdaptationRate>0</cv:AdaptationRate>
+                <cv:ThresholdValue>0</cv:ThresholdValue>
+                <cv:ThresholdType>ToZero</cv:ThresholdType>
+                <cv:SubtractionMethod>Absolute</cv:SubtractionMethod>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:FindContours">
-                <q2:Mode>List</q2:Mode>
-                <q2:Method>ChainApproxSimple</q2:Method>
-                <q2:Offset>
-                  <q2:X>0</q2:X>
-                  <q2:Y>0</q2:Y>
-                </q2:Offset>
-                <q2:MinArea>250</q2:MinArea>
-                <q2:MaxArea>5000</q2:MaxArea>
+              <Combinator xsi:type="cv:FindContours">
+                <cv:Mode>List</cv:Mode>
+                <cv:Method>ChainApproxSimple</cv:Method>
+                <cv:Offset>
+                  <cv:X>0</cv:X>
+                  <cv:Y>0</cv:Y>
+                </cv:Offset>
+                <cv:MinArea>250</cv:MinArea>
+                <cv:MaxArea>5000</cv:MaxArea>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:BinaryRegionAnalysis" />
+              <Combinator xsi:type="cv:BinaryRegionAnalysis" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:SortBinaryRegions" />
+              <Combinator xsi:type="cv:SortBinaryRegions" />
             </Expression>
-            <Expression xsi:type="q3:PythonTransform">
-              <q3:Script>import clr
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 clr.AddReference("Bonsai.Vision")
@@ -325,10 +326,10 @@ def process(sortedRegions):
     if int(blob1Index)+2 &lt;= len(vSortRegionList)-1:
       Component.Add(vSortRegionList[int(blob1Index)+2])
     
-  return Component</q3:Script>
+  return Component</ipy:Script>
             </Expression>
-            <Expression xsi:type="q3:PythonTransform">
-              <q3:Script>#return x,y values for base, center, tip of three central whiskers
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>#return x,y values for base, center, tip of three central whiskers
 import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
@@ -370,11 +371,11 @@ def process(sortedRegions):
     tipList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
 
   return Tuple.Create(baseList, centroidList, tipList)
-</q3:Script>
+</ipy:Script>
             </Expression>
             <Expression xsi:type="Disable">
-              <Builder xsi:type="q3:ExpressionTransform">
-                <q3:Expression>new(
+              <Builder xsi:type="scr:ExpressionTransform">
+                <scr:Expression>new(
 Item1.Item1 as Whisker1_Base,
 Item1.Item2 as Whisker2_Base,
 Item1.Item3 as Whisker3_Base,
@@ -384,23 +385,23 @@ Item2.Item3 as Whisker3_Centroid,
 Item3.Item1 as Whisker1_Tip,
 Item3.Item2 as Whisker2_Tip,
 Item3.Item3 as Whisker3_Tip
-)</q3:Expression>
+)</scr:Expression>
               </Builder>
             </Expression>
             <Expression xsi:type="Disable">
-              <Builder xsi:type="q1:CsvWriter">
-                <q1:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt34_0515_4988\WhiskerCoordinates_Bonsai.csv</q1:FileName>
-                <q1:Delimiter>,</q1:Delimiter>
-                <q1:Append>true</q1:Append>
-                <q1:Overwrite>true</q1:Overwrite>
-                <q1:Suffix>None</q1:Suffix>
-                <q1:IncludeHeader>false</q1:IncludeHeader>
-                <q1:Selector>Whisker1_Base.X,Whisker1_Base.Y,Whisker1_Centroid.X,Whisker1_Centroid.Y,Whisker1_Tip.X,Whisker1_Tip.Y,Whisker2_Base.X,Whisker2_Base.Y,Whisker2_Centroid.X,Whisker2_Centroid.Y,Whisker2_Tip.X,Whisker2_Tip.Y,Whisker3_Base.X,Whisker3_Base.Y,Whisker3_Centroid.X,Whisker3_Centroid.Y,Whisker3_Tip.X,Whisker3_Tip.Y</q1:Selector>
+              <Builder xsi:type="io:CsvWriter">
+                <io:FileName>V:\Code\Souris\DLC_Projects\FreeWhisking\HF_FreeWhisking_LeftSide-Vincent-2019-06-03\labeled-data\vIRt34_0515_4988\WhiskerCoordinates_Bonsai.csv</io:FileName>
+                <io:Delimiter>,</io:Delimiter>
+                <io:Append>true</io:Append>
+                <io:Overwrite>true</io:Overwrite>
+                <io:Suffix>None</io:Suffix>
+                <io:IncludeHeader>false</io:IncludeHeader>
+                <io:Selector>Whisker1_Base.X,Whisker1_Base.Y,Whisker1_Centroid.X,Whisker1_Centroid.Y,Whisker1_Tip.X,Whisker1_Tip.Y,Whisker2_Base.X,Whisker2_Base.Y,Whisker2_Centroid.X,Whisker2_Centroid.Y,Whisker2_Tip.X,Whisker2_Tip.Y,Whisker3_Base.X,Whisker3_Base.Y,Whisker3_Centroid.X,Whisker3_Centroid.Y,Whisker3_Tip.X,Whisker3_Tip.Y</io:Selector>
               </Builder>
             </Expression>
             <Expression xsi:type="Disable">
-              <Builder xsi:type="q3:PythonTransform">
-                <q3:Script>#return x,y values for tip of first whisker
+              <Builder xsi:type="ipy:PythonTransform">
+                <ipy:Script>#return x,y values for tip of first whisker
 import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
@@ -431,37 +432,37 @@ def process(sortedRegions):
     tipList=NaNPoint
 
   return tipList
-</q3:Script>
+</ipy:Script>
               </Builder>
             </Expression>
             <Expression xsi:type="Disable">
-              <Builder xsi:type="q1:CsvWriter">
-                <q1:Append>false</q1:Append>
-                <q1:Overwrite>false</q1:Overwrite>
-                <q1:Suffix>None</q1:Suffix>
-                <q1:IncludeHeader>false</q1:IncludeHeader>
+              <Builder xsi:type="io:CsvWriter">
+                <io:Append>false</io:Append>
+                <io:Overwrite>false</io:Overwrite>
+                <io:Suffix>None</io:Suffix>
+                <io:IncludeHeader>false</io:IncludeHeader>
               </Builder>
             </Expression>
-            <Expression xsi:type="SelectMany">
+            <Expression xsi:type="rx:SelectMany">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
                     <Name>Source1</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="Merge" />
+                    <Combinator xsi:type="rx:Merge" />
                   </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Contour</Selector>
                   </Expression>
-                  <Expression xsi:type="SelectMany">
+                  <Expression xsi:type="rx:SelectMany">
                     <Workflow>
                       <Nodes>
                         <Expression xsi:type="WorkflowInput">
                           <Name>Source1</Name>
                         </Expression>
-                        <Expression xsi:type="MinBy">
-                          <KeySelector>Rect.X</KeySelector>
+                        <Expression xsi:type="rx:MinBy">
+                          <rx:KeySelector>Rect.X</rx:KeySelector>
                         </Expression>
                         <Expression xsi:type="WorkflowOutput" />
                       </Nodes>
@@ -481,11 +482,11 @@ def process(sortedRegions):
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="OrderBy">
-              <KeySelector>Rect.X</KeySelector>
+            <Expression xsi:type="rx:OrderBy">
+              <rx:KeySelector>Rect.X</rx:KeySelector>
             </Expression>
-            <Expression xsi:type="q3:PythonTransform">
-              <q3:Script>#return x,y values for tip of first whisker
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>#return x,y values for tip of first whisker
 import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
@@ -509,16 +510,16 @@ def process(vSortRegionList):
   #  tipList=NaNPoint
 
   return tipList
-</q3:Script>
+</ipy:Script>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:Grayscale" />
+              <Combinator xsi:type="cv:Grayscale" />
             </Expression>
             <Expression xsi:type="Disable">
-              <Builder xsi:type="q3:PythonTransform">
-                <q3:Name>TODO</q3:Name>
-                <q3:Description>TODO</q3:Description>
-                <q3:Script>Should find closest base in x/y, instead of just using a threshold</q3:Script>
+              <Builder xsi:type="ipy:PythonTransform">
+                <ipy:Name>TODO</ipy:Name>
+                <ipy:Description>TODO</ipy:Description>
+                <ipy:Script>Should find closest base in x/y, instead of just using a threshold</ipy:Script>
               </Builder>
             </Expression>
           </Nodes>
@@ -548,7 +549,7 @@ def process(vSortRegionList):
         </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Concat" />
+        <Combinator xsi:type="rx:Concat" />
       </Expression>
     </Nodes>
     <Edges>
@@ -557,23 +558,4 @@ def process(vSortRegionList):
       <Edge From="2" To="3" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.GetFiles, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Merge, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.MinByBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.OrderByBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

@@ -1,261 +1,300 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio" xmlns:q7="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q6="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Rhd2000EvalBoard">
-          <q1:BitFileName>C:\OpenEphys\open-ephys-windows\rhd2000.bit</q1:BitFileName>
-          <q1:SampleRate>SampleRate30000Hz</q1:SampleRate>
-          <q1:FastSettle>false</q1:FastSettle>
-          <q1:LowerBandwidth>0.1</q1:LowerBandwidth>
-          <q1:UpperBandwidth>7500</q1:UpperBandwidth>
-          <q1:DspCutoffFrequency>1</q1:DspCutoffFrequency>
-          <q1:DspEnabled>true</q1:DspEnabled>
-          <q1:CableDelayA xsi:nil="true" />
-          <q1:CableDelayB xsi:nil="true" />
-          <q1:CableDelayC xsi:nil="true" />
-          <q1:CableDelayD xsi:nil="true" />
+        <Combinator xsi:type="p1:Rhd2000EvalBoard">
+          <p1:BitFileName>C:\OpenEphys\open-ephys-windows\rhd2000.bit</p1:BitFileName>
+          <p1:SampleRate>SampleRate30000Hz</p1:SampleRate>
+          <p1:FastSettle>false</p1:FastSettle>
+          <p1:LowerBandwidth>0.1</p1:LowerBandwidth>
+          <p1:UpperBandwidth>7500</p1:UpperBandwidth>
+          <p1:DspCutoffFrequency>1</p1:DspCutoffFrequency>
+          <p1:DspEnabled>true</p1:DspEnabled>
+          <p1:CableDelayA xsi:nil="true" />
+          <p1:CableDelayB xsi:nil="true" />
+          <p1:CableDelayC xsi:nil="true" />
+          <p1:CableDelayD xsi:nil="true" />
+          <p1:ExternalFastSettleEnabled>false</p1:ExternalFastSettleEnabled>
+          <p1:ExternalFastSettleChannel>0</p1:ExternalFastSettleChannel>
+          <p1:LedDisplayEnabled>false</p1:LedDisplayEnabled>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="rx:Defer">
+        <Name>SignalProcessing</Name>
+        <Description>FilteredAI1</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>BoardAdcData</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:SelectChannels">
+                <dsp:Channels>
+                  <dsp:int>0</dsp:int>
+                </dsp:Channels>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:AdcScale">
+                <p1:AdcType>BoardAdc</p1:AdcType>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:FrequencyFilter">
+                <dsp:SampleRate>44100</dsp:SampleRate>
+                <dsp:Cutoff1>300</dsp:Cutoff1>
+                <dsp:Cutoff2>6000</dsp:Cutoff2>
+                <dsp:KernelLength>60</dsp:KernelLength>
+                <dsp:FilterType>BandPass</dsp:FilterType>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:DetectSpikes">
+          <dsp:Delay>20</dsp:Delay>
+          <dsp:Length>60</dsp:Length>
+          <dsp:Threshold>
+            <dsp:double>0.08054950873683589</dsp:double>
+          </dsp:Threshold>
+          <dsp:WaveformRefinement>AlignPeaks</dsp:WaveformRefinement>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>TtlIn</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:DetectSpikes">
-          <q2:Delay>20</q2:Delay>
-          <q2:Length>60</q2:Length>
-          <q2:Threshold>
-            <q2:double>0.08054950873683589</q2:double>
-          </q2:Threshold>
-          <q2:WaveformRefinement>AlignPeaks</q2:WaveformRefinement>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:TriggeredBuffer">
-          <q2:Count>300</q2:Count>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Accumulate" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Threshold">
-          <q2:ThresholdValue>0.5</q2:ThresholdValue>
-          <q2:MaxValue>1</q2:MaxValue>
-          <q2:ThresholdType>Binary</q2:ThresholdType>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:AudioPlayback">
-          <q3:DeviceName>Generic Software on Speakers (Realtek High Definition Audio)</q3:DeviceName>
-          <q3:Frequency>30000</q3:Frequency>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:ConvertScale">
-          <q2:Depth>S32</q2:Depth>
-          <q2:Scale>60000</q2:Scale>
-          <q2:Shift>0</q2:Shift>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="q4:PythonTransform">
-        <q4:Name>OffCycleTrigger</q4:Name>
-        <q4:Script>cycleOn = False
-
-@returns(bool)
-def process(value):
-  global cycleOn
-
-  if value.Item1&lt;-2 and value.Item2&gt;2:
-    onCycleTrig = True
-    offCycleTrig = False
-  elif value.Item1&gt;2 and value.Item2&gt;2:
-    onCycleTrig = False
-    offCycleTrig = True
-  else:
-    onCycleTrig = False
-    offCycleTrig = False
-
-  if cycleOn == True:
-    if offCycleTrig == False:
-      cycleOn = True
-      return False
-    else:
-      cycleOn = False
-      return False
-
-  if cycleOn == False:
-    if onCycleTrig == True:
-      cycleOn = True
-      return True
-    else:
-      cycleOn = False
-      return False</q4:Script>
-      </Expression>
-      <Expression xsi:type="q4:PythonTransform">
-        <q4:Name>OnCycleTrigger</q4:Name>
-        <q4:Script>cycleOn = False
-
-@returns(bool)
-def process(value):
-  global cycleOn
-
-  if value.Item1&gt;2 and value.Item2&gt;2:
-    onCycleTrig = True
-    offCycleTrig = False
-  elif value.Item1&lt;-2 and value.Item2&gt;2:
-    onCycleTrig = False
-    offCycleTrig = True
-  else:
-    onCycleTrig = False
-    offCycleTrig = False
-
-  if cycleOn == True:
-    if offCycleTrig == False:
-      cycleOn = True
-      return False
-    else:
-      cycleOn = False
-      return False
-
-  if cycleOn == False:
-    if onCycleTrig == True:
-      cycleOn = True
-      return True
-    else:
-      cycleOn = False
-      return False</q4:Script>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="CombineLatest" />
-      </Expression>
-      <Expression xsi:type="Combinator">
         <Combinator xsi:type="DoubleProperty">
           <Value>1</Value>
         </Combinator>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:CombineLatest" />
+      </Expression>
       <Expression xsi:type="BitwiseAnd" />
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="SkipUntil" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q5:KeyDown">
-          <q5:Filter>Space</q5:Filter>
+        <Combinator xsi:type="dsp:Threshold">
+          <dsp:ThresholdValue>0.5</dsp:ThresholdValue>
+          <dsp:MaxValue>1</dsp:MaxValue>
+          <dsp:ThresholdType>Binary</dsp:ThresholdType>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="TriggeredWindow">
-          <Count>1</Count>
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:TriggeredBuffer">
+          <dsp:Count>300</dsp:Count>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="TriggeredWindow">
-          <Count>1</Count>
+        <Combinator xsi:type="dsp:Accumulate" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:ConvertScale">
+          <dsp:Depth>S32</dsp:Depth>
+          <dsp:Scale>60000</dsp:Scale>
+          <dsp:Shift>0</dsp:Shift>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q6:ImageWriter">
-          <q6:Path>\\.\pipe\video</q6:Path>
-          <q6:Suffix>None</q6:Suffix>
-          <q6:Overwrite>false</q6:Overwrite>
+        <Combinator xsi:type="al:AudioPlayback">
+          <al:DeviceName>Generic Software on Speakers (Realtek High Definition Audio)</al:DeviceName>
+          <al:SampleRate>44100</al:SampleRate>
+          <al:State>Playing</al:State>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="SkipUntil" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Concat">
-          <q2:Axis>1</q2:Axis>
+        <Combinator xsi:type="cv:CameraCapture">
+          <cv:Index>0</cv:Index>
+          <cv:CaptureProperties />
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="TriggeredBuffer">
-          <Count>100</Count>
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>Space</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Delay">
-          <q2:Count>3000</q2:Count>
+        <Combinator xsi:type="rx:SkipUntil" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:ImageWriter">
+          <cv:Path>\\.\pipe\video</cv:Path>
+          <cv:Suffix>None</cv:Suffix>
+          <cv:Overwrite>false</cv:Overwrite>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q6:CameraCapture">
-          <q6:Index>0</q6:Index>
-          <q6:CaptureProperties />
+        <Combinator xsi:type="dsp:Delay">
+          <dsp:Count>3000</dsp:Count>
         </Combinator>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
-        <Name>SignalProcessing</Name>
-        <Description>FilteredAI1</Description>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:FrequencyFilter">
-                <q2:SamplingFrequency>30000</q2:SamplingFrequency>
-                <q2:Cutoff1>300</q2:Cutoff1>
-                <q2:Cutoff2>6000</q2:Cutoff2>
-                <q2:KernelLength>60</q2:KernelLength>
-                <q2:FilterType>BandPass</q2:FilterType>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:AdcScale">
-                <q1:AdcType>BoardAdc</q1:AdcType>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:SelectChannels">
-                <q2:Channels>
-                  <q2:int>0</q2:int>
-                </q2:Channels>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>BoardAdcData</Selector>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge>
-              <From>0</From>
-              <To>5</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>4</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>WhiskerTracking</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="q4:PythonTransform">
-              <q4:Script>import clr
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:Crop">
+                <cv:RegionOfInterest>
+                  <cv:X>6</cv:X>
+                  <cv:Y>6</cv:Y>
+                  <cv:Width>616</cv:Width>
+                  <cv:Height>432</cv:Height>
+                </cv:RegionOfInterest>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:Grayscale" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:AdaptiveThreshold">
+                <cv:MaxValue>255</cv:MaxValue>
+                <cv:AdaptiveMethod>MeanC</cv:AdaptiveMethod>
+                <cv:ThresholdType>Binary</cv:ThresholdType>
+                <cv:BlockSize>25</cv:BlockSize>
+                <cv:Parameter>3</cv:Parameter>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:MaskPolygon">
+                <cv:Regions>
+                  <cv:ArrayOfPoint>
+                    <cv:Point>
+                      <cv:X>220</cv:X>
+                      <cv:Y>51</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>220</cv:X>
+                      <cv:Y>51</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>220</cv:X>
+                      <cv:Y>52</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>220</cv:X>
+                      <cv:Y>52</cv:Y>
+                    </cv:Point>
+                  </cv:ArrayOfPoint>
+                  <cv:ArrayOfPoint>
+                    <cv:Point>
+                      <cv:X>681</cv:X>
+                      <cv:Y>143</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>669</cv:X>
+                      <cv:Y>-27</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>256</cv:X>
+                      <cv:Y>-10</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>22</cv:X>
+                      <cv:Y>-22</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>47</cv:X>
+                      <cv:Y>10</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>213</cv:X>
+                      <cv:Y>20</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>232</cv:X>
+                      <cv:Y>70</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>319</cv:X>
+                      <cv:Y>108</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>367</cv:X>
+                      <cv:Y>106</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>435</cv:X>
+                      <cv:Y>144</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>527</cv:X>
+                      <cv:Y>169</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>575</cv:X>
+                      <cv:Y>176</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>584</cv:X>
+                      <cv:Y>312</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>596</cv:X>
+                      <cv:Y>449</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>652</cv:X>
+                      <cv:Y>448</cv:Y>
+                    </cv:Point>
+                  </cv:ArrayOfPoint>
+                </cv:Regions>
+                <cv:MaskType>ToZeroInv</cv:MaskType>
+                <cv:FillValue>
+                  <cv:Val0>255</cv:Val0>
+                  <cv:Val1>255</cv:Val1>
+                  <cv:Val2>255</cv:Val2>
+                  <cv:Val3>0</cv:Val3>
+                </cv:FillValue>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:BackgroundSubtraction">
+                <cv:BackgroundFrames>0</cv:BackgroundFrames>
+                <cv:AdaptationRate>0</cv:AdaptationRate>
+                <cv:ThresholdValue>0</cv:ThresholdValue>
+                <cv:ThresholdType>Binary</cv:ThresholdType>
+                <cv:SubtractionMethod>Absolute</cv:SubtractionMethod>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:FindContours">
+                <cv:Mode>List</cv:Mode>
+                <cv:Method>ChainApproxSimple</cv:Method>
+                <cv:Offset>
+                  <cv:X>0</cv:X>
+                  <cv:Y>0</cv:Y>
+                </cv:Offset>
+                <cv:MinArea>400</cv:MinArea>
+                <cv:MaxArea>10000</cv:MaxArea>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:SortBinaryRegions" />
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 clr.AddReference("Bonsai.Vision")
@@ -369,210 +408,161 @@ def process(sortedRegions):
   else:
     return Tuple.Create(float(0),float(0)) #Point(0,0) #
 
-</q4:Script>
+</ipy:Script>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q6:SortBinaryRegions" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q6:BinaryRegionAnalysis" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q6:FindContours">
-                <q6:Mode>List</q6:Mode>
-                <q6:Method>ChainApproxSimple</q6:Method>
-                <q6:Offset>
-                  <q6:X>0</q6:X>
-                  <q6:Y>0</q6:Y>
-                </q6:Offset>
-                <q6:MinArea>400</q6:MinArea>
-                <q6:MaxArea>10000</q6:MaxArea>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q6:BackgroundSubtraction">
-                <q6:BackgroundFrames>0</q6:BackgroundFrames>
-                <q6:AdaptationRate>0</q6:AdaptationRate>
-                <q6:ThresholdValue>0</q6:ThresholdValue>
-                <q6:ThresholdType>Binary</q6:ThresholdType>
-                <q6:SubtractionMethod>Absolute</q6:SubtractionMethod>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q6:MaskPolygon">
-                <q6:Regions>
-                  <q6:ArrayOfPoint>
-                    <q6:Point>
-                      <q6:X>220</q6:X>
-                      <q6:Y>51</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>220</q6:X>
-                      <q6:Y>51</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>220</q6:X>
-                      <q6:Y>52</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>220</q6:X>
-                      <q6:Y>52</q6:Y>
-                    </q6:Point>
-                  </q6:ArrayOfPoint>
-                  <q6:ArrayOfPoint>
-                    <q6:Point>
-                      <q6:X>681</q6:X>
-                      <q6:Y>143</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>669</q6:X>
-                      <q6:Y>-27</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>256</q6:X>
-                      <q6:Y>-10</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>22</q6:X>
-                      <q6:Y>-22</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>47</q6:X>
-                      <q6:Y>10</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>213</q6:X>
-                      <q6:Y>20</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>232</q6:X>
-                      <q6:Y>70</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>319</q6:X>
-                      <q6:Y>108</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>367</q6:X>
-                      <q6:Y>106</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>435</q6:X>
-                      <q6:Y>144</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>527</q6:X>
-                      <q6:Y>169</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>575</q6:X>
-                      <q6:Y>176</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>584</q6:X>
-                      <q6:Y>312</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>596</q6:X>
-                      <q6:Y>449</q6:Y>
-                    </q6:Point>
-                    <q6:Point>
-                      <q6:X>652</q6:X>
-                      <q6:Y>448</q6:Y>
-                    </q6:Point>
-                  </q6:ArrayOfPoint>
-                </q6:Regions>
-                <q6:MaskType>ToZeroInv</q6:MaskType>
-                <q6:FillValue>
-                  <q6:Val0>255</q6:Val0>
-                  <q6:Val1>255</q6:Val1>
-                  <q6:Val2>255</q6:Val2>
-                  <q6:Val3>0</q6:Val3>
-                </q6:FillValue>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q6:AdaptiveThreshold">
-                <q6:MaxValue>255</q6:MaxValue>
-                <q6:AdaptiveMethod>MeanC</q6:AdaptiveMethod>
-                <q6:ThresholdType>Binary</q6:ThresholdType>
-                <q6:BlockSize>25</q6:BlockSize>
-                <q6:Parameter>3</q6:Parameter>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q6:Grayscale" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q6:Crop">
-                <q6:RegionOfInterest>
-                  <q6:X>6</q6:X>
-                  <q6:Y>6</q6:Y>
-                  <q6:Width>616</q6:Width>
-                  <q6:Height>432</q6:Height>
-                </q6:RegionOfInterest>
-              </Combinator>
-            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>OffCycleTrigger</ipy:Name>
+        <ipy:Script>cycleOn = False
+
+@returns(bool)
+def process(value):
+  global cycleOn
+
+  if value.Item1&lt;-2 and value.Item2&gt;2:
+    onCycleTrig = True
+    offCycleTrig = False
+  elif value.Item1&gt;2 and value.Item2&gt;2:
+    onCycleTrig = False
+    offCycleTrig = True
+  else:
+    onCycleTrig = False
+    offCycleTrig = False
+
+  if cycleOn == True:
+    if offCycleTrig == False:
+      cycleOn = True
+      return False
+    else:
+      cycleOn = False
+      return False
+
+  if cycleOn == False:
+    if onCycleTrig == True:
+      cycleOn = True
+      return True
+    else:
+      cycleOn = False
+      return False</ipy:Script>
+      </Expression>
+      <Expression xsi:type="rx:Condition">
+        <Workflow>
+          <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>10</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>4</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>6</From>
-              <To>5</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>7</From>
-              <To>6</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>8</From>
-              <To>7</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>9</From>
-              <To>8</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:BufferTrigger">
+          <rx:Count>100</rx:Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Concat">
+          <dsp:Axis>1</dsp:Axis>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>200msBufferAligned100ms</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:Delay">
+                <dsp:Count>3000</dsp:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:Buffer">
+                <dsp:Count>6000</dsp:Count>
+                <dsp:Skip xsi:nil="true" />
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>OnCycleTrigger</ipy:Name>
+        <ipy:Script>cycleOn = False
+
+@returns(bool)
+def process(value):
+  global cycleOn
+
+  if value.Item1&gt;2 and value.Item2&gt;2:
+    onCycleTrig = True
+    offCycleTrig = False
+  elif value.Item1&lt;-2 and value.Item2&gt;2:
+    onCycleTrig = False
+    offCycleTrig = True
+  else:
+    onCycleTrig = False
+    offCycleTrig = False
+
+  if cycleOn == True:
+    if offCycleTrig == False:
+      cycleOn = True
+      return False
+    else:
+      cycleOn = False
+      return False
+
+  if cycleOn == False:
+    if onCycleTrig == True:
+      cycleOn = True
+      return True
+    else:
+      cycleOn = False
+      return False</ipy:Script>
+      </Expression>
+      <Expression xsi:type="rx:Condition">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:WindowTrigger">
+          <rx:Count>1</rx:Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="rx:SelectMany">
         <Name>ProtractionAlignedSignal</Name>
         <Workflow>
           <Nodes>
@@ -582,68 +572,42 @@ def process(sortedRegions):
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:SkipUntil" />
+      </Expression>
+      <Expression xsi:type="rx:Defer">
         <Name>Save Ephys and Video</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="q7:CsvWriter">
-              <q7:FileName>C:\Data\test\test_20190125-183304_HSCam.csv</q7:FileName>
-              <q7:Append>false</q7:Append>
-              <q7:Overwrite>false</q7:Overwrite>
-              <q7:Suffix>None</q7:Suffix>
-              <q7:IncludeHeader>false</q7:IncludeHeader>
-              <q7:Selector>Timestamp</q7:Selector>
-              <q7:CompatibilityMode>true</q7:CompatibilityMode>
-            </Expression>
-            <Expression xsi:type="q4:PythonTransform">
-              <q4:Name>ffmpeg call</q4:Name>
-              <q4:Script>import os
-
-#fname = 'D:\\Data\\Video\\video.avi'
-pipename = r'\\.\pipe\video'
-
-@returns(bool)
-def process(value):
-  fname=value.Item2;
-  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -r 500 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 20M {1}',pipename,fname))
-  return True</q4:Script>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="XP name" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:MatrixWriter">
-                <q2:Path>C:\Data\test\test_20190125-183304_AIN1.bin</q2:Path>
-                <q2:Suffix>None</q2:Suffix>
-                <q2:Overwrite>false</q2:Overwrite>
-                <q2:Layout>ColumnMajor</q2:Layout>
+              <Combinator xsi:type="StringProperty">
+                <Value>test</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="Directory" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>C:\Data\test\</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:MatrixWriter">
-                <q2:Path>C:\Data\test\test_20190125-183304_TTL.bin</q2:Path>
-                <q2:Suffix>None</q2:Suffix>
-                <q2:Overwrite>false</q2:Overwrite>
-                <q2:Layout>ColumnMajor</q2:Layout>
-              </Combinator>
+              <Combinator xsi:type="rx:Zip" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Timestamp" />
+              <Combinator xsi:type="rx:Repeat" />
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="SkipUntil" />
-            </Expression>
-            <Expression xsi:type="q4:PythonTransform">
-              <q4:Name>csv filename</q4:Name>
-              <q4:Script>import clr
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>csv filename</ipy:Name>
+              <ipy:Script>import clr
 #clr.AddReference("Bonsai.System")
 #from System.IO import Path
 #from Bonsai.IO import PathHelper, PathSuffix
@@ -657,18 +621,52 @@ def process(value):
 #  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
   path = value.Item2 + value.Item1 + "_" + timestamp + "_HSCam.csv"
   return path
-</q4:Script>
+</ipy:Script>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source3</Name>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Timer">
-                <DueTime>PT1S</DueTime>
-                <Period>PT0S</Period>
+              <Combinator xsi:type="rx:Timestamp" />
+            </Expression>
+            <Expression xsi:type="io:CsvWriter">
+              <io:FileName>C:\Data\test\test_20190125-183304_HSCam.csv</io:FileName>
+              <io:Append>false</io:Append>
+              <io:Overwrite>false</io:Overwrite>
+              <io:Suffix>None</io:Suffix>
+              <io:IncludeHeader>false</io:IncludeHeader>
+              <io:Selector>Timestamp</io:Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Timer">
+                <rx:DueTime>PT1S</rx:DueTime>
               </Combinator>
             </Expression>
-            <Expression xsi:type="q4:PythonTransform">
-              <q4:Name>avi filename</q4:Name>
-              <q4:Description>avi filename</q4:Description>
-              <q4:Script>import clr
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>test</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>C:\Data\test\</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Repeat" />
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>avi filename</ipy:Name>
+              <ipy:Description>avi filename</ipy:Description>
+              <ipy:Script>import clr
 #clr.AddReference("Bonsai.System")
 #from System.IO import Path
 #from Bonsai.IO import PathHelper, PathSuffix
@@ -682,11 +680,43 @@ def process(value):
 #  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
   path = value.Item2 + value.Item1 + "_" + timestamp + "_HSCam.avi"
   return path
-</q4:Script>
+</ipy:Script>
             </Expression>
-            <Expression xsi:type="q4:PythonTransform">
-              <q4:Name>ADC binary filename</q4:Name>
-              <q4:Script>import clr
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>ffmpeg call</ipy:Name>
+              <ipy:Script>import os
+
+#fname = 'D:\\Data\\Video\\video.avi'
+pipename = r'\\.\pipe\video'
+
+@returns(bool)
+def process(value):
+  fname=value.Item2;
+  os.system(str.format(r'ffmpeg -y -f rawvideo -vcodec rawvideo -s 640x480 -r 500 -pix_fmt rgb24 -i {0} -c:v h264_nvenc -preset fast -b:v 20M {1}',pipename,fname))
+  return True</ipy:Script>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>test</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>C:\Data\test\</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Repeat" />
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>ADC binary filename</ipy:Name>
+              <ipy:Script>import clr
 #clr.AddReference("Bonsai.System")
 #from System.IO import Path
 #from Bonsai.IO import PathHelper, PathSuffix
@@ -700,11 +730,49 @@ def process(value):
 #  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
   path = value.Item2 + value.Item1 + "_" + timestamp + "_AIN1.bin"
   return path
-</q4:Script>
+</ipy:Script>
             </Expression>
-            <Expression xsi:type="q4:PythonTransform">
-              <q4:Name>TTL binary filename</q4:Name>
-              <q4:Script>import clr
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Path" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source2</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:SkipUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:MatrixWriter">
+                <dsp:Path>C:\Data\test\test_20190125-183304_AIN1.bin</dsp:Path>
+                <dsp:Suffix>None</dsp:Suffix>
+                <dsp:Overwrite>false</dsp:Overwrite>
+                <dsp:Layout>ColumnMajor</dsp:Layout>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>test</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>C:\Data\test\</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Repeat" />
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>TTL binary filename</ipy:Name>
+              <ipy:Script>import clr
 #clr.AddReference("Bonsai.System")
 #from System.IO import Path
 #from Bonsai.IO import PathHelper, PathSuffix
@@ -718,305 +786,74 @@ def process(value):
 #  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
   path = value.Item2 + value.Item1 + "_" + timestamp + "_TTL.bin"
   return path
-</q4:Script>
+</ipy:Script>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Repeat" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Repeat" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Repeat" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Repeat" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>test</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>C:\Data\test\</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>test</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>C:\Data\test\</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>test</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>C:\Data\test\</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>test</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>C:\Data\test\</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source2</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source3</Name>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Path" />
+              </PropertyMappings>
             </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source4</Name>
             </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>FileName</MemberName>
-              <Name>HScam csv filename</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>Path</MemberName>
-              <Name>ADCrec filename</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>Path</MemberName>
-              <Name>TTL filename</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>Value</MemberName>
-              <Name>XP name</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>Value</MemberName>
-              <Name>Directory</Name>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:MatrixWriter">
+                <dsp:Path>C:\Data\test\test_20190125-183304_TTL.bin</dsp:Path>
+                <dsp:Suffix>None</dsp:Suffix>
+                <dsp:Overwrite>false</dsp:Overwrite>
+                <dsp:Layout>ColumnMajor</dsp:Layout>
+              </Combinator>
             </Expression>
           </Nodes>
           <Edges>
-            <Edge>
-              <From>4</From>
-              <To>0</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>6</From>
-              <To>2</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>7</From>
-              <To>32</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>8</From>
-              <To>5</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>9</From>
-              <To>5</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>10</From>
-              <To>33</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>11</From>
-              <To>34</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>12</From>
-              <To>7</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>13</From>
-              <To>9</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>14</From>
-              <To>10</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>15</From>
-              <To>11</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>16</From>
-              <To>12</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>17</From>
-              <To>13</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>18</From>
-              <To>14</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>19</From>
-              <To>15</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>20</From>
-              <To>16</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>21</From>
-              <To>16</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>22</From>
-              <To>17</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>23</From>
-              <To>17</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>24</From>
-              <To>18</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>25</From>
-              <To>18</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>26</From>
-              <To>19</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>27</From>
-              <To>19</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>28</From>
-              <To>6</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>29</From>
-              <To>6</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>30</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>31</From>
-              <To>3</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>32</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>33</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>34</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>35</From>
-              <To>20</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>35</From>
-              <To>22</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>35</From>
-              <To>24</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>35</From>
-              <To>26</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>36</From>
-              <To>21</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>36</From>
-              <To>23</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>36</From>
-              <To>25</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>36</From>
-              <To>27</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="12" Label="Source1" />
+            <Edge From="0" To="19" Label="Source1" />
+            <Edge From="0" To="29" Label="Source1" />
+            <Edge From="1" To="4" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="2" To="13" Label="Source1" />
+            <Edge From="2" To="20" Label="Source1" />
+            <Edge From="2" To="30" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="10" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source2" />
+            <Edge From="11" To="17" Label="Source1" />
+            <Edge From="12" To="14" Label="Source1" />
+            <Edge From="13" To="14" Label="Source2" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="17" Label="Source2" />
+            <Edge From="17" To="18" Label="Source1" />
+            <Edge From="19" To="21" Label="Source1" />
+            <Edge From="20" To="21" Label="Source2" />
+            <Edge From="21" To="22" Label="Source1" />
+            <Edge From="22" To="23" Label="Source1" />
+            <Edge From="23" To="24" Label="Source1" />
+            <Edge From="24" To="28" Label="Source1" />
+            <Edge From="25" To="27" Label="Source1" />
+            <Edge From="26" To="27" Label="Source2" />
+            <Edge From="27" To="28" Label="Source2" />
+            <Edge From="29" To="31" Label="Source1" />
+            <Edge From="30" To="31" Label="Source2" />
+            <Edge From="31" To="32" Label="Source1" />
+            <Edge From="32" To="33" Label="Source1" />
+            <Edge From="33" To="34" Label="Source1" />
+            <Edge From="34" To="36" Label="Source1" />
+            <Edge From="35" To="36" Label="Source2" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:WindowTrigger">
+          <rx:Count>1</rx:Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="rx:SelectMany">
         <Name>RetractionAlignedSignal</Name>
         <Workflow>
           <Nodes>
@@ -1026,319 +863,50 @@ def process(value):
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="Condition">
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="Condition">
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="GroupWorkflow">
-        <Name>200msBufferAligned100ms</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:Delay">
-                <q2:Count>3000</q2:Count>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:Buffer">
-                <q2:Count>6000</q2:Count>
-                <q2:Skip xsi:nil="true" />
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>0</From>
-        <To>24</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>19</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>6</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>29</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>30</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>13</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>12</From>
-        <To>11</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>13</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>14</From>
-        <To>18</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>14</From>
-        <To>27</To>
-        <Label>Source3</Label>
-      </Edge>
-      <Edge>
-        <From>15</From>
-        <To>14</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>15</From>
-        <To>19</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>15</From>
-        <To>27</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>16</From>
-        <To>26</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>17</From>
-        <To>28</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>19</From>
-        <To>27</To>
-        <Label>Source4</Label>
-      </Edge>
-      <Edge>
-        <From>21</From>
-        <To>20</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>22</From>
-        <To>21</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>23</From>
-        <To>14</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>23</From>
-        <To>25</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>24</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>24</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>24</From>
-        <To>27</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>24</From>
-        <To>31</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>24</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>24</From>
-        <To>22</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>25</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>25</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>29</From>
-        <To>17</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>29</From>
-        <To>21</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>30</From>
-        <To>16</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>31</From>
-        <To>16</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>31</From>
-        <To>17</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="0" To="3" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="1" To="8" Label="Source1" />
+      <Edge From="1" To="11" Label="Source1" />
+      <Edge From="1" To="17" Label="Source1" />
+      <Edge From="1" To="23" Label="Source1" />
+      <Edge From="1" To="29" Label="Source1" />
+      <Edge From="3" To="5" Label="Source1" />
+      <Edge From="3" To="28" Label="Source1" />
+      <Edge From="4" To="5" Label="Source2" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source2" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="13" To="15" Label="Source1" />
+      <Edge From="13" To="18" Label="Source1" />
+      <Edge From="14" To="15" Label="Source2" />
+      <Edge From="14" To="28" Label="Source2" />
+      <Edge From="14" To="29" Label="Source2" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="15" To="29" Label="Source3" />
+      <Edge From="17" To="21" Label="Source1" />
+      <Edge From="18" To="19" Label="Source1" />
+      <Edge From="18" To="24" Label="Source1" />
+      <Edge From="19" To="20" Label="Source1" />
+      <Edge From="20" To="21" Label="Source2" />
+      <Edge From="20" To="30" Label="Source2" />
+      <Edge From="21" To="22" Label="Source1" />
+      <Edge From="23" To="26" Label="Source1" />
+      <Edge From="23" To="30" Label="Source1" />
+      <Edge From="24" To="25" Label="Source1" />
+      <Edge From="25" To="26" Label="Source2" />
+      <Edge From="26" To="27" Label="Source1" />
+      <Edge From="28" To="29" Label="Source4" />
+      <Edge From="30" To="31" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.DetectSpikes, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.TriggeredBuffer, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Accumulate, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Threshold, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Audio.AudioPlayback, Bonsai.Audio, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.ConvertScale, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.BitwiseAndBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.SkipUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.TriggeredWindow, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.ImageWriter, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Concat, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.TriggeredBuffer, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Delay, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.CameraCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Ephys.AdcScale, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.MatrixWriter, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timestamp, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Buffer, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

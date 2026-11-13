@@ -1,12 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:q1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:p1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="GroupWorkflow">
@@ -48,23 +41,33 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="ReplaySubject">
+      <Expression xsi:type="rx:ReplaySubject">
         <Name>DirFileName</Name>
-        <BufferSize xsi:nil="true" />
+        <rx:BufferSize xsi:nil="true" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:PylonCapture">
-          <q1:SerialNumber>23106925</q1:SerialNumber>
-          <q1:ParameterFile>C:\Code\WideField\BaslerConfig\WideFieldCam.pfs</q1:ParameterFile>
+        <Combinator xsi:type="p1:PylonCapture">
+          <p1:SerialNumber>23106925</p1:SerialNumber>
+          <p1:ParameterFile>C:\Code\WideField\BaslerConfig\WideFieldCam.pfs</p1:ParameterFile>
+          <p1:GrabStrategy>OneByOne</p1:GrabStrategy>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>Image</Selector>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>Save Wide Field Frames</Name>
         <Workflow>
           <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>TrialTrigger</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:SubscribeWhen" />
+            </Expression>
             <Expression xsi:type="GroupWorkflow">
               <Name>ImageFileName</Name>
               <Workflow>
@@ -78,10 +81,10 @@
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
-                  <Expression xsi:type="scr:PythonTransform">
-                    <scr:Name>filename</scr:Name>
-                    <scr:Description>image dir and  filename</scr:Description>
-                    <scr:Script>import clr
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Name>filename</ipy:Name>
+                    <ipy:Description>image dir and  filename</ipy:Description>
+                    <ipy:Script>import clr
 #from datetime import datetime
 
 def getOutputType():
@@ -91,7 +94,7 @@ def process(value):
   #timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
   path = value.Item1.Item1 + value.Item1.Item2 + "\\" + str(value.Item2) + "\\WideField\\" + ".tiff"
   return path
-</scr:Script>
+</ipy:Script>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
@@ -108,15 +111,6 @@ def process(value):
                 <Property Name="FileName" />
               </PropertyMappings>
             </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>TrialTrigger</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:SubscribeWhen" />
-            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:SaveImage">
                 <cv:FileName>D:\IOS\Manuel\sourisbidule\run2\\10\WideField\.tiff</cv:FileName>
@@ -126,11 +120,11 @@ def process(value):
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="5" Label="Source2" />
-            <Edge From="2" To="4" Label="Source1" />
-            <Edge From="3" To="4" Label="Source2" />
-            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="2" Label="Source2" />
+            <Edge From="2" To="5" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source2" />
             <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
@@ -156,7 +150,7 @@ def process(value):
                 <Value>50</Value>
               </Operand>
             </Expression>
-            <Expression xsi:type="Condition">
+            <Expression xsi:type="rx:Condition">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
@@ -186,22 +180,32 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="BehaviorSubject">
+      <Expression xsi:type="rx:BehaviorSubject">
         <Name>TrialTrigger</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:PylonCapture">
-          <q1:SerialNumber>40030319</q1:SerialNumber>
-          <q1:ParameterFile>C:\Code\WideField\BaslerConfig\BehaviorCam.pfs</q1:ParameterFile>
+        <Combinator xsi:type="p1:PylonCapture">
+          <p1:SerialNumber>40030319</p1:SerialNumber>
+          <p1:ParameterFile>C:\Code\WideField\BaslerConfig\BehaviorCam.pfs</p1:ParameterFile>
+          <p1:GrabStrategy>OneByOne</p1:GrabStrategy>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>Image</Selector>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>Save Behavior Frames</Name>
         <Workflow>
           <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>TrialTrigger</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:SubscribeWhen" />
+            </Expression>
             <Expression xsi:type="GroupWorkflow">
               <Name>ImageFileName</Name>
               <Workflow>
@@ -215,10 +219,10 @@ def process(value):
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
-                  <Expression xsi:type="scr:PythonTransform">
-                    <scr:Name>filename</scr:Name>
-                    <scr:Description>image dir and  filename</scr:Description>
-                    <scr:Script>import clr
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Name>filename</ipy:Name>
+                    <ipy:Description>image dir and  filename</ipy:Description>
+                    <ipy:Script>import clr
 #from datetime import datetime
 
 def getOutputType():
@@ -228,7 +232,7 @@ def process(value):
   #timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
   path = value.Item1.Item1 + value.Item1.Item2 + "\\" + str(value.Item2) + "\\Behavior\\" + ".tiff"
   return path
-</scr:Script>
+</ipy:Script>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
@@ -245,15 +249,6 @@ def process(value):
                 <Property Name="FileName" />
               </PropertyMappings>
             </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>TrialTrigger</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:SubscribeWhen" />
-            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:SaveImage">
                 <cv:FileName>D:\IOS\Manuel\sourisbidule\run2\\10\Behavior\.tiff</cv:FileName>
@@ -263,11 +258,11 @@ def process(value):
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="5" Label="Source2" />
-            <Edge From="2" To="4" Label="Source1" />
-            <Edge From="3" To="4" Label="Source2" />
-            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="2" Label="Source2" />
+            <Edge From="2" To="5" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source2" />
             <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
@@ -313,7 +308,7 @@ def process(value):
           <Value>0</Value>
         </Combinator>
       </Expression>
-      <Expression xsi:type="BehaviorSubject">
+      <Expression xsi:type="rx:BehaviorSubject">
         <Name>TrialNumber</Name>
       </Expression>
     </Nodes>

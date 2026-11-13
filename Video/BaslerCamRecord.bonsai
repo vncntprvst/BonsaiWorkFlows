@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:PylonCapture">
-          <q1:SerialNumber>22789615</q1:SerialNumber>
-          <q1:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</q1:ParameterFile>
+        <Combinator xsi:type="p1:PylonCapture">
+          <p1:SerialNumber>22789615</p1:SerialNumber>
+          <p1:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</p1:ParameterFile>
+          <p1:GrabStrategy>OneByOne</p1:GrabStrategy>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -16,7 +17,4 @@
       <Edge From="0" To="1" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Pylon.PylonCapture, Bonsai.Pylon, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

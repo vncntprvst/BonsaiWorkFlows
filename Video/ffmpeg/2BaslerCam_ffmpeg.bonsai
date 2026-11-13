@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:p1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="GroupWorkflow">
         <Name>Experiment name</Name>
@@ -24,10 +24,10 @@
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
+              <Combinator xsi:type="rx:Zip" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Repeat" />
+              <Combinator xsi:type="rx:Repeat" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -41,14 +41,13 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="ReplaySubject">
+      <Expression xsi:type="rx:ReplaySubject">
         <Name>DirFileName</Name>
-        <BufferSize xsi:nil="true" />
+        <rx:BufferSize xsi:nil="true" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Timer">
-          <DueTime>PT2S</DueTime>
-          <Period>PT0S</Period>
+        <Combinator xsi:type="rx:Timer">
+          <rx:DueTime>PT2S</rx:DueTime>
         </Combinator>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
@@ -58,10 +57,10 @@
             <Expression xsi:type="SubscribeSubject">
               <Name>DirFileName</Name>
             </Expression>
-            <Expression xsi:type="q1:PythonTransform">
-              <q1:Name>avi filename</q1:Name>
-              <q1:Description>avi filename</q1:Description>
-              <q1:Script>import clr
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>avi filename</ipy:Name>
+              <ipy:Description>avi filename</ipy:Description>
+              <ipy:Script>import clr
 #clr.AddReference("Bonsai.System")
 #from System.IO import Path
 #from Bonsai.IO import PathHelper, PathSuffix
@@ -75,7 +74,7 @@ def process(value):
 #  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
   path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCam1.avi"
   return path
-</q1:Script>
+</ipy:Script>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -86,18 +85,18 @@ def process(value):
         </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
+        <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="q1:PythonTransform">
-        <q1:Name>ffmpeg call</q1:Name>
-        <q1:Script>import os
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>ffmpeg call</ipy:Name>
+        <ipy:Script>import os
 pipename = r'\\.\pipe\video1'
 
 @returns(bool)
 def process(value):
   fname=value.Item2;
   os.system(str.format(r'ffmpeg -y -f rawvideo -pix_fmt gray -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
-  return True</q1:Script>
+  return True</ipy:Script>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
         <Name>Video2FileName</Name>
@@ -106,10 +105,10 @@ def process(value):
             <Expression xsi:type="SubscribeSubject">
               <Name>DirFileName</Name>
             </Expression>
-            <Expression xsi:type="q1:PythonTransform">
-              <q1:Name>avi filename</q1:Name>
-              <q1:Description>avi filename</q1:Description>
-              <q1:Script>import clr
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>avi filename</ipy:Name>
+              <ipy:Description>avi filename</ipy:Description>
+              <ipy:Script>import clr
 #clr.AddReference("Bonsai.System")
 #from System.IO import Path
 #from Bonsai.IO import PathHelper, PathSuffix
@@ -123,7 +122,7 @@ def process(value):
 #  path = Path.Combine(Path.GetDirectoryName(value.Item1), Path.GetFileNameWithoutExtension(value.Item2)) + timestamp + ".csv"
   path = value.Item2 + value.Item1 + "_" + timestamp + "_" + "HSCam2.avi"
   return path
-</q1:Script>
+</ipy:Script>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -134,26 +133,24 @@ def process(value):
         </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
+        <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="q1:PythonTransform">
-        <q1:Name>ffmpeg call</q1:Name>
-        <q1:Script>import os
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>ffmpeg call</ipy:Name>
+        <ipy:Script>import os
 pipename = r'\\.\pipe\video2'
 
 @returns(bool)
 def process(value):
   fname=value.Item2;
   os.system(str.format(r'ffmpeg -y -f rawvideo -pix_fmt gray -s 640x480 -i {0} -y -pix_fmt nv12 -vcodec h264_nvenc {1}',pipename,fname))
-  return True</q1:Script>
-      </Expression>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>VideoEnd</Name>
+  return True</ipy:Script>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:PylonCapture">
-          <q2:SerialNumber>22789615</q2:SerialNumber>
-          <q2:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</q2:ParameterFile>
+        <Combinator xsi:type="p1:PylonCapture">
+          <p1:SerialNumber>22789615</p1:SerialNumber>
+          <p1:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</p1:ParameterFile>
+          <p1:GrabStrategy>OneByOne</p1:GrabStrategy>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -163,25 +160,26 @@ def process(value):
         <Name>VideoStart</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="SkipUntil" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="TakeUntil" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:ImageWriter">
-          <q3:Path>\\.\pipe\video1</q3:Path>
-          <q3:Suffix>None</q3:Suffix>
-          <q3:Overwrite>false</q3:Overwrite>
-        </Combinator>
+        <Combinator xsi:type="rx:SkipUntil" />
       </Expression>
       <Expression xsi:type="SubscribeSubject">
         <Name>VideoEnd</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:PylonCapture">
-          <q2:SerialNumber>22636055</q2:SerialNumber>
-          <q2:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</q2:ParameterFile>
+        <Combinator xsi:type="rx:TakeUntil" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:ImageWriter">
+          <cv:Path>\\.\pipe\video1</cv:Path>
+          <cv:Suffix>None</cv:Suffix>
+          <cv:Overwrite>false</cv:Overwrite>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="p1:PylonCapture">
+          <p1:SerialNumber>22636055</p1:SerialNumber>
+          <p1:ParameterFile>C:\Basler\Config\acA640-750um_triggered500Hz_318rig.pfs</p1:ParameterFile>
+          <p1:GrabStrategy>OneByOne</p1:GrabStrategy>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -191,34 +189,37 @@ def process(value):
         <Name>VideoStart</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="SkipUntil" />
+        <Combinator xsi:type="rx:SkipUntil" />
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>VideoEnd</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="TakeUntil" />
+        <Combinator xsi:type="rx:TakeUntil" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:ImageWriter">
-          <q3:Path>\\.\pipe\video2</q3:Path>
-          <q3:Suffix>None</q3:Suffix>
-          <q3:Overwrite>false</q3:Overwrite>
+        <Combinator xsi:type="cv:ImageWriter">
+          <cv:Path>\\.\pipe\video2</cv:Path>
+          <cv:Suffix>None</cv:Suffix>
+          <cv:Overwrite>false</cv:Overwrite>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q4:KeyDown">
-          <q4:Filter>Pause</q4:Filter>
-          <q4:SuppressRepetitions>false</q4:SuppressRepetitions>
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>Pause</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
         </Combinator>
       </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="rx:PublishSubject">
         <Name>VideoStart</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q4:KeyDown">
-          <q4:Filter>End</q4:Filter>
-          <q4:SuppressRepetitions>false</q4:SuppressRepetitions>
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>End</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
         </Combinator>
       </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="rx:PublishSubject">
         <Name>VideoEnd</Name>
       </Expression>
     </Nodes>
@@ -230,32 +231,20 @@ def process(value):
       <Edge From="4" To="5" Label="Source1" />
       <Edge From="6" To="7" Label="Source2" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="9" To="14" Label="Source2" />
-      <Edge From="10" To="11" Label="Source1" />
-      <Edge From="11" To="13" Label="Source1" />
-      <Edge From="12" To="13" Label="Source2" />
-      <Edge From="13" To="14" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="12" Label="Source1" />
+      <Edge From="11" To="12" Label="Source2" />
+      <Edge From="12" To="14" Label="Source1" />
+      <Edge From="13" To="14" Label="Source2" />
       <Edge From="14" To="15" Label="Source1" />
-      <Edge From="16" To="21" Label="Source2" />
-      <Edge From="17" To="18" Label="Source1" />
-      <Edge From="18" To="20" Label="Source1" />
-      <Edge From="19" To="20" Label="Source2" />
-      <Edge From="20" To="21" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="19" Label="Source1" />
+      <Edge From="18" To="19" Label="Source2" />
+      <Edge From="19" To="21" Label="Source1" />
+      <Edge From="20" To="21" Label="Source2" />
       <Edge From="21" To="22" Label="Source1" />
       <Edge From="23" To="24" Label="Source1" />
       <Edge From="25" To="26" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Expressions.StringProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Pylon.PylonCapture, Bonsai.Pylon, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.SkipUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.TakeUntil, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.ImageWriter, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

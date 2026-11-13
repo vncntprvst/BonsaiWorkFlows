@@ -1,39 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.1.3">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
-      <Expression xsi:type="Source">
-        <PropertyMappings />
-        <Generator xsi:type="q1:IntanEvalBoard">
-          <q1:HighPassFilter>true</q1:HighPassFilter>
-          <q1:HighPassFilterCutoff>1</q1:HighPassFilterCutoff>
-          <q1:NotchFilter>false</q1:NotchFilter>
-          <q1:NotchFrequency>60</q1:NotchFrequency>
-        </Generator>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="p1:IntanEvalBoard">
+          <p1:HighPassFilter>true</p1:HighPassFilter>
+          <p1:HighPassFilterCutoff>1</p1:HighPassFilterCutoff>
+          <p1:NotchFilter>false</p1:NotchFilter>
+          <p1:NotchFrequency>60</p1:NotchFrequency>
+        </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.DataFrame</Selector>
+        <Selector>DataFrame</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:SelectChannels" />
+        <Combinator xsi:type="dsp:SelectChannels" />
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Ephys.IntanEvalBoard, Bonsai.Ephys, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

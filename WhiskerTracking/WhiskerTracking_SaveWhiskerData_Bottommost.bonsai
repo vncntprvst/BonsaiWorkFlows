@@ -1,161 +1,161 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Crop">
-          <q1:RegionOfInterest>
-            <q1:X>0</q1:X>
-            <q1:Y>82</q1:Y>
-            <q1:Width>630</q1:Width>
-            <q1:Height>388</q1:Height>
-          </q1:RegionOfInterest>
+        <Combinator xsi:type="cv:FileCapture">
+          <cv:FileName>D:\Data\vIRt32\vIRt32_0403\vIRt32_4469.mp4</cv:FileName>
+          <cv:PlaybackRate>50000</cv:PlaybackRate>
+          <cv:StartPosition>0</cv:StartPosition>
+          <cv:PositionUnits>Frames</cv:PositionUnits>
+          <cv:Loop>false</cv:Loop>
+          <cv:Playing>true</cv:Playing>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:FileCapture">
-          <q1:FileName>D:\Data\vIRt32\vIRt32_0403\vIRt32_4469.mp4</q1:FileName>
-          <q1:PlaybackRate>50000</q1:PlaybackRate>
-          <q1:StartPosition>0</q1:StartPosition>
-          <q1:PositionUnits>Frames</q1:PositionUnits>
-          <q1:Loop>false</q1:Loop>
-          <q1:Playing>true</q1:Playing>
+        <Combinator xsi:type="cv:Crop">
+          <cv:RegionOfInterest>
+            <cv:X>0</cv:X>
+            <cv:Y>82</cv:Y>
+            <cv:Width>630</cv:Width>
+            <cv:Height>388</cv:Height>
+          </cv:RegionOfInterest>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:SortBinaryRegions" />
+        <Combinator xsi:type="cv:Grayscale" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:BinaryRegionAnalysis" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:FindContours">
-          <q1:Mode>List</q1:Mode>
-          <q1:Method>ChainApproxSimple</q1:Method>
-          <q1:Offset>
-            <q1:X>0</q1:X>
-            <q1:Y>0</q1:Y>
-          </q1:Offset>
-          <q1:MinArea>400</q1:MinArea>
-          <q1:MaxArea>10000</q1:MaxArea>
+        <Combinator xsi:type="cv:AdaptiveThreshold">
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:AdaptiveMethod>MeanC</cv:AdaptiveMethod>
+          <cv:ThresholdType>Binary</cv:ThresholdType>
+          <cv:BlockSize>25</cv:BlockSize>
+          <cv:Parameter>3</cv:Parameter>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:BackgroundSubtraction">
-          <q1:BackgroundFrames>0</q1:BackgroundFrames>
-          <q1:AdaptationRate>0</q1:AdaptationRate>
-          <q1:ThresholdValue>0</q1:ThresholdValue>
-          <q1:ThresholdType>Binary</q1:ThresholdType>
-          <q1:SubtractionMethod>Absolute</q1:SubtractionMethod>
+        <Combinator xsi:type="cv:MaskPolygon">
+          <cv:Regions>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>220</cv:X>
+                <cv:Y>51</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>220</cv:X>
+                <cv:Y>51</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>220</cv:X>
+                <cv:Y>52</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>220</cv:X>
+                <cv:Y>52</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>639</cv:X>
+                <cv:Y>76</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>530</cv:X>
+                <cv:Y>43</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>431</cv:X>
+                <cv:Y>6</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>287</cv:X>
+                <cv:Y>8</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>224</cv:X>
+                <cv:Y>66</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>198</cv:X>
+                <cv:Y>101</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>196</cv:X>
+                <cv:Y>132</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>189</cv:X>
+                <cv:Y>161</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>167</cv:X>
+                <cv:Y>197</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>141</cv:X>
+                <cv:Y>231</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>112</cv:X>
+                <cv:Y>266</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>-1</cv:X>
+                <cv:Y>242</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>-9</cv:X>
+                <cv:Y>-10</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>370</cv:X>
+                <cv:Y>-35</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>632</cv:X>
+                <cv:Y>-35</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+          </cv:Regions>
+          <cv:MaskType>ToZeroInv</cv:MaskType>
+          <cv:FillValue>
+            <cv:Val0>255</cv:Val0>
+            <cv:Val1>255</cv:Val1>
+            <cv:Val2>255</cv:Val2>
+            <cv:Val3>0</cv:Val3>
+          </cv:FillValue>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:MaskPolygon">
-          <q1:Regions>
-            <q1:ArrayOfPoint>
-              <q1:Point>
-                <q1:X>220</q1:X>
-                <q1:Y>51</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>220</q1:X>
-                <q1:Y>51</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>220</q1:X>
-                <q1:Y>52</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>220</q1:X>
-                <q1:Y>52</q1:Y>
-              </q1:Point>
-            </q1:ArrayOfPoint>
-            <q1:ArrayOfPoint>
-              <q1:Point>
-                <q1:X>639</q1:X>
-                <q1:Y>76</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>530</q1:X>
-                <q1:Y>43</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>431</q1:X>
-                <q1:Y>6</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>287</q1:X>
-                <q1:Y>8</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>224</q1:X>
-                <q1:Y>66</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>198</q1:X>
-                <q1:Y>101</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>196</q1:X>
-                <q1:Y>132</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>189</q1:X>
-                <q1:Y>161</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>167</q1:X>
-                <q1:Y>197</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>141</q1:X>
-                <q1:Y>231</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>112</q1:X>
-                <q1:Y>266</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>-1</q1:X>
-                <q1:Y>242</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>-9</q1:X>
-                <q1:Y>-10</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>370</q1:X>
-                <q1:Y>-35</q1:Y>
-              </q1:Point>
-              <q1:Point>
-                <q1:X>632</q1:X>
-                <q1:Y>-35</q1:Y>
-              </q1:Point>
-            </q1:ArrayOfPoint>
-          </q1:Regions>
-          <q1:MaskType>ToZeroInv</q1:MaskType>
-          <q1:FillValue>
-            <q1:Val0>255</q1:Val0>
-            <q1:Val1>255</q1:Val1>
-            <q1:Val2>255</q1:Val2>
-            <q1:Val3>0</q1:Val3>
-          </q1:FillValue>
+        <Combinator xsi:type="cv:BackgroundSubtraction">
+          <cv:BackgroundFrames>0</cv:BackgroundFrames>
+          <cv:AdaptationRate>0</cv:AdaptationRate>
+          <cv:ThresholdValue>0</cv:ThresholdValue>
+          <cv:ThresholdType>Binary</cv:ThresholdType>
+          <cv:SubtractionMethod>Absolute</cv:SubtractionMethod>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:AdaptiveThreshold">
-          <q1:MaxValue>255</q1:MaxValue>
-          <q1:AdaptiveMethod>MeanC</q1:AdaptiveMethod>
-          <q1:ThresholdType>Binary</q1:ThresholdType>
-          <q1:BlockSize>25</q1:BlockSize>
-          <q1:Parameter>3</q1:Parameter>
+        <Combinator xsi:type="cv:FindContours">
+          <cv:Mode>List</cv:Mode>
+          <cv:Method>ChainApproxSimple</cv:Method>
+          <cv:Offset>
+            <cv:X>0</cv:X>
+            <cv:Y>0</cv:Y>
+          </cv:Offset>
+          <cv:MinArea>400</cv:MinArea>
+          <cv:MaxArea>10000</cv:MaxArea>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Grayscale" />
+        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
       </Expression>
-      <Expression xsi:type="q2:PythonTransform">
-        <q2:Script>import clr
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:SortBinaryRegions" />
+      </Expression>
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 clr.AddReference("Bonsai.Vision")
@@ -272,91 +272,32 @@ def process(sortedRegions):
   # else:
   #   return Tuple.Create(float(0),float(0)) #Point(0,0) #
 
-</q2:Script>
+</ipy:Script>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:LargestBinaryRegion" />
+        <Combinator xsi:type="cv:LargestBinaryRegion" />
       </Expression>
-      <Expression xsi:type="q3:CsvWriter">
-        <q3:FileName>D:\Data\vIRt32\vIRt32_0403\WhiskerTracking\WhiskersCentroidOrientation_vIRt32_0403_4469.csv</q3:FileName>
-        <q3:Append>false</q3:Append>
-        <q3:Overwrite>false</q3:Overwrite>
-        <q3:Suffix>None</q3:Suffix>
-        <q3:IncludeHeader>false</q3:IncludeHeader>
-        <q3:Selector>Centroid,Orientation</q3:Selector>
-        <q3:CompatibilityMode>true</q3:CompatibilityMode>
+      <Expression xsi:type="io:CsvWriter">
+        <io:FileName>D:\Data\vIRt32\vIRt32_0403\WhiskerTracking\WhiskersCentroidOrientation_vIRt32_0403_4469.csv</io:FileName>
+        <io:Append>false</io:Append>
+        <io:Overwrite>false</io:Overwrite>
+        <io:Suffix>None</io:Suffix>
+        <io:IncludeHeader>false</io:IncludeHeader>
+        <io:Selector>Centroid,Orientation</io:Selector>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>0</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

@@ -1,12 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -42,7 +35,7 @@
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="IncludeWorkflow" Path="Extensions\ColorMask_Magenta.bonsai" />
+        <Builder xsi:type="IncludeWorkflow" Path="Extensions\ColorMask.bonsai" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:AdaptiveThreshold">
@@ -124,8 +117,8 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="Extensions\TrackWhisker_Single_Bottom.bonsai" />
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>#return x,y values for base, center, tip of three central whiskers
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>#return x,y values for base, center, tip of three central whiskers
 import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
@@ -167,7 +160,7 @@ def process(sortedRegions):
     tipList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
 
   return Tuple.Create(baseList, centroidList, tipList)
-</scr:Script>
+</ipy:Script>
       </Expression>
       <Expression xsi:type="scr:ExpressionTransform">
         <scr:Expression>new(
@@ -186,10 +179,10 @@ Item3.Item3 as Whisker3_Tip
         <MemberName>FileName</MemberName>
         <Value>D:\Vincent\vIRt42\vIRt42_1016\vIRt42_1016_5000_10Hz_10ms_10mW_20191016-122553_HSCam.avi</Value>
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>@returns(str)
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>@returns(str)
 def process(value):
-  return value.replace('.avi', '_WhiskersBaseCentroidTip.csv')</scr:Script>
+  return value.replace('.avi', '_WhiskersBaseCentroidTip.csv')</ipy:Script>
       </Expression>
       <Expression xsi:type="PropertyMapping">
         <PropertyMappings>
@@ -210,12 +203,12 @@ def process(value):
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Name>DrawMarkers</scr:Name>
-        <scr:Description>Draws whiskers' base, centroid and tip on video
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>DrawMarkers</ipy:Name>
+        <ipy:Description>Draws whiskers' base, centroid and tip on video
 
-</scr:Description>
-        <scr:Script>import clr
+</ipy:Description>
+        <ipy:Script>import clr
 #clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 #from System import Tuple
@@ -243,15 +236,15 @@ def process(value):
     CV.Circle(output, Point(markerCoordinates.Item2.Item3), 10, Scalar.Rgb(99,71, 255), -1) 
     CV.Circle(output, Point(markerCoordinates.Item3.Item3), 10, Scalar.Rgb(127,80, 255), -1)
 
-  return output</scr:Script>
+  return output</ipy:Script>
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="scr:PythonTransform">
-          <scr:Name>DrawMarkers</scr:Name>
-          <scr:Description>Draws whiskers' base, centroid and tip on video
+        <Builder xsi:type="ipy:PythonTransform">
+          <ipy:Name>DrawMarkers</ipy:Name>
+          <ipy:Description>Draws whiskers' base, centroid and tip on video
 
-</scr:Description>
-          <scr:Script>import clr
+</ipy:Description>
+          <ipy:Script>import clr
 #clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 #from System import Tuple
@@ -278,7 +271,7 @@ def process(value):
     CV.Circle(output, Point(markerCoordinates.Item2.Item3), 10, Scalar.Rgb(99,71, 255), -1) 
     CV.Circle(output, Point(markerCoordinates.Item3.Item3), 10, Scalar.Rgb(127,80, 255), -1)
 
-  return output</scr:Script>
+  return output</ipy:Script>
         </Builder>
       </Expression>
     </Nodes>

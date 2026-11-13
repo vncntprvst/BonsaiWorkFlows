@@ -1,234 +1,164 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Rhd2000EvalBoard">
-          <q1:BitFileName>C:\OpenEphys\open-ephys-windows\rhd2000.bit</q1:BitFileName>
-          <q1:SampleRate>SampleRate20000Hz</q1:SampleRate>
-          <q1:FastSettle>false</q1:FastSettle>
-          <q1:LowerBandwidth>0.1</q1:LowerBandwidth>
-          <q1:UpperBandwidth>7500</q1:UpperBandwidth>
-          <q1:DspCutoffFrequency>1</q1:DspCutoffFrequency>
-          <q1:DspEnabled>true</q1:DspEnabled>
-          <q1:CableDelayA xsi:nil="true" />
-          <q1:CableDelayB xsi:nil="true" />
-          <q1:CableDelayC xsi:nil="true" />
-          <q1:CableDelayD xsi:nil="true" />
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:DetectSpikes">
-          <q2:Delay>16</q2:Delay>
-          <q2:Length>48</q2:Length>
-          <q2:Threshold>
-            <q2:double>-42.578102018003179</q2:double>
-            <q2:double>-22.136259339883509</q2:double>
-            <q2:double>0</q2:double>
-            <q2:double>0.029720656346556185</q2:double>
-          </q2:Threshold>
-          <q2:WaveformRefinement>AlignPeaks</q2:WaveformRefinement>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:MatrixWriter">
-          <q2:Path>C:\Data\raw\Bonsai\_TTL_.bin</q2:Path>
-          <q2:Suffix>Timestamp</q2:Suffix>
-          <q2:Overwrite>false</q2:Overwrite>
-          <q2:Layout>ColumnMajor</q2:Layout>
+        <Combinator xsi:type="p1:Rhd2000EvalBoard">
+          <p1:BitFileName>C:\OpenEphys\open-ephys-windows\rhd2000.bit</p1:BitFileName>
+          <p1:SampleRate>SampleRate20000Hz</p1:SampleRate>
+          <p1:FastSettle>false</p1:FastSettle>
+          <p1:LowerBandwidth>0.1</p1:LowerBandwidth>
+          <p1:UpperBandwidth>7500</p1:UpperBandwidth>
+          <p1:DspCutoffFrequency>1</p1:DspCutoffFrequency>
+          <p1:DspEnabled>true</p1:DspEnabled>
+          <p1:CableDelayA xsi:nil="true" />
+          <p1:CableDelayB xsi:nil="true" />
+          <p1:CableDelayC xsi:nil="true" />
+          <p1:CableDelayD xsi:nil="true" />
+          <p1:ExternalFastSettleEnabled>false</p1:ExternalFastSettleEnabled>
+          <p1:ExternalFastSettleChannel>0</p1:ExternalFastSettleChannel>
+          <p1:LedDisplayEnabled>false</p1:LedDisplayEnabled>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.BufferCapacity</Selector>
+        <Selector>AmplifierData</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:SelectChannels">
-          <q2:Channels>
-            <q2:int>5</q2:int>
-            <q2:int>6</q2:int>
-            <q2:int>9</q2:int>
-            <q2:int>10</q2:int>
-          </q2:Channels>
+        <Combinator xsi:type="dsp:SelectChannels" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:ConvertScale">
+          <dsp:Depth>F32</dsp:Depth>
+          <dsp:Scale>1</dsp:Scale>
+          <dsp:Shift>-32768</dsp:Shift>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:ReferenceChannels">
+          <dsp:Channels>
+            <dsp:int>10</dsp:int>
+          </dsp:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:ConvertScale">
+          <dsp:Depth>S16</dsp:Depth>
+          <dsp:Scale>1</dsp:Scale>
+          <dsp:Shift>0</dsp:Shift>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:SelectChannels">
+          <dsp:Channels>
+            <dsp:int>0</dsp:int>
+            <dsp:int>1</dsp:int>
+            <dsp:int>2</dsp:int>
+            <dsp:int>3</dsp:int>
+            <dsp:int>4</dsp:int>
+            <dsp:int>5</dsp:int>
+            <dsp:int>6</dsp:int>
+            <dsp:int>7</dsp:int>
+            <dsp:int>8</dsp:int>
+            <dsp:int>9</dsp:int>
+            <dsp:int>10</dsp:int>
+            <dsp:int>11</dsp:int>
+            <dsp:int>12</dsp:int>
+            <dsp:int>13</dsp:int>
+            <dsp:int>14</dsp:int>
+            <dsp:int>15</dsp:int>
+          </dsp:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:MatrixWriter">
+          <dsp:Path>C:\Data\raw\Bonsai\_16ch_.bin</dsp:Path>
+          <dsp:Suffix>Timestamp</dsp:Suffix>
+          <dsp:Overwrite>false</dsp:Overwrite>
+          <dsp:Layout>ColumnMajor</dsp:Layout>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:FrequencyFilter">
+          <dsp:SampleRate>44100</dsp:SampleRate>
+          <dsp:Cutoff1>300</dsp:Cutoff1>
+          <dsp:Cutoff2>5000</dsp:Cutoff2>
+          <dsp:KernelLength>120</dsp:KernelLength>
+          <dsp:FilterType>BandPass</dsp:FilterType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:ReferenceChannels">
+          <dsp:Channels>
+            <dsp:int>10</dsp:int>
+          </dsp:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:SelectChannels">
+          <dsp:Channels>
+            <dsp:int>5</dsp:int>
+            <dsp:int>6</dsp:int>
+            <dsp:int>9</dsp:int>
+            <dsp:int>10</dsp:int>
+          </dsp:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:DetectSpikes">
+          <dsp:Delay>16</dsp:Delay>
+          <dsp:Length>48</dsp:Length>
+          <dsp:Threshold>
+            <dsp:double>-42.578102018003179</dsp:double>
+            <dsp:double>-22.136259339883509</dsp:double>
+            <dsp:double>0</dsp:double>
+            <dsp:double>0.029720656346556185</dsp:double>
+          </dsp:Threshold>
+          <dsp:WaveformRefinement>AlignPeaks</dsp:WaveformRefinement>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.TtlIn</Selector>
+        <Selector>TtlIn</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:ReferenceChannels">
-          <q2:Channels>
-            <q2:int>10</q2:int>
-          </q2:Channels>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:FrequencyFilter">
-          <q2:SamplingFrequency>30000</q2:SamplingFrequency>
-          <q2:Cutoff1>300</q2:Cutoff1>
-          <q2:Cutoff2>5000</q2:Cutoff2>
-          <q2:KernelLength>120</q2:KernelLength>
-          <q2:FilterType>BandPass</q2:FilterType>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:MatrixWriter">
-          <q2:Path>C:\Data\raw\Bonsai\_16ch_.bin</q2:Path>
-          <q2:Suffix>Timestamp</q2:Suffix>
-          <q2:Overwrite>false</q2:Overwrite>
-          <q2:Layout>ColumnMajor</q2:Layout>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:SelectChannels">
-          <q2:Channels>
-            <q2:int>0</q2:int>
-            <q2:int>1</q2:int>
-            <q2:int>2</q2:int>
-            <q2:int>3</q2:int>
-            <q2:int>4</q2:int>
-            <q2:int>5</q2:int>
-            <q2:int>6</q2:int>
-            <q2:int>7</q2:int>
-            <q2:int>8</q2:int>
-            <q2:int>9</q2:int>
-            <q2:int>10</q2:int>
-            <q2:int>11</q2:int>
-            <q2:int>12</q2:int>
-            <q2:int>13</q2:int>
-            <q2:int>14</q2:int>
-            <q2:int>15</q2:int>
-          </q2:Channels>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:ConvertScale">
-          <q2:Depth>S16</q2:Depth>
-          <q2:Scale>1</q2:Scale>
-          <q2:Shift>0</q2:Shift>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:ReferenceChannels">
-          <q2:Channels>
-            <q2:int>10</q2:int>
-          </q2:Channels>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:ConvertScale">
-          <q2:Depth>F32</q2:Depth>
-          <q2:Scale>1</q2:Scale>
-          <q2:Shift>-32768</q2:Shift>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:SelectChannels" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.AmplifierData</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:MatrixWriter">
-          <q2:Path>LOCAL STORAGE\Ephys\Ivy\Ivy_ColumnAccel_.bin</q2:Path>
-          <q2:Suffix>Timestamp</q2:Suffix>
-          <q2:Overwrite>false</q2:Overwrite>
-          <q2:Layout>ColumnMajor</q2:Layout>
+        <Combinator xsi:type="dsp:MatrixWriter">
+          <dsp:Path>C:\Data\raw\Bonsai\_TTL_.bin</dsp:Path>
+          <dsp:Suffix>Timestamp</dsp:Suffix>
+          <dsp:Overwrite>false</dsp:Overwrite>
+          <dsp:Layout>ColumnMajor</dsp:Layout>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.AuxiliaryData</Selector>
+        <Selector>BufferCapacity</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>AuxiliaryData</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:MatrixWriter">
+          <dsp:Path>LOCAL STORAGE\Ephys\Ivy\Ivy_ColumnAccel_.bin</dsp:Path>
+          <dsp:Suffix>Timestamp</dsp:Suffix>
+          <dsp:Overwrite>false</dsp:Overwrite>
+          <dsp:Layout>ColumnMajor</dsp:Layout>
+        </Combinator>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>14</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>0</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>0</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>0</From>
-        <To>16</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>12</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>13</From>
-        <To>12</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>14</From>
-        <To>13</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>16</From>
-        <To>15</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="0" To="12" Label="Source1" />
+      <Edge From="0" To="14" Label="Source1" />
+      <Edge From="0" To="15" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.DetectSpikes, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.MatrixWriter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.ReferenceChannels, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.ConvertScale, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

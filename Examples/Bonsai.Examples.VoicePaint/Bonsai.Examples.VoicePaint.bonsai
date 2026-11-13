@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
-                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio" xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -27,7 +21,7 @@
           <dsp:Alpha>0.5</dsp:Alpha>
         </Combinator>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>PowerSpectrum</Name>
         <Description>Computes the power spectrum of the audio signal using a discrete Fourier transform.</Description>
         <Workflow>
@@ -42,16 +36,6 @@
               <Combinator xsi:type="IntProperty">
                 <Value>512</Value>
               </Combinator>
-            </Expression>
-            <Expression xsi:type="Divide">
-              <Operand xsi:type="IntProperty">
-                <Value>2</Value>
-              </Operand>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="EndCol" />
-              </PropertyMappings>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
@@ -69,6 +53,16 @@
                 <dsp:OperationFlags>Forward</dsp:OperationFlags>
               </Combinator>
             </Expression>
+            <Expression xsi:type="Divide">
+              <Operand xsi:type="IntProperty">
+                <Value>2</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="EndCol" />
+              </PropertyMappings>
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="dsp:Submatrix">
                 <dsp:StartRow>0</dsp:StartRow>
@@ -83,15 +77,15 @@
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="6" Label="Source1" />
+            <Edge From="0" To="4" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="2" To="5" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="8" Label="Source2" />
-            <Edge From="5" To="6" Label="Source2" />
+            <Edge From="2" To="6" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="8" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="7" To="8" Label="Source2" />
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
           </Edges>
@@ -127,10 +121,10 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Name>UpdateCanvas</scr:Name>
-        <scr:Description>Iteratively paints a canvas by moving a particle controlled by the input pitch and magnitude.</scr:Description>
-        <scr:Script>import clr
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>UpdateCanvas</ipy:Name>
+        <ipy:Description>Iteratively paints a canvas by moving a particle controlled by the input pitch and magnitude.</ipy:Description>
+        <ipy:Script>import clr
 clr.AddReference("OpenCV.Net")
 from OpenCV.Net import *
 from math import sin, cos, pi
@@ -165,7 +159,7 @@ def unload():
   output.Close()
   output = None
   particle = None
-</scr:Script>
+</ipy:Script>
       </Expression>
     </Nodes>
     <Edges>
