@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="GroupWorkflow">
@@ -21,10 +15,10 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Zip" />
             </Expression>
-            <Expression xsi:type="scr:PythonTransform">
-              <scr:Name>csv filename</scr:Name>
-              <scr:Description>csv filename</scr:Description>
-              <scr:Script>import clr
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>csv filename</ipy:Name>
+              <ipy:Description>csv filename</ipy:Description>
+              <ipy:Script>import clr
 
 def getOutputType():
     return clr.GetClrType(str)
@@ -32,7 +26,7 @@ def getOutputType():
 def process(value):
   path = value.Item2 + value.Item1
   return path
-</scr:Script>
+</ipy:Script>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -55,7 +49,7 @@ def process(value):
         <io:ScanPattern>%i,%i</io:ScanPattern>
         <io:SkipRows>0</io:SkipRows>
       </Expression>
-      <Expression xsi:type="CreateObservable">
+      <Expression xsi:type="rx:CreateObservable">
         <Name>VideoClips</Name>
         <Workflow>
           <Nodes>
@@ -78,59 +72,9 @@ Item2-Item1+1 as Count
               <Name>SaveClip</Name>
               <Workflow>
                 <Nodes>
-                  <Expression xsi:type="ExternalizedMapping">
-                    <Property Name="Count" />
-                  </Expression>
-                  <Expression xsi:type="ExternalizedMapping">
-                    <Property Name="StartPosition" />
-                  </Expression>
-                  <Expression xsi:type="GroupWorkflow">
-                    <Name>Outpout video filename</Name>
-                    <Workflow>
-                      <Nodes>
-                        <Expression xsi:type="SubscribeSubject">
-                          <Name>VideoFileName</Name>
-                        </Expression>
-                        <Expression xsi:type="SubscribeSubject">
-                          <Name>DirName</Name>
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:Zip" />
-                        </Expression>
-                        <Expression xsi:type="scr:PythonTransform">
-                          <scr:Name>split video filename</scr:Name>
-                          <scr:Description>split video filename</scr:Description>
-                          <scr:Script>import clr
-
-def getOutputType():
-    return clr.GetClrType(str)
-
-def process(value):
-  filename=value.Item1
-  filename=filename.replace('.avi', '_Trial.avi')
-  filename=filename.replace('.mp4', '_Trial.avi') 
-  path = value.Item2 + "WhiskerTracking\\" + filename 
-  return path
-</scr:Script>
-                        </Expression>
-                        <Expression xsi:type="WorkflowOutput" />
-                      </Nodes>
-                      <Edges>
-                        <Edge From="0" To="2" Label="Source1" />
-                        <Edge From="1" To="2" Label="Source2" />
-                        <Edge From="2" To="3" Label="Source1" />
-                        <Edge From="3" To="4" Label="Source1" />
-                      </Edges>
-                    </Workflow>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="FileName" />
-                    </PropertyMappings>
-                  </Expression>
                   <Expression xsi:type="Disable">
                     <Builder xsi:type="GroupWorkflow">
-                      <Name>Outpout video filename</Name>
+                      <Name>Outpout CSV mask filename</Name>
                       <Workflow>
                         <Nodes>
                           <Expression xsi:type="SubscribeSubject">
@@ -142,20 +86,23 @@ def process(value):
                           <Expression xsi:type="Combinator">
                             <Combinator xsi:type="rx:Zip" />
                           </Expression>
-                          <Expression xsi:type="scr:PythonTransform">
-                            <scr:Name>split video filename</scr:Name>
-                            <scr:Description>split video filename</scr:Description>
-                            <scr:Script>import clr
+                          <Expression xsi:type="ipy:PythonTransform">
+                            <ipy:Name>head contour filename</ipy:Name>
+                            <ipy:Description />
+                            <ipy:Script>import clr
 
 def getOutputType():
     return clr.GetClrType(str)
 
 def process(value):
   filename=value.Item1
-  filename=filename.replace('.avi', '_Trial.mp4') 
-  path = value.Item2 + "Test\\" + filename 
+  if '.avi' in filename:
+    filename=filename.replace('.avi', '_Mask_part.csv') 
+  elif '.mp4' in filename:
+    filename=filename.replace('.mp4', '_Mask_part.csv') 
+  path = value.Item2 + "workspace\\" + filename 
   return path
-</scr:Script>
+</ipy:Script>
                           </Expression>
                           <Expression xsi:type="WorkflowOutput" />
                         </Nodes>
@@ -175,6 +122,9 @@ def process(value):
                       </PropertyMappings>
                     </Builder>
                   </Expression>
+                  <Expression xsi:type="ExternalizedMapping">
+                    <Property Name="StartPosition" />
+                  </Expression>
                   <Expression xsi:type="GroupWorkflow">
                     <Name>Input video filename</Name>
                     <Workflow>
@@ -188,10 +138,10 @@ def process(value):
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="rx:Zip" />
                         </Expression>
-                        <Expression xsi:type="scr:PythonTransform">
-                          <scr:Name>video filename</scr:Name>
-                          <scr:Description>video filename</scr:Description>
-                          <scr:Script>import clr
+                        <Expression xsi:type="ipy:PythonTransform">
+                          <ipy:Name>video filename</ipy:Name>
+                          <ipy:Description>video filename</ipy:Description>
+                          <ipy:Script>import clr
 
 def getOutputType():
     return clr.GetClrType(str)
@@ -199,7 +149,7 @@ def getOutputType():
 def process(value):
   path = value.Item2 + value.Item1
   return path
-</scr:Script>
+</ipy:Script>
                         </Expression>
                         <Expression xsi:type="WorkflowOutput" />
                       </Nodes>
@@ -273,10 +223,60 @@ def process(value):
                       </Combinator>
                     </Builder>
                   </Expression>
+                  <Expression xsi:type="ExternalizedMapping">
+                    <Property Name="Count" />
+                  </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Take">
                       <rx:Count>2500</rx:Count>
                     </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="GroupWorkflow">
+                      <Name>Outpout video filename</Name>
+                      <Workflow>
+                        <Nodes>
+                          <Expression xsi:type="SubscribeSubject">
+                            <Name>VideoFileName</Name>
+                          </Expression>
+                          <Expression xsi:type="SubscribeSubject">
+                            <Name>DirName</Name>
+                          </Expression>
+                          <Expression xsi:type="Combinator">
+                            <Combinator xsi:type="rx:Zip" />
+                          </Expression>
+                          <Expression xsi:type="ipy:PythonTransform">
+                            <ipy:Name>split video filename</ipy:Name>
+                            <ipy:Description>split video filename</ipy:Description>
+                            <ipy:Script>import clr
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  filename=value.Item1
+  filename=filename.replace('.avi', '_Trial.mp4') 
+  path = value.Item2 + "Test\\" + filename 
+  return path
+</ipy:Script>
+                          </Expression>
+                          <Expression xsi:type="WorkflowOutput" />
+                        </Nodes>
+                        <Edges>
+                          <Edge From="0" To="2" Label="Source1" />
+                          <Edge From="1" To="2" Label="Source2" />
+                          <Edge From="2" To="3" Label="Source1" />
+                          <Edge From="3" To="4" Label="Source1" />
+                        </Edges>
+                      </Workflow>
+                    </Builder>
+                  </Expression>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="PropertyMapping">
+                      <PropertyMappings>
+                        <Property Name="FileName" />
+                      </PropertyMappings>
+                    </Builder>
                   </Expression>
                   <Expression xsi:type="Disable">
                     <Builder xsi:type="Combinator">
@@ -286,6 +286,50 @@ def process(value):
                         <cv:Overwrite>false</cv:Overwrite>
                       </Combinator>
                     </Builder>
+                  </Expression>
+                  <Expression xsi:type="GroupWorkflow">
+                    <Name>Outpout video filename</Name>
+                    <Workflow>
+                      <Nodes>
+                        <Expression xsi:type="SubscribeSubject">
+                          <Name>VideoFileName</Name>
+                        </Expression>
+                        <Expression xsi:type="SubscribeSubject">
+                          <Name>DirName</Name>
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="rx:Zip" />
+                        </Expression>
+                        <Expression xsi:type="ipy:PythonTransform">
+                          <ipy:Name>split video filename</ipy:Name>
+                          <ipy:Description>split video filename</ipy:Description>
+                          <ipy:Script>import clr
+
+def getOutputType():
+    return clr.GetClrType(str)
+
+def process(value):
+  filename=value.Item1
+  filename=filename.replace('.avi', '_Trial.avi')
+  filename=filename.replace('.mp4', '_Trial.avi') 
+  path = value.Item2 + "WhiskerTracking\\" + filename 
+  return path
+</ipy:Script>
+                        </Expression>
+                        <Expression xsi:type="WorkflowOutput" />
+                      </Nodes>
+                      <Edges>
+                        <Edge From="0" To="2" Label="Source1" />
+                        <Edge From="1" To="2" Label="Source2" />
+                        <Edge From="2" To="3" Label="Source1" />
+                        <Edge From="3" To="4" Label="Source1" />
+                      </Edges>
+                    </Workflow>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="FileName" />
+                    </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:VideoWriter">
@@ -378,56 +422,6 @@ def process(value):
                     </Builder>
                   </Expression>
                   <Expression xsi:type="Disable">
-                    <Builder xsi:type="GroupWorkflow">
-                      <Name>Outpout CSV mask filename</Name>
-                      <Workflow>
-                        <Nodes>
-                          <Expression xsi:type="SubscribeSubject">
-                            <Name>VideoFileName</Name>
-                          </Expression>
-                          <Expression xsi:type="SubscribeSubject">
-                            <Name>DirName</Name>
-                          </Expression>
-                          <Expression xsi:type="Combinator">
-                            <Combinator xsi:type="rx:Zip" />
-                          </Expression>
-                          <Expression xsi:type="scr:PythonTransform">
-                            <scr:Name>head contour filename</scr:Name>
-                            <scr:Description />
-                            <scr:Script>import clr
-
-def getOutputType():
-    return clr.GetClrType(str)
-
-def process(value):
-  filename=value.Item1
-  if '.avi' in filename:
-    filename=filename.replace('.avi', '_Mask_part.csv') 
-  elif '.mp4' in filename:
-    filename=filename.replace('.mp4', '_Mask_part.csv') 
-  path = value.Item2 + "workspace\\" + filename 
-  return path
-</scr:Script>
-                          </Expression>
-                          <Expression xsi:type="WorkflowOutput" />
-                        </Nodes>
-                        <Edges>
-                          <Edge From="0" To="2" Label="Source1" />
-                          <Edge From="1" To="2" Label="Source2" />
-                          <Edge From="2" To="3" Label="Source1" />
-                          <Edge From="3" To="4" Label="Source1" />
-                        </Edges>
-                      </Workflow>
-                    </Builder>
-                  </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="FileName" />
-                      </PropertyMappings>
-                    </Builder>
-                  </Expression>
-                  <Expression xsi:type="Disable">
                     <Builder xsi:type="io:CsvWriter">
                       <io:FileName>D:\Vincent\vIRt44\vIRt44_1210\workspace\vIRt44_1210_4600_20191210-185921_HSCam_Mask_part.csv</io:FileName>
                       <io:Delimiter>,</io:Delimiter>
@@ -445,7 +439,6 @@ def process(value):
                     <Builder xsi:type="Combinator">
                       <Combinator xsi:type="rx:Timer">
                         <rx:DueTime>PT0.5S</rx:DueTime>
-                        <rx:Period>PT0S</rx:Period>
                       </Combinator>
                     </Builder>
                   </Expression>
@@ -455,9 +448,9 @@ def process(value):
                     </Builder>
                   </Expression>
                   <Expression xsi:type="Disable">
-                    <Builder xsi:type="scr:PythonTransform">
-                      <scr:Name>ffmpeg call</scr:Name>
-                      <scr:Script>import os
+                    <Builder xsi:type="ipy:PythonTransform">
+                      <ipy:Name>ffmpeg call</ipy:Name>
+                      <ipy:Script>import os
 
 #fname = 'D:\\Data\\Video\\video.avi'
 pipename = r'\\.\pipe\video'
@@ -469,29 +462,29 @@ def process(value):
   # -r 500 -preset fast  -b:v 2M
   os.system(str.format(r'ffmpeg -f rawvideo -vcodec rawvideo -s 640x480 -pix_fmt rgb24 -i {0} -f mp4 {1}',pipename,fname))
   #os.system(str.format(r'ffmpeg -c:v h264_nvenc -i {0} -vcodec copy -y {1}',pipename,fname))
-  return True</scr:Script>
+  return True</ipy:Script>
                     </Builder>
                   </Expression>
                 </Nodes>
                 <Edges>
-                  <Edge From="0" To="12" Label="Source2" />
-                  <Edge From="1" To="8" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="3" To="14" Label="Source2" />
-                  <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="5" To="13" Label="Source2" />
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="18" Label="Source1" />
+                  <Edge From="2" To="5" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source2" />
+                  <Edge From="5" To="6" Label="Source1" />
                   <Edge From="6" To="7" Label="Source1" />
-                  <Edge From="7" To="8" Label="Source2" />
-                  <Edge From="8" To="9" Label="Source1" />
-                  <Edge From="9" To="10" Label="Source1" />
-                  <Edge From="10" To="11" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source1" />
+                  <Edge From="8" To="10" Label="Source1" />
+                  <Edge From="9" To="10" Label="Source2" />
+                  <Edge From="10" To="13" Label="Source1" />
                   <Edge From="11" To="12" Label="Source1" />
-                  <Edge From="12" To="13" Label="Source1" />
-                  <Edge From="13" To="14" Label="Source1" />
+                  <Edge From="12" To="13" Label="Source2" />
+                  <Edge From="13" To="16" Label="Source1" />
                   <Edge From="14" To="15" Label="Source1" />
-                  <Edge From="15" To="18" Label="Source2" />
+                  <Edge From="15" To="16" Label="Source2" />
                   <Edge From="16" To="17" Label="Source1" />
-                  <Edge From="17" To="18" Label="Source1" />
+                  <Edge From="17" To="18" Label="Source2" />
                   <Edge From="18" To="19" Label="Source1" />
                   <Edge From="20" To="21" Label="Source1" />
                   <Edge From="21" To="22" Label="Source1" />
@@ -527,9 +520,9 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:First" />
             </Expression>
-            <Expression xsi:type="ReplaySubject">
+            <Expression xsi:type="rx:ReplaySubject">
               <Name>DirName</Name>
-              <BufferSize xsi:nil="true" />
+              <rx:BufferSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="Value" DisplayName="VideoFileName" />
@@ -542,9 +535,9 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:First" />
             </Expression>
-            <Expression xsi:type="ReplaySubject">
+            <Expression xsi:type="rx:ReplaySubject">
               <Name>VideoFileName</Name>
-              <BufferSize xsi:nil="true" />
+              <rx:BufferSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="Value" DisplayName="CSVFileName" />
@@ -557,9 +550,9 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:First" />
             </Expression>
-            <Expression xsi:type="ReplaySubject">
+            <Expression xsi:type="rx:ReplaySubject">
               <Name>CSVFileName</Name>
-              <BufferSize xsi:nil="true" />
+              <rx:BufferSize xsi:nil="true" />
             </Expression>
           </Nodes>
           <Edges>

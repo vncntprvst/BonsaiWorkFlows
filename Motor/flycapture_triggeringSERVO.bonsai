@@ -1,113 +1,113 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q4="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:q1="clr-namespace:Bonsai.PointGrey;assembly=Bonsai.PointGrey" xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p1="clr-namespace:Bonsai.PointGrey;assembly=Bonsai.PointGrey" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:FlyCapture">
-          <q1:Index>0</q1:Index>
-          <q1:ColorProcessing>Default</q1:ColorProcessing>
+        <Combinator xsi:type="p1:FlyCapture">
+          <p1:Index>0</p1:Index>
+          <p1:ColorProcessing>Default</p1:ColorProcessing>
+          <p1:ToggleTrigger>false</p1:ToggleTrigger>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>Image</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:VideoWriter">
-          <q2:FileName>Data\tests\11102017\testvideo.avi</q2:FileName>
-          <q2:Suffix>None</q2:Suffix>
-          <q2:Buffered>true</q2:Buffered>
-          <q2:Overwrite>false</q2:Overwrite>
-          <q2:FourCC>FMP4</q2:FourCC>
-          <q2:FrameRate>30</q2:FrameRate>
-          <q2:FrameSize>
-            <q2:Width>0</q2:Width>
-            <q2:Height>0</q2:Height>
-          </q2:FrameSize>
-          <q2:ResizeInterpolation>NearestNeighbor</q2:ResizeInterpolation>
+        <Combinator xsi:type="cv:VideoWriter">
+          <cv:FileName>Data\tests\11102017\testvideo.avi</cv:FileName>
+          <cv:Suffix>None</cv:Suffix>
+          <cv:Buffered>true</cv:Buffered>
+          <cv:Overwrite>false</cv:Overwrite>
+          <cv:FourCC>FMP4</cv:FourCC>
+          <cv:FrameRate>30</cv:FrameRate>
+          <cv:FrameSize>
+            <cv:Width>0</cv:Width>
+            <cv:Height>0</cv:Height>
+          </cv:FrameSize>
+          <cv:ResizeInterpolation>NearestNeighbor</cv:ResizeInterpolation>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:CropPolygon">
-          <q2:Regions>
-            <q2:ArrayOfPoint>
-              <q2:Point>
-                <q2:X>1423</q2:X>
-                <q2:Y>786</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>1423</q2:X>
-                <q2:Y>786</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>1423</q2:X>
-                <q2:Y>783</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>1423</q2:X>
-                <q2:Y>783</q2:Y>
-              </q2:Point>
-            </q2:ArrayOfPoint>
-            <q2:ArrayOfPoint>
-              <q2:Point>
-                <q2:X>666</q2:X>
-                <q2:Y>818</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>173</q2:X>
-                <q2:Y>818</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>173</q2:X>
-                <q2:Y>1723</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>666</q2:X>
-                <q2:Y>1723</q2:Y>
-              </q2:Point>
-            </q2:ArrayOfPoint>
-          </q2:Regions>
-          <q2:MaskType>ToZero</q2:MaskType>
-          <q2:FillValue>
-            <q2:Val0>0</q2:Val0>
-            <q2:Val1>0</q2:Val1>
-            <q2:Val2>0</q2:Val2>
-            <q2:Val3>0</q2:Val3>
-          </q2:FillValue>
+        <Combinator xsi:type="cv:CropPolygon">
+          <cv:Regions>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>1423</cv:X>
+                <cv:Y>786</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>1423</cv:X>
+                <cv:Y>786</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>1423</cv:X>
+                <cv:Y>783</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>1423</cv:X>
+                <cv:Y>783</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>666</cv:X>
+                <cv:Y>818</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>173</cv:X>
+                <cv:Y>818</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>173</cv:X>
+                <cv:Y>1723</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>666</cv:X>
+                <cv:Y>1723</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+          </cv:Regions>
+          <cv:MaskType>ToZero</cv:MaskType>
+          <cv:FillValue>
+            <cv:Val0>0</cv:Val0>
+            <cv:Val1>0</cv:Val1>
+            <cv:Val2>0</cv:Val2>
+            <cv:Val3>0</cv:Val3>
+          </cv:FillValue>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Threshold">
-          <q2:ThresholdValue>44</q2:ThresholdValue>
-          <q2:MaxValue>255</q2:MaxValue>
-          <q2:ThresholdType>BinaryInv</q2:ThresholdType>
+        <Combinator xsi:type="cv:Threshold">
+          <cv:ThresholdValue>44</cv:ThresholdValue>
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:ThresholdType>BinaryInv</cv:ThresholdType>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:FindContours">
-          <q2:Mode>External</q2:Mode>
-          <q2:Method>ChainApproxNone</q2:Method>
-          <q2:Offset>
-            <q2:X>0</q2:X>
-            <q2:Y>0</q2:Y>
-          </q2:Offset>
-          <q2:MinArea xsi:nil="true" />
-          <q2:MaxArea>50000</q2:MaxArea>
+        <Combinator xsi:type="cv:FindContours">
+          <cv:Mode>External</cv:Mode>
+          <cv:Method>ChainApproxNone</cv:Method>
+          <cv:Offset>
+            <cv:X>0</cv:X>
+            <cv:Y>0</cv:Y>
+          </cv:Offset>
+          <cv:MinArea xsi:nil="true" />
+          <cv:MaxArea>50000</cv:MaxArea>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:BinaryRegionAnalysis" />
+        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:LargestBinaryRegion" />
+        <Combinator xsi:type="cv:LargestBinaryRegion" />
       </Expression>
-      <Expression xsi:type="q3:CsvWriter">
-        <q3:FileName>Data\tests\11102017\test.csv</q3:FileName>
-        <q3:Append>false</q3:Append>
-        <q3:Overwrite>false</q3:Overwrite>
-        <q3:Suffix>None</q3:Suffix>
-        <q3:IncludeHeader>false</q3:IncludeHeader>
-        <q3:Selector>Source.Centroid</q3:Selector>
-        <q3:CompatibilityMode>true</q3:CompatibilityMode>
+      <Expression xsi:type="io:CsvWriter">
+        <io:FileName>Data\tests\11102017\test.csv</io:FileName>
+        <io:Append>false</io:Append>
+        <io:Overwrite>false</io:Overwrite>
+        <io:Suffix>None</io:Suffix>
+        <io:IncludeHeader>false</io:IncludeHeader>
+        <io:Selector>Centroid</io:Selector>
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>Area</Selector>
@@ -118,9 +118,9 @@
         </Operand>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="DistinctUntilChanged" />
+        <Combinator xsi:type="rx:DistinctUntilChanged" />
       </Expression>
-      <Expression xsi:type="Condition">
+      <Expression xsi:type="rx:Condition">
         <Name>Entry</Name>
         <Workflow>
           <Nodes>
@@ -134,91 +134,90 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="rx:PublishSubject">
         <Name>EnterA</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:CropPolygon">
-          <q2:Regions>
-            <q2:ArrayOfPoint>
-              <q2:Point>
-                <q2:X>1423</q2:X>
-                <q2:Y>786</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>1423</q2:X>
-                <q2:Y>786</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>1423</q2:X>
-                <q2:Y>783</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>1423</q2:X>
-                <q2:Y>783</q2:Y>
-              </q2:Point>
-            </q2:ArrayOfPoint>
-            <q2:ArrayOfPoint>
-              <q2:Point>
-                <q2:X>835</q2:X>
-                <q2:Y>937</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>1463</q2:X>
-                <q2:Y>937</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>1463</q2:X>
-                <q2:Y>1567</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>835</q2:X>
-                <q2:Y>1567</q2:Y>
-              </q2:Point>
-            </q2:ArrayOfPoint>
-          </q2:Regions>
-          <q2:MaskType>ToZero</q2:MaskType>
-          <q2:FillValue>
-            <q2:Val0>0</q2:Val0>
-            <q2:Val1>0</q2:Val1>
-            <q2:Val2>0</q2:Val2>
-            <q2:Val3>0</q2:Val3>
-          </q2:FillValue>
+        <Combinator xsi:type="cv:CropPolygon">
+          <cv:Regions>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>1423</cv:X>
+                <cv:Y>786</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>1423</cv:X>
+                <cv:Y>786</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>1423</cv:X>
+                <cv:Y>783</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>1423</cv:X>
+                <cv:Y>783</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>835</cv:X>
+                <cv:Y>937</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>1463</cv:X>
+                <cv:Y>937</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>1463</cv:X>
+                <cv:Y>1567</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>835</cv:X>
+                <cv:Y>1567</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+          </cv:Regions>
+          <cv:MaskType>ToZero</cv:MaskType>
+          <cv:FillValue>
+            <cv:Val0>0</cv:Val0>
+            <cv:Val1>0</cv:Val1>
+            <cv:Val2>0</cv:Val2>
+            <cv:Val3>0</cv:Val3>
+          </cv:FillValue>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Threshold">
-          <q2:ThresholdValue>44</q2:ThresholdValue>
-          <q2:MaxValue>255</q2:MaxValue>
-          <q2:ThresholdType>BinaryInv</q2:ThresholdType>
+        <Combinator xsi:type="cv:Threshold">
+          <cv:ThresholdValue>44</cv:ThresholdValue>
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:ThresholdType>BinaryInv</cv:ThresholdType>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:FindContours">
-          <q2:Mode>External</q2:Mode>
-          <q2:Method>ChainApproxNone</q2:Method>
-          <q2:Offset>
-            <q2:X>0</q2:X>
-            <q2:Y>0</q2:Y>
-          </q2:Offset>
-          <q2:MinArea xsi:nil="true" />
-          <q2:MaxArea>50000</q2:MaxArea>
+        <Combinator xsi:type="cv:FindContours">
+          <cv:Mode>External</cv:Mode>
+          <cv:Method>ChainApproxNone</cv:Method>
+          <cv:Offset>
+            <cv:X>0</cv:X>
+            <cv:Y>0</cv:Y>
+          </cv:Offset>
+          <cv:MinArea xsi:nil="true" />
+          <cv:MaxArea>50000</cv:MaxArea>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:BinaryRegionAnalysis" />
+        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:LargestBinaryRegion" />
+        <Combinator xsi:type="cv:LargestBinaryRegion" />
       </Expression>
-      <Expression xsi:type="q3:CsvWriter">
-        <q3:FileName>Data\tests\11102017\test.csv</q3:FileName>
-        <q3:Append>false</q3:Append>
-        <q3:Overwrite>false</q3:Overwrite>
-        <q3:Suffix>None</q3:Suffix>
-        <q3:IncludeHeader>false</q3:IncludeHeader>
-        <q3:Selector>Source.Centroid</q3:Selector>
-        <q3:CompatibilityMode>true</q3:CompatibilityMode>
+      <Expression xsi:type="io:CsvWriter">
+        <io:FileName>Data\tests\11102017\test.csv</io:FileName>
+        <io:Append>false</io:Append>
+        <io:Overwrite>false</io:Overwrite>
+        <io:Suffix>None</io:Suffix>
+        <io:IncludeHeader>false</io:IncludeHeader>
+        <io:Selector>Centroid</io:Selector>
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>Area</Selector>
@@ -229,9 +228,9 @@
         </Operand>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="DistinctUntilChanged" />
+        <Combinator xsi:type="rx:DistinctUntilChanged" />
       </Expression>
-      <Expression xsi:type="Condition">
+      <Expression xsi:type="rx:Condition">
         <Name>Entry</Name>
         <Workflow>
           <Nodes>
@@ -245,16 +244,15 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="rx:PublishSubject">
         <Name>EnterB</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Timer">
-          <DueTime>PT2S</DueTime>
-          <Period>PT0S</Period>
+        <Combinator xsi:type="rx:Timer">
+          <rx:DueTime>PT2S</rx:DueTime>
         </Combinator>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>Close</Name>
         <Workflow>
           <Nodes>
@@ -267,9 +265,9 @@
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q4:ServoOutput">
-                <q4:PortName>COM4</q4:PortName>
-                <q4:Pin>9</q4:Pin>
+              <Combinator xsi:type="ard:ServoOutput">
+                <ard:PortName>COM4</ard:PortName>
+                <ard:Pin>9</ard:Pin>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -281,7 +279,7 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>EnterA</Name>
         <Workflow>
           <Nodes>
@@ -289,8 +287,8 @@
               <Name>EnterA</Name>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Take">
-                <Count>1</Count>
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>1</rx:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -301,7 +299,7 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>EnterB</Name>
         <Workflow>
           <Nodes>
@@ -309,8 +307,8 @@
               <Name>EnterB</Name>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Take">
-                <Count>1</Count>
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>1</rx:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -321,7 +319,7 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>Open</Name>
         <Workflow>
           <Nodes>
@@ -334,9 +332,9 @@
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q4:ServoOutput">
-                <q4:PortName>COM4</q4:PortName>
-                <q4:Pin>9</q4:Pin>
+              <Combinator xsi:type="ard:ServoOutput">
+                <ard:PortName>COM4</ard:PortName>
+                <ard:Pin>9</ard:Pin>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -349,7 +347,7 @@
         </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Repeat" />
+        <Combinator xsi:type="rx:Repeat" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="IntProperty">
@@ -357,9 +355,9 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q4:ServoOutput">
-          <q4:PortName>COM4</q4:PortName>
-          <q4:Pin>9</q4:Pin>
+        <Combinator xsi:type="ard:ServoOutput">
+          <ard:PortName>COM4</ard:PortName>
+          <ard:Pin>9</ard:Pin>
         </Combinator>
       </Expression>
     </Nodes>
@@ -396,22 +394,4 @@
       <Edge From="31" To="32" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Arduino.ServoOutput, Bonsai.Arduino, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.PointGrey.FlyCapture, Bonsai.PointGrey, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.DistinctUntilChanged, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.CropPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

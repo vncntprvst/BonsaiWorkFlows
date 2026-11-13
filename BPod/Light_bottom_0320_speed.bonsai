@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.6.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -64,6 +58,9 @@
       <Expression xsi:type="MemberSelector">
         <Selector>X</Selector>
       </Expression>
+      <Expression xsi:type="scr:ExpressionTransform">
+        <scr:Expression>it &gt; 155 &amp;&amp; it &lt; 280</scr:Expression>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Timer">
           <rx:DueTime>PT0S</rx:DueTime>
@@ -86,9 +83,6 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Zip" />
-      </Expression>
-      <Expression xsi:type="scr:ExpressionTransform">
-        <scr:Expression>it &gt; 155 &amp;&amp; it &lt; 280</scr:Expression>
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>Y</Selector>
@@ -113,13 +107,13 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Name>SpeedComputation</scr:Name>
-        <scr:Script>import math
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>SpeedComputation</ipy:Name>
+        <ipy:Script>import math
 @returns(float)
 def process(value):
   speed = math.sqrt(((value[0][0][0]-value[0][1][0])**2)+((value[1][0][0]-value[1][1][0])**2))
-  return float(speed)</scr:Script>
+  return float(speed)</ipy:Script>
       </Expression>
       <Expression xsi:type="osc:SendMessage">
         <osc:Connection>MyPort</osc:Connection>
@@ -147,18 +141,18 @@ def process(value):
       <Edge From="6" To="26" Label="Source1" />
       <Edge From="7" To="8" Label="Source1" />
       <Edge From="7" To="16" Label="Source1" />
-      <Edge From="8" To="10" Label="Source1" />
-      <Edge From="8" To="15" Label="Source1" />
-      <Edge From="9" To="11" Label="Source2" />
-      <Edge From="9" To="17" Label="Source2" />
-      <Edge From="9" To="18" Label="Source2" />
-      <Edge From="9" To="10" Label="Source2" />
-      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="8" To="11" Label="Source1" />
+      <Edge From="10" To="11" Label="Source2" />
+      <Edge From="10" To="12" Label="Source2" />
+      <Edge From="10" To="17" Label="Source2" />
+      <Edge From="10" To="18" Label="Source2" />
       <Edge From="11" To="12" Label="Source1" />
       <Edge From="12" To="13" Label="Source1" />
-      <Edge From="12" To="14" Label="Source2" />
       <Edge From="13" To="14" Label="Source1" />
-      <Edge From="14" To="22" Label="Source1" />
+      <Edge From="13" To="15" Label="Source2" />
+      <Edge From="14" To="15" Label="Source1" />
+      <Edge From="15" To="22" Label="Source1" />
       <Edge From="16" To="17" Label="Source1" />
       <Edge From="16" To="25" Label="Source1" />
       <Edge From="17" To="18" Label="Source1" />

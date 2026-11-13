@@ -1,16 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.6.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:p1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon"
-                 xmlns:ffmpeg="clr-namespace:Bonsai.FFmpeg;assembly=Bonsai.FFmpeg"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p1="clr-namespace:Bonsai.Pylon;assembly=Bonsai.Pylon" xmlns:ffmpeg="clr-namespace:Bonsai.FFmpeg;assembly=Bonsai.FFmpeg" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:PylonCapture">
           <p1:SerialNumber>40138851</p1:SerialNumber>
           <p1:ParameterFile>D:\Basler\Config\acA1440-220um_40138851_default.pfs</p1:ParameterFile>
+          <p1:GrabStrategy>OneByOne</p1:GrabStrategy>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">

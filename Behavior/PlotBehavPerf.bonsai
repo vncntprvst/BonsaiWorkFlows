@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.5"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -28,7 +22,7 @@
           <Value>1</Value>
         </Operand>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>Left blue</Name>
         <Description>Left condition</Description>
         <Workflow>
@@ -36,7 +30,7 @@
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="Condition">
+            <Expression xsi:type="rx:Condition">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
@@ -71,7 +65,7 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>Rigth orange</Name>
         <Description>Right Condition</Description>
         <Workflow>
@@ -79,7 +73,7 @@
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="Condition">
+            <Expression xsi:type="rx:Condition">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
@@ -123,14 +117,14 @@
           <dsp:ColumnTiles>10</dsp:ColumnTiles>
         </Combinator>
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>import clr
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>import clr
 clr.AddReference("OpenCV.Net")
 from OpenCV.Net import Mat
 
 @returns(Mat)
 def process(value):
-  return value.Reshape(0, 1)</scr:Script>
+  return value.Reshape(0, 1)</ipy:Script>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="dsp:Tile">
@@ -138,13 +132,13 @@ def process(value):
           <dsp:ColumnTiles>1</dsp:ColumnTiles>
         </Combinator>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>FilterMatrix</Name>
         <Description>FilterMatrix</Description>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="scr:PythonSource">
-              <scr:Script>import clr
+            <Expression xsi:type="ipy:PythonSource">
+              <ipy:Script>import clr
 clr.AddReference("OpenCV.Net")
 from OpenCV.Net import Mat
 from System import Array
@@ -155,7 +149,7 @@ def generate():
   for i in range(10):
     array[0, i] = 1
     array[1, i+10] = 1
-  yield Mat.FromArray(array)</scr:Script>
+  yield Mat.FromArray(array)</ipy:Script>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>

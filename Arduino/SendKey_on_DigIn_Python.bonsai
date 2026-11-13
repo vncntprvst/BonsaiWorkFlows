@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.5"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
+      <Expression xsi:type="Annotation">
+        <Name>Arduino parameters</Name>
+        <Text><![CDATA[Select the COM port for the ARDUINO.
+Set the sampling frequency (default interval: 10ms).]]></Text>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="ard:CreateArduino">
           <ard:Name>DigitalTrigger</ard:Name>
@@ -14,6 +14,10 @@
           <ard:BaudRate>57600</ard:BaudRate>
           <ard:SamplingInterval>10</ard:SamplingInterval>
         </Combinator>
+      </Expression>
+      <Expression xsi:type="Annotation">
+        <Name>Digital input parameter</Name>
+        <Text><![CDATA[Set which pin receives the TTL]]></Text>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="ard:DigitalInput">
@@ -54,8 +58,8 @@
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="scr:PythonTransform">
-              <scr:Script>import clr
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>import clr
 clr.AddReference('System.Windows.Forms')
 from System.Windows.Forms import SendKeys
 
@@ -65,7 +69,7 @@ def process(value):
         # SendKeys.SendWait("^3")
         # Send Ctl Shift 8 
         SendKeys.SendWait("^+8")
-    return value</scr:Script>
+    return value</ipy:Script>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -85,11 +89,13 @@ def process(value):
       </Expression>
     </Nodes>
     <Edges>
-      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="0" To="1" Label="Source1" />
       <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
-      <Edge From="5" To="6" Label="Source1" />
       <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

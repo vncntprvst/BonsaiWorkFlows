@@ -1,22 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="ard:DigitalInput">
           <ard:PortName>COM7</ard:PortName>
-          <ard:Pin>2</ard:Pin>
+          <ard:Pin>3</ard:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="ard:DigitalInput">
           <ard:PortName>COM7</ard:PortName>
-          <ard:Pin>3</ard:Pin>
+          <ard:Pin>2</ard:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -41,7 +36,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="Condition">
+      <Expression xsi:type="rx:Condition">
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
@@ -80,7 +75,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="Condition">
+      <Expression xsi:type="rx:Condition">
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
@@ -121,8 +116,8 @@
       </Expression>
     </Nodes>
     <Edges>
-      <Edge From="0" To="2" Label="Source2" />
-      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="0" To="2" Label="Source1" />
+      <Edge From="1" To="2" Label="Source2" />
       <Edge From="2" To="3" Label="Source1" />
       <Edge From="2" To="14" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />

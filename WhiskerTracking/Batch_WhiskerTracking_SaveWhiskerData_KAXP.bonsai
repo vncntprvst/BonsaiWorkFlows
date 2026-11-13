@@ -1,259 +1,243 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Concat" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:GetFiles">
-          <q1:Path>D:\Data\vIRt12</q1:Path>
-          <q1:SearchPattern>*.avi</q1:SearchPattern>
-          <q1:SearchOption>TopDirectoryOnly</q1:SearchOption>
+        <Combinator xsi:type="io:GetFiles">
+          <io:Path>D:\Data\vIRt12</io:Path>
+          <io:SearchPattern>*.avi</io:SearchPattern>
+          <io:SearchOption>TopDirectoryOnly</io:SearchOption>
         </Combinator>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>FileNames</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Concat" />
+              <Combinator xsi:type="rx:Concat" />
             </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="CreateObservable">
+      <Expression xsi:type="rx:CreateObservable">
         <Name>ProcessVideo</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="ReplaySubject">
+            <Expression xsi:type="rx:ReplaySubject">
               <Name>FileName</Name>
-              <BufferSize xsi:nil="true" />
+              <rx:BufferSize xsi:nil="true" />
             </Expression>
-            <Expression xsi:type="q2:PythonTransform">
-              <q2:Script>@returns(str)
-def process(value):
-  return value.replace('.avi', '_WhiskersBaseCentroids.csv')</q2:Script>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:FileCapture">
-                <q3:FileName>D:\Data\vIRt12\vIRt12_Acute_KAionto_5100_cutWhiskers_HSCam2018-01-18T15_53_03.avi</q3:FileName>
-                <q3:PlaybackRate>5000</q3:PlaybackRate>
-                <q3:StartPosition>0</q3:StartPosition>
-                <q3:PositionUnits>Frames</q3:PositionUnits>
-                <q3:Loop>false</q3:Loop>
-                <q3:Playing>true</q3:Playing>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>FileName</MemberName>
+            <Expression xsi:type="SubscribeSubject">
               <Name>FileName</Name>
             </Expression>
-            <Expression xsi:type="ExternalizedProperty">
-              <MemberName>FileName</MemberName>
-              <Name>CSVFileName</Name>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:Crop">
-                <q3:RegionOfInterest>
-                  <q3:X>0</q3:X>
-                  <q3:Y>2</q3:Y>
-                  <q3:Width>594</q3:Width>
-                  <q3:Height>478</q3:Height>
-                </q3:RegionOfInterest>
+              <Combinator xsi:type="cv:FileCapture">
+                <cv:FileName>D:\Data\vIRt12\vIRt12_Acute_KAionto_5100_cutWhiskers_HSCam2018-01-18T15_53_03.avi</cv:FileName>
+                <cv:PlaybackRate>5000</cv:PlaybackRate>
+                <cv:StartPosition>0</cv:StartPosition>
+                <cv:PositionUnits>Frames</cv:PositionUnits>
+                <cv:Loop>false</cv:Loop>
+                <cv:Playing>true</cv:Playing>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:SortBinaryRegions" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:BinaryRegionAnalysis" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:FindContours">
-                <q3:Mode>List</q3:Mode>
-                <q3:Method>ChainApproxSimple</q3:Method>
-                <q3:Offset>
-                  <q3:X>0</q3:X>
-                  <q3:Y>0</q3:Y>
-                </q3:Offset>
-                <q3:MinArea>400</q3:MinArea>
-                <q3:MaxArea>5000</q3:MaxArea>
+              <Combinator xsi:type="cv:Crop">
+                <cv:RegionOfInterest>
+                  <cv:X>0</cv:X>
+                  <cv:Y>2</cv:Y>
+                  <cv:Width>594</cv:Width>
+                  <cv:Height>478</cv:Height>
+                </cv:RegionOfInterest>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:BackgroundSubtraction">
-                <q3:BackgroundFrames>0</q3:BackgroundFrames>
-                <q3:AdaptationRate>0</q3:AdaptationRate>
-                <q3:ThresholdValue>0</q3:ThresholdValue>
-                <q3:ThresholdType>ToZero</q3:ThresholdType>
-                <q3:SubtractionMethod>Absolute</q3:SubtractionMethod>
+              <Combinator xsi:type="cv:Grayscale" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:AdaptiveThreshold">
+                <cv:MaxValue>255</cv:MaxValue>
+                <cv:AdaptiveMethod>MeanC</cv:AdaptiveMethod>
+                <cv:ThresholdType>Binary</cv:ThresholdType>
+                <cv:BlockSize>11</cv:BlockSize>
+                <cv:Parameter>7</cv:Parameter>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:MaskPolygon">
-                <q3:Regions>
-                  <q3:ArrayOfPoint>
-                    <q3:Point>
-                      <q3:X>-21</q3:X>
-                      <q3:Y>517</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>79</q3:X>
-                      <q3:Y>481</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>98</q3:X>
-                      <q3:Y>497</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>172</q3:X>
-                      <q3:Y>479</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>168</q3:X>
-                      <q3:Y>396</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>116</q3:X>
-                      <q3:Y>344</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>118</q3:X>
-                      <q3:Y>274</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>135</q3:X>
-                      <q3:Y>225</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>202</q3:X>
-                      <q3:Y>163</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>278</q3:X>
-                      <q3:Y>101</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>313</q3:X>
-                      <q3:Y>107</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>369</q3:X>
-                      <q3:Y>119</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>480</q3:X>
-                      <q3:Y>133</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>613</q3:X>
-                      <q3:Y>139</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>708</q3:X>
-                      <q3:Y>29</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>633</q3:X>
-                      <q3:Y>-47</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>377</q3:X>
-                      <q3:Y>-85</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>-2</q3:X>
-                      <q3:Y>-85</q3:Y>
-                    </q3:Point>
-                  </q3:ArrayOfPoint>
-                  <q3:ArrayOfPoint>
-                    <q3:Point>
-                      <q3:X>597</q3:X>
-                      <q3:Y>444</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>172</q3:X>
-                      <q3:Y>442</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>174</q3:X>
-                      <q3:Y>479</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>618</q3:X>
-                      <q3:Y>497</q3:Y>
-                    </q3:Point>
-                  </q3:ArrayOfPoint>
-                  <q3:ArrayOfPoint>
-                    <q3:Point>
-                      <q3:X>477</q3:X>
-                      <q3:Y>199</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>426</q3:X>
-                      <q3:Y>294</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>549</q3:X>
-                      <q3:Y>444</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>606</q3:X>
-                      <q3:Y>444</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>612</q3:X>
-                      <q3:Y>139</q3:Y>
-                    </q3:Point>
-                    <q3:Point>
-                      <q3:X>519</q3:X>
-                      <q3:Y>135</q3:Y>
-                    </q3:Point>
-                  </q3:ArrayOfPoint>
-                </q3:Regions>
-                <q3:MaskType>ToZeroInv</q3:MaskType>
-                <q3:FillValue>
-                  <q3:Val0>255</q3:Val0>
-                  <q3:Val1>255</q3:Val1>
-                  <q3:Val2>255</q3:Val2>
-                  <q3:Val3>0</q3:Val3>
-                </q3:FillValue>
+              <Combinator xsi:type="cv:MaskPolygon">
+                <cv:Regions>
+                  <cv:ArrayOfPoint>
+                    <cv:Point>
+                      <cv:X>-21</cv:X>
+                      <cv:Y>517</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>79</cv:X>
+                      <cv:Y>481</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>98</cv:X>
+                      <cv:Y>497</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>172</cv:X>
+                      <cv:Y>479</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>168</cv:X>
+                      <cv:Y>396</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>116</cv:X>
+                      <cv:Y>344</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>118</cv:X>
+                      <cv:Y>274</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>135</cv:X>
+                      <cv:Y>225</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>202</cv:X>
+                      <cv:Y>163</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>278</cv:X>
+                      <cv:Y>101</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>313</cv:X>
+                      <cv:Y>107</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>369</cv:X>
+                      <cv:Y>119</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>480</cv:X>
+                      <cv:Y>133</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>613</cv:X>
+                      <cv:Y>139</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>708</cv:X>
+                      <cv:Y>29</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>633</cv:X>
+                      <cv:Y>-47</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>377</cv:X>
+                      <cv:Y>-85</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>-2</cv:X>
+                      <cv:Y>-85</cv:Y>
+                    </cv:Point>
+                  </cv:ArrayOfPoint>
+                  <cv:ArrayOfPoint>
+                    <cv:Point>
+                      <cv:X>597</cv:X>
+                      <cv:Y>444</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>172</cv:X>
+                      <cv:Y>442</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>174</cv:X>
+                      <cv:Y>479</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>618</cv:X>
+                      <cv:Y>497</cv:Y>
+                    </cv:Point>
+                  </cv:ArrayOfPoint>
+                  <cv:ArrayOfPoint>
+                    <cv:Point>
+                      <cv:X>477</cv:X>
+                      <cv:Y>199</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>426</cv:X>
+                      <cv:Y>294</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>549</cv:X>
+                      <cv:Y>444</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>606</cv:X>
+                      <cv:Y>444</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>612</cv:X>
+                      <cv:Y>139</cv:Y>
+                    </cv:Point>
+                    <cv:Point>
+                      <cv:X>519</cv:X>
+                      <cv:Y>135</cv:Y>
+                    </cv:Point>
+                  </cv:ArrayOfPoint>
+                </cv:Regions>
+                <cv:MaskType>ToZeroInv</cv:MaskType>
+                <cv:FillValue>
+                  <cv:Val0>255</cv:Val0>
+                  <cv:Val1>255</cv:Val1>
+                  <cv:Val2>255</cv:Val2>
+                  <cv:Val3>0</cv:Val3>
+                </cv:FillValue>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:AdaptiveThreshold">
-                <q3:MaxValue>255</q3:MaxValue>
-                <q3:AdaptiveMethod>MeanC</q3:AdaptiveMethod>
-                <q3:ThresholdType>Binary</q3:ThresholdType>
-                <q3:BlockSize>11</q3:BlockSize>
-                <q3:Parameter>7</q3:Parameter>
+              <Combinator xsi:type="cv:BackgroundSubtraction">
+                <cv:BackgroundFrames>0</cv:BackgroundFrames>
+                <cv:AdaptationRate>0</cv:AdaptationRate>
+                <cv:ThresholdValue>0</cv:ThresholdValue>
+                <cv:ThresholdType>ToZero</cv:ThresholdType>
+                <cv:SubtractionMethod>Absolute</cv:SubtractionMethod>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q3:Grayscale" />
+              <Combinator xsi:type="cv:FindContours">
+                <cv:Mode>List</cv:Mode>
+                <cv:Method>ChainApproxSimple</cv:Method>
+                <cv:Offset>
+                  <cv:X>0</cv:X>
+                  <cv:Y>0</cv:Y>
+                </cv:Offset>
+                <cv:MinArea>400</cv:MinArea>
+                <cv:MaxArea>5000</cv:MaxArea>
+              </Combinator>
             </Expression>
-            <Expression xsi:type="q2:PythonTransform">
-              <q2:Script>import clr
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:SortBinaryRegions" />
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 from System import Tuple
@@ -292,10 +276,10 @@ def process(sortedRegions):
     centroidList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint,NaNPoint,NaNPoint,NaNPoint)
 
   return Tuple.Create(baseList, centroidList)
-</q2:Script>
+</ipy:Script>
             </Expression>
-            <Expression xsi:type="q2:ExpressionTransform">
-              <q2:Expression>new(
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Expression>new(
 Item1.Item1 as Whisker1_Base,
 Item1.Item2 as Whisker2_Base,
 Item1.Item3 as Whisker3_Base,
@@ -308,146 +292,60 @@ Item2.Item3 as Whisker3_Centroid,
 Item2.Item4 as Whisker4_Centroid,
 Item2.Item5 as Whisker5_Centroid,
 Item2.Item6 as Whisker6_Centroid
-)</q2:Expression>
-            </Expression>
-            <Expression xsi:type="q1:CsvWriter">
-              <q1:FileName>D:\Data\vIRt12\vIRt12_Acute_KAionto_5100_cutWhiskers_HSCam2018-01-18T15_53_03_WhiskersBaseCentroids.csv</q1:FileName>
-              <q1:Delimiter>,</q1:Delimiter>
-              <q1:Append>false</q1:Append>
-              <q1:Overwrite>true</q1:Overwrite>
-              <q1:Suffix>None</q1:Suffix>
-              <q1:IncludeHeader>true</q1:IncludeHeader>
-              <q1:Selector>Whisker1_Base,Whisker1_Centroid,Whisker2_Base,Whisker2_Centroid,Whisker3_Base,Whisker3_Centroid,Whisker4_Base,Whisker4_Centroid,Whisker5_Base,Whisker5_Centroid,Whisker6_Base,Whisker6_Centroid</q1:Selector>
+)</scr:Expression>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>FileName</Name>
             </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>FileName</Name>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>@returns(str)
+def process(value):
+  return value.replace('.avi', '_WhiskersBaseCentroids.csv')</ipy:Script>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="io:CsvWriter">
+              <io:FileName>D:\Data\vIRt12\vIRt12_Acute_KAionto_5100_cutWhiskers_HSCam2018-01-18T15_53_03_WhiskersBaseCentroids.csv</io:FileName>
+              <io:Delimiter>,</io:Delimiter>
+              <io:Append>false</io:Append>
+              <io:Overwrite>true</io:Overwrite>
+              <io:Suffix>None</io:Suffix>
+              <io:IncludeHeader>true</io:IncludeHeader>
+              <io:Selector>Whisker1_Base,Whisker1_Centroid,Whisker2_Base,Whisker2_Centroid,Whisker3_Base,Whisker3_Centroid,Whisker4_Base,Whisker4_Centroid,Whisker5_Base,Whisker5_Centroid,Whisker6_Base,Whisker6_Centroid</io:Selector>
             </Expression>
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>5</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>6</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>4</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>16</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>6</From>
-              <To>13</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>7</From>
-              <To>14</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>8</From>
-              <To>7</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>9</From>
-              <To>8</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>10</From>
-              <To>9</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>11</From>
-              <To>10</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>12</From>
-              <To>11</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>13</From>
-              <To>12</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>14</From>
-              <To>15</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>15</From>
-              <To>16</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>17</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>18</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="14" To="18" Label="Source1" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="17" To="18" Label="Source2" />
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Concat" />
+      </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>1</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>0</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.GetFiles, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.SortBinaryRegions, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.MaskPolygon, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.AdaptiveThreshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

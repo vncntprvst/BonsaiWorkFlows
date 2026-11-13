@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -32,7 +26,7 @@
           <cv:Operation>Sum</cv:Operation>
         </Combinator>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>ActivityIndex</Name>
         <Workflow>
           <Nodes>
@@ -61,7 +55,7 @@
       <Expression xsi:type="rx:GroupBy">
         <rx:KeySelector>Index</rx:KeySelector>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>DetectEntryToExit</Name>
         <Workflow>
           <Nodes>
@@ -97,7 +91,7 @@ Item2 as RoiIndex,
 Item1.Value as RoiState,
 Item1.Interval.TotalSeconds as SecondsSinceLastState)</scr:Expression>
             </Expression>
-            <Expression xsi:type="Condition">
+            <Expression xsi:type="rx:Condition">
               <Name>EntryToExitOnly</Name>
               <Workflow>
                 <Nodes>

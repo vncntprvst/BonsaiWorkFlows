@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -190,8 +184,8 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:SortBinaryRegions" />
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>import clr
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 clr.AddReference("Bonsai.Vision")
@@ -276,10 +270,10 @@ def process(sortedRegions):
     if int(blob1Index)+2 &lt;= len(vSortRegionList)-1:
       Component.Add(vSortRegionList[int(blob1Index)+2])
     
-  return Component</scr:Script>
+  return Component</ipy:Script>
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>#return x,y values for base, center, tip of three central whiskers
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>#return x,y values for base, center, tip of three central whiskers
 import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
@@ -321,7 +315,7 @@ def process(sortedRegions):
     tipList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
 
   return Tuple.Create(baseList, centroidList, tipList)
-</scr:Script>
+</ipy:Script>
       </Expression>
       <Expression xsi:type="scr:ExpressionTransform">
         <scr:Expression>new(
@@ -340,10 +334,10 @@ Item3.Item3 as Whisker3_Tip
         <MemberName>FileName</MemberName>
         <Value>D:\Vincent\vIRt41\vIRt41_0815\vIRt41_0815_5100_10Hz_10ms_20mW_20190815-174017_HSCam.avi</Value>
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>@returns(str)
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>@returns(str)
 def process(value):
-  return value.replace('.avi', '_WhiskersBaseCentroidTip.csv')</scr:Script>
+  return value.replace('.avi', '_WhiskersBaseCentroidTip.csv')</ipy:Script>
       </Expression>
       <Expression xsi:type="PropertyMapping">
         <PropertyMappings>

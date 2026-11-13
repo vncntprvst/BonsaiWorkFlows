@@ -1,308 +1,207 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.2.1">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:VideoCaptureDevice">
-          <q1:Index>1</q1:Index>
+        <Combinator xsi:type="vid:VideoCaptureDevice">
+          <vid:Index>1</vid:Index>
+          <vid:CaptureProperties />
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:RoiActivity">
-          <q2:Regions>
-            <q2:ArrayOfPoint>
-              <q2:Point>
-                <q2:X>7</q2:X>
-                <q2:Y>12</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>344</q2:X>
-                <q2:Y>12</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>344</q2:X>
-                <q2:Y>92</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>7</q2:X>
-                <q2:Y>92</q2:Y>
-              </q2:Point>
-            </q2:ArrayOfPoint>
-            <q2:ArrayOfPoint>
-              <q2:Point>
-                <q2:X>6</q2:X>
-                <q2:Y>398</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>343</q2:X>
-                <q2:Y>398</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>343</q2:X>
-                <q2:Y>478</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>6</q2:X>
-                <q2:Y>478</q2:Y>
-              </q2:Point>
-            </q2:ArrayOfPoint>
-            <q2:ArrayOfPoint>
-              <q2:Point>
-                <q2:X>296</q2:X>
-                <q2:Y>392</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>633</q2:X>
-                <q2:Y>392</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>633</q2:X>
-                <q2:Y>472</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>296</q2:X>
-                <q2:Y>472</q2:Y>
-              </q2:Point>
-            </q2:ArrayOfPoint>
-            <q2:ArrayOfPoint>
-              <q2:Point>
-                <q2:X>300</q2:X>
-                <q2:Y>8</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>637</q2:X>
-                <q2:Y>8</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>637</q2:X>
-                <q2:Y>88</q2:Y>
-              </q2:Point>
-              <q2:Point>
-                <q2:X>300</q2:X>
-                <q2:Y>88</q2:Y>
-              </q2:Point>
-            </q2:ArrayOfPoint>
-          </q2:Regions>
+        <Combinator xsi:type="cv:RoiActivity">
+          <cv:Regions>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>7</cv:X>
+                <cv:Y>12</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>344</cv:X>
+                <cv:Y>12</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>344</cv:X>
+                <cv:Y>92</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>7</cv:X>
+                <cv:Y>92</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>6</cv:X>
+                <cv:Y>398</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>343</cv:X>
+                <cv:Y>398</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>343</cv:X>
+                <cv:Y>478</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>6</cv:X>
+                <cv:Y>478</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>296</cv:X>
+                <cv:Y>392</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>633</cv:X>
+                <cv:Y>392</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>633</cv:X>
+                <cv:Y>472</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>296</cv:X>
+                <cv:Y>472</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>300</cv:X>
+                <cv:Y>8</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>637</cv:X>
+                <cv:Y>8</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>637</cv:X>
+                <cv:Y>88</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>300</cv:X>
+                <cv:Y>88</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+          </cv:Regions>
+          <cv:Operation>Sum</cv:Operation>
         </Combinator>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
-      </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Workflow>
           <Nodes>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:RoiActivityDetected">
-                <q2:Index>0</q2:Index>
-                <q2:Threshold>0</q2:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:RoiActivityDetected">
-                <q2:Index xsi:nil="true" />
-                <q2:Threshold>0</q2:Threshold>
-              </Combinator>
-            </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:RoiActivityDetected">
+                <cv:Index>0</cv:Index>
+                <cv:Threshold>0</cv:Threshold>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:RoiActivityDetected">
+                <cv:Index xsi:nil="true" />
+                <cv:Threshold>0</cv:Threshold>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:RoiActivityDetected">
+                <cv:Index>0</cv:Index>
+                <cv:Threshold>0</cv:Threshold>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:RoiActivityDetected">
+                <cv:Index xsi:nil="true" />
+                <cv:Threshold>0</cv:Threshold>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:RoiActivityDetected">
+                <cv:Index>0</cv:Index>
+                <cv:Threshold>0</cv:Threshold>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:RoiActivityDetected">
+                <cv:Index xsi:nil="true" />
+                <cv:Threshold>0</cv:Threshold>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>0</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="0" To="3" Label="Source1" />
+            <Edge From="0" To="4" Label="Source1" />
+            <Edge From="0" To="5" Label="Source1" />
+            <Edge From="0" To="6" Label="Source1" />
+            <Edge From="1" To="7" Label="Source1" />
+            <Edge From="2" To="7" Label="Source2" />
+            <Edge From="3" To="7" Label="Source3" />
+            <Edge From="4" To="7" Label="Source4" />
+            <Edge From="5" To="7" Label="Source5" />
+            <Edge From="6" To="7" Label="Source6" />
+            <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Workflow>
           <Nodes>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:RoiActivityDetected">
-                <q2:Index>0</q2:Index>
-                <q2:Threshold>0</q2:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:RoiActivityDetected">
-                <q2:Index xsi:nil="true" />
-                <q2:Threshold>0</q2:Threshold>
-              </Combinator>
-            </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:RoiActivityDetected">
+                <cv:Index>0</cv:Index>
+                <cv:Threshold>0</cv:Threshold>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:RoiActivityDetected">
+                <cv:Index xsi:nil="true" />
+                <cv:Threshold>0</cv:Threshold>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
             <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:RoiActivityDetected">
-                <q2:Index>0</q2:Index>
-                <q2:Threshold>0</q2:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:RoiActivityDetected">
-                <q2:Index xsi:nil="true" />
-                <q2:Threshold>0</q2:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:RoiActivityDetected">
-                <q2:Index>0</q2:Index>
-                <q2:Threshold>0</q2:Threshold>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:RoiActivityDetected">
-                <q2:Index xsi:nil="true" />
-                <q2:Threshold>0</q2:Threshold>
-              </Combinator>
-            </Expression>
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>0</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>5</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>6</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>7</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>8</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>0</To>
-              <Label>Source3</Label>
-            </Edge>
-            <Edge>
-              <From>6</From>
-              <To>0</To>
-              <Label>Source4</Label>
-            </Edge>
-            <Edge>
-              <From>7</From>
-              <To>0</To>
-              <Label>Source5</Label>
-            </Edge>
-            <Edge>
-              <From>8</From>
-              <To>0</To>
-              <Label>Source6</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="3" Label="Source1" />
+            <Edge From="2" To="3" Label="Source2" />
+            <Edge From="3" To="4" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="q3:CsvWriter">
-        <q3:FileName>E:\Data\Video\tests\testCSV.csv</q3:FileName>
-        <q3:Append>false</q3:Append>
-        <q3:Overwrite>false</q3:Overwrite>
-        <q3:Suffix>FileCount</q3:Suffix>
-        <q3:IncludeHeader>false</q3:IncludeHeader>
-        <q3:Selector>Source.Item1,Source.Item2</q3:Selector>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="io:CsvWriter">
+        <io:FileName>E:\Data\Video\tests\testCSV.csv</io:FileName>
+        <io:Append>false</io:Append>
+        <io:Overwrite>false</io:Overwrite>
+        <io:Suffix>FileCount</io:Suffix>
+        <io:IncludeHeader>false</io:IncludeHeader>
+        <io:Selector>Item1,Item2</io:Selector>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>2</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="1" To="3" Label="Source1" />
+      <Edge From="2" To="4" Label="Source1" />
+      <Edge From="3" To="4" Label="Source2" />
+      <Edge From="4" To="5" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.RoiActivity, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.RoiActivityDetected, Bonsai.Vision, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

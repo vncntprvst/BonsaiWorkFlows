@@ -1,109 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.1.2">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q3="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
-      <Expression xsi:type="Source">
-        <PropertyMappings>
-          <PropertyMapping name="SampleRate" selector="Source1" />
-        </PropertyMappings>
-        <Generator xsi:type="q1:Rhd2000EvalBoard">
-          <q1:BitFileName>C:\Shared Data\RHD2000interface_source_code_v1_41\main.bit</q1:BitFileName>
-          <q1:SampleRate>SampleRate1000Hz</q1:SampleRate>
-          <q1:FastSettle>false</q1:FastSettle>
-          <q1:LowerBandwidth>0.1</q1:LowerBandwidth>
-          <q1:UpperBandwidth>7500</q1:UpperBandwidth>
-          <q1:DspCutoffFrequency>1</q1:DspCutoffFrequency>
-          <q1:DspEnabled>false</q1:DspEnabled>
-        </Generator>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.BoardAdcData</Selector>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="SampleRate" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:Split" />
-      </Expression>
-      <Expression xsi:type="ExternalizedPropertyOfAmplifierSampleRateRhd2000EvalBoard">
-        <MemberName>SampleRate</MemberName>
-        <Name>SampleRate</Name>
-        <Value>SampleRate1000Hz</Value>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:Abs" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:Submatrix">
-          <q2:StartRow>0</q2:StartRow>
-          <q2:EndRow>1</q2:EndRow>
-          <q2:StartCol>0</q2:StartCol>
-          <q2:EndCol>60</q2:EndCol>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:FrequencyFilter">
-          <q2:SamplingFrequency>1000</q2:SamplingFrequency>
-          <q2:Cutoff1>8</q2:Cutoff1>
-          <q2:Cutoff2>15</q2:Cutoff2>
-          <q2:KernelLength>1000</q2:KernelLength>
-          <q2:FilterType>BandPass</q2:FilterType>
+        <Combinator xsi:type="p1:Rhd2000EvalBoard">
+          <p1:BitFileName>C:\Shared Data\RHD2000interface_source_code_v1_41\main.bit</p1:BitFileName>
+          <p1:SampleRate>SampleRate1000Hz</p1:SampleRate>
+          <p1:FastSettle>false</p1:FastSettle>
+          <p1:LowerBandwidth>0.1</p1:LowerBandwidth>
+          <p1:UpperBandwidth>7500</p1:UpperBandwidth>
+          <p1:DspCutoffFrequency>1</p1:DspCutoffFrequency>
+          <p1:DspEnabled>false</p1:DspEnabled>
+          <p1:CableDelayA xsi:nil="true" />
+          <p1:CableDelayB xsi:nil="true" />
+          <p1:CableDelayC xsi:nil="true" />
+          <p1:CableDelayD xsi:nil="true" />
+          <p1:ExternalFastSettleEnabled>false</p1:ExternalFastSettleEnabled>
+          <p1:ExternalFastSettleChannel>0</p1:ExternalFastSettleChannel>
+          <p1:LedDisplayEnabled>false</p1:LedDisplayEnabled>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.Item1</Selector>
+        <Selector>BoardAdcData</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:Sum" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.Val0</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:Buffer">
-          <q2:Count>3</q2:Count>
-          <q2:Skip xsi:nil="true" />
+        <Combinator xsi:type="dsp:Submatrix">
+          <dsp:StartRow>0</dsp:StartRow>
+          <dsp:EndRow>1</dsp:EndRow>
+          <dsp:StartCol>0</dsp:StartCol>
+          <dsp:EndCol>60</dsp:EndCol>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q2:Average" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.Val0</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q3:DigitalOutput">
-          <q3:PortName>COM1</q3:PortName>
-          <q3:Pin>8</q3:Pin>
+        <Combinator xsi:type="dsp:FrequencyFilter">
+          <dsp:SampleRate>44100</dsp:SampleRate>
+          <dsp:Cutoff1>8</dsp:Cutoff1>
+          <dsp:Cutoff2>15</dsp:Cutoff2>
+          <dsp:KernelLength>1000</dsp:KernelLength>
+          <dsp:FilterType>BandPass</dsp:FilterType>
         </Combinator>
       </Expression>
-      <Expression xsi:type="q4:PythonTransform">
-        <q4:Script>import clr
-
-def getOutputType():
-  return clr.GetClrType(bool)
-
-def process(input):
-  if input == True:
-    return False
-  </q4:Script>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Abs" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Split" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Sum" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Val0</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Buffer">
+          <dsp:Count>3</dsp:Count>
+          <dsp:Skip xsi:nil="true" />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Average" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Val0</Selector>
       </Expression>
       <Expression xsi:type="GreaterThan">
         <Operand xsi:type="DoubleProperty">
           <Value>0</Value>
         </Operand>
-        <PropertyMappings />
       </Expression>
+      <Expression xsi:type="MemberSelector" />
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="DistinctUntilChanged" />
+        <Combinator xsi:type="rx:DistinctUntilChanged" />
       </Expression>
-      <Expression xsi:type="Condition">
+      <Expression xsi:type="rx:Condition">
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
@@ -112,170 +88,70 @@ def process(input):
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
           </Edges>
         </Workflow>
-        <PropertyMappings />
       </Expression>
-      <Expression xsi:type="MemberSelector" />
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Take">
-          <Count>1</Count>
+        <Combinator xsi:type="rx:Take">
+          <rx:Count>1</rx:Count>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q3:DigitalOutput">
-          <q3:PortName>COM1</q3:PortName>
-          <q3:Pin>8</q3:Pin>
+        <Combinator xsi:type="ard:DigitalOutput">
+          <ard:PortName>COM1</ard:PortName>
+          <ard:Pin>8</ard:Pin>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>import clr
+
+def getOutputType():
+  return clr.GetClrType(bool)
+
+def process(input):
+  if input == True:
+    return False
+  </ipy:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="ard:DigitalOutput">
+          <ard:PortName>COM1</ard:PortName>
+          <ard:Pin>8</ard:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Delay">
-          <DueTime>PT30S</DueTime>
+        <Combinator xsi:type="rx:Delay">
+          <rx:DueTime>PT30S</rx:DueTime>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="Repeat" />
+        <Combinator xsi:type="rx:Repeat" />
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>0</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>12</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>12</From>
-        <To>15</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>13</From>
-        <To>21</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>14</From>
-        <To>13</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>15</From>
-        <To>16</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>15</From>
-        <To>18</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>16</From>
-        <To>17</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>17</From>
-        <To>19</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>19</From>
-        <To>20</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>20</From>
-        <To>14</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>21</From>
-        <To>22</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="13" To="14" Label="Source1" />
+      <Edge From="13" To="15" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="18" Label="Source1" />
+      <Edge From="18" To="19" Label="Source1" />
+      <Edge From="19" To="20" Label="Source1" />
+      <Edge From="20" To="21" Label="Source1" />
+      <Edge From="21" To="22" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Split, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[Rhythm.Net.AmplifierSampleRate, Rhythm.Net, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null],[Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Abs, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Submatrix, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Sum, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Buffer, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Average, Bonsai.Dsp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Arduino.DigitalOutput, Bonsai.Arduino, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.DistinctUntilChanged, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

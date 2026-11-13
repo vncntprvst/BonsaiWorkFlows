@@ -1,178 +1,111 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.1.2">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q2="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc" xmlns:q3="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q5="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
-      <Expression xsi:type="Source">
-        <PropertyMappings />
-        <Generator xsi:type="q3:VideoCaptureDevice">
-          <q3:Index>0</q3:Index>
-        </Generator>
-      </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:Crop">
-          <q1:RegionOfInterest>
-            <q1:X>64</q1:X>
-            <q1:Y>116</q1:Y>
-            <q1:Width>92</q1:Width>
-            <q1:Height>106</q1:Height>
-          </q1:RegionOfInterest>
+        <Combinator xsi:type="vid:VideoCaptureDevice">
+          <vid:Index>0</vid:Index>
+          <vid:CaptureProperties />
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:Laplace">
-          <q1:ApertureSize>3</q1:ApertureSize>
+        <Combinator xsi:type="cv:Flip">
+          <cv:Mode>Vertical</cv:Mode>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:Crop">
-          <q1:RegionOfInterest>
-            <q1:X>490</q1:X>
-            <q1:Y>102</q1:Y>
-            <q1:Width>98</q1:Width>
-            <q1:Height>146</q1:Height>
-          </q1:RegionOfInterest>
+        <Combinator xsi:type="cv:Crop">
+          <cv:RegionOfInterest>
+            <cv:X>64</cv:X>
+            <cv:Y>116</cv:Y>
+            <cv:Width>92</cv:Width>
+            <cv:Height>106</cv:Height>
+          </cv:RegionOfInterest>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:RoiActivityDetected">
-          <q1:Index>0</q1:Index>
-          <q1:Threshold>40000</q1:Threshold>
+        <Combinator xsi:type="cv:Laplace">
+          <cv:ApertureSize>3</cv:ApertureSize>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:Flip">
-          <q1:Mode>Vertical</q1:Mode>
+        <Combinator xsi:type="cv:RoiActivity">
+          <cv:Operation>Sum</cv:Operation>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:RoiActivity" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:Laplace">
-          <q1:ApertureSize>3</q1:ApertureSize>
+        <Combinator xsi:type="cv:RoiActivityDetected">
+          <cv:Index>0</cv:Index>
+          <cv:Threshold>40000</cv:Threshold>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:RoiActivity" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:RoiActivityDetected">
-          <q1:Index xsi:nil="true" />
-          <q1:Threshold>0</q1:Threshold>
+        <Combinator xsi:type="cv:Crop">
+          <cv:RegionOfInterest>
+            <cv:X>490</cv:X>
+            <cv:Y>102</cv:Y>
+            <cv:Width>98</cv:Width>
+            <cv:Height>146</cv:Height>
+          </cv:RegionOfInterest>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:Crop">
-          <q1:RegionOfInterest>
-            <q1:X>232</q1:X>
-            <q1:Y>18</q1:Y>
-            <q1:Width>156</q1:Width>
-            <q1:Height>96</q1:Height>
-          </q1:RegionOfInterest>
+        <Combinator xsi:type="cv:Laplace">
+          <cv:ApertureSize>3</cv:ApertureSize>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:Laplace">
-          <q1:ApertureSize>3</q1:ApertureSize>
+        <Combinator xsi:type="cv:RoiActivity">
+          <cv:Operation>Sum</cv:Operation>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:RoiActivity" />
+        <Combinator xsi:type="cv:RoiActivityDetected">
+          <cv:Index xsi:nil="true" />
+          <cv:Threshold>0</cv:Threshold>
+        </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <PropertyMappings />
-        <Combinator xsi:type="q1:RoiActivityDetected">
-          <q1:Index xsi:nil="true" />
-          <q1:Threshold>0</q1:Threshold>
+        <Combinator xsi:type="cv:Crop">
+          <cv:RegionOfInterest>
+            <cv:X>232</cv:X>
+            <cv:Y>18</cv:Y>
+            <cv:Width>156</cv:Width>
+            <cv:Height>96</cv:Height>
+          </cv:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:Laplace">
+          <cv:ApertureSize>3</cv:ApertureSize>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:RoiActivity">
+          <cv:Operation>Sum</cv:Operation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:RoiActivityDetected">
+          <cv:Index xsi:nil="true" />
+          <cv:Threshold>0</cv:Threshold>
         </Combinator>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>12</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>12</From>
-        <To>13</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="1" To="6" Label="Source1" />
+      <Edge From="1" To="10" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Video.VideoCaptureDevice, Bonsai.Video, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Laplace, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.RoiActivityDetected, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Flip, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.RoiActivity, Bonsai.Vision, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

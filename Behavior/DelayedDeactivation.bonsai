@@ -1,17 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.7.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Timer">
           <rx:DueTime>PT5S</rx:DueTime>
-          <rx:Period>PT0S</rx:Period>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">

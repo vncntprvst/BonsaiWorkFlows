@@ -1,17 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:ljm="clr-namespace:Bonsai.LabJack;assembly=Bonsai.LabJack"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p1="clr-namespace:Bonsai.LabJack;assembly=Bonsai.LabJack" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="ljm:AnalogInput">
-          <ljm:ScanNames>
-            <ljm:string>AIN0</ljm:string>
-            <ljm:string>AIN1</ljm:string>
-          </ljm:ScanNames>
-          <ljm:ScansPerRead>1000</ljm:ScansPerRead>
+        <Combinator xsi:type="p1:AnalogInput">
+          <p1:ScanNames>
+            <p1:string>AIN0</p1:string>
+            <p1:string>AIN1</p1:string>
+          </p1:ScanNames>
+          <p1:ScansPerRead>1000</p1:ScansPerRead>
         </Combinator>
       </Expression>
     </Nodes>

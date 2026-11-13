@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino" xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="SubscribeSubject">
         <Name>VideoStart</Name>
@@ -11,9 +11,9 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:DigitalOutput">
-          <q1:PortName>COM4</q1:PortName>
-          <q1:Pin>13</q1:Pin>
+        <Combinator xsi:type="ard:DigitalOutput">
+          <ard:PortName>COM4</ard:PortName>
+          <ard:Pin>13</ard:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
@@ -25,27 +25,27 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:DigitalOutput">
-          <q1:PortName>COM4</q1:PortName>
-          <q1:Pin>13</q1:Pin>
+        <Combinator xsi:type="ard:DigitalOutput">
+          <ard:PortName>COM4</ard:PortName>
+          <ard:Pin>13</ard:Pin>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:KeyDown">
-          <q2:Filter>Space</q2:Filter>
-          <q2:SuppressRepetitions>false</q2:SuppressRepetitions>
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>Space</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
         </Combinator>
       </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="rx:PublishSubject">
         <Name>VideoStart</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:KeyDown">
-          <q2:Filter>End</q2:Filter>
-          <q2:SuppressRepetitions>false</q2:SuppressRepetitions>
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>End</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
         </Combinator>
       </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="rx:PublishSubject">
         <Name>VideoEnd</Name>
       </Expression>
     </Nodes>
@@ -58,9 +58,4 @@
       <Edge From="8" To="9" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Arduino.DigitalOutput, Bonsai.Arduino, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

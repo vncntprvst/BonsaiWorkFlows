@@ -1,0 +1,40 @@
+The most minimalistic code to report a single pin state change using Firmata would be something like the following:
+
+
+#include <Firmata.h>
+
+byte testPin = 13;
+byte testPort = 1; // the PORT for pin 13 is 1
+
+void sendPortData(byte port)
+{
+    Firmata.sendDigitalPort(port, readPort(port, 0xff));
+
+}
+
+void setPinModeCallback(byte pin, int mode) {
+  if (IS_PIN_DIGITAL(pin)) {
+    pinMode(PIN_TO_DIGITAL(pin), mode);
+  }
+}
+
+void setup()
+{
+  Firmata.setFirmwareVersion(FIRMATA_FIRMWARE_MAJOR_VERSION, FIRMATA_FIRMWARE_MINOR_VERSION);
+
+  Firmata.attach(SET_PIN_MODE, setPinModeCallback);
+  Firmata.begin(57600);
+}
+
+void loop()
+{
+  digitalWrite(testPin, HIGH); // change pin to HIGH
+  sendPortData(testPort); // send PORT data
+  delay(1000);
+  digitalWrite(testPin, LOW); // change pin to LOW
+  sendPortData(testPort); // send PORT data
+  delay(1000);
+}
+
+
+This should allow to change the state of the pin and send the updated PORT data to Bonsai.

@@ -1,12 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -114,12 +107,15 @@
 Item1 as Activity,
 Item2 as FrameIndex)</scr:Expression>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>ActivityIndex</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>FrameIndex</Selector>
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Activity</Selector>
@@ -132,9 +128,6 @@ Item2 as FrameIndex)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:ElementIndex" />
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>FrameIndex</Selector>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:CombineLatest" />
@@ -149,12 +142,12 @@ Item2.Index as RoiIndex)</scr:Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="0" To="5" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="6" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="6" Label="Source2" />
-            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source2" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
           </Edges>
@@ -164,7 +157,7 @@ Item2.Index as RoiIndex)</scr:Expression>
         <rx:KeySelector>RoiIndex</rx:KeySelector>
         <rx:ElementSelector />
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>DetectEntryToExit</Name>
         <Workflow>
           <Nodes>
@@ -222,7 +215,7 @@ Item1.RoiIndex as RoiIndex,
 Item1.RoiState as RoiState,
 Item1.FrameIndex - Item2.FrameIndex as FramesSinceLastState)</scr:Expression>
             </Expression>
-            <Expression xsi:type="Condition">
+            <Expression xsi:type="rx:Condition">
               <Name>EntryToExitOnly</Name>
               <Workflow>
                 <Nodes>

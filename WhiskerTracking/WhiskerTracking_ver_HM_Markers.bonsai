@@ -1,12 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -42,7 +35,7 @@
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="IncludeWorkflow" Path="Extensions\ColorMask_Magenta.bonsai" />
+        <Builder xsi:type="IncludeWorkflow" Path="Extensions\ColorMask.bonsai" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:AdaptiveThreshold">
@@ -124,8 +117,8 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="Extensions\TrackWhisker_Multiple_VerticalHeadPosition.bonsai" />
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>#return x,y values for base, center, tip of three central whiskers
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>#return x,y values for base, center, tip of three central whiskers
 import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
@@ -166,7 +159,7 @@ def process(sortedRegions):
     tipList=Tuple.Create(NaNPoint,NaNPoint,NaNPoint)
 
   return Tuple.Create(baseList, centroidList, tipList)
-</scr:Script>
+</ipy:Script>
       </Expression>
       <Expression xsi:type="scr:ExpressionTransform">
         <scr:Expression>new(
@@ -185,10 +178,10 @@ Item3.Item3 as Whisker3_Tip
         <MemberName>FileName</MemberName>
         <Value>D:\Vincent\vIRt43\vIRt43_1119\vIRt43_1119_wheeltraining_20191119-175457_HSCam.avi</Value>
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>@returns(str)
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>@returns(str)
 def process(value):
-  return value.replace('.avi', '_WhiskersBaseCentroidTip.csv')</scr:Script>
+  return value.replace('.avi', '_WhiskersBaseCentroidTip.csv')</ipy:Script>
       </Expression>
       <Expression xsi:type="PropertyMapping">
         <PropertyMappings>
@@ -206,12 +199,90 @@ def process(value):
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="Combinator">
+          <Combinator xsi:type="rx:Zip" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="ipy:PythonTransform">
+          <ipy:Name>DrawMarkers</ipy:Name>
+          <ipy:Description>Draws whiskers' base, centroid and tip on video
+
+</ipy:Description>
+          <ipy:Script>import clr
+#clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+#from System import Tuple
+#from System.Linq import Enumerable
+from OpenCV.Net import *
+
+@returns(IplImage)
+def process(value):
+  image = value.Item2
+  markerCoordinates = value.Item1
+  #vSortMarkersList = list(Enumerable.OrderByDescending(markerCoordinates, lambda x:x.Item1.X))
+  output = image.Clone()
+  if markerCoordinates is not None:
+    #print(type(markerCoordinates))
+  #    if len(markerCoordinates.Item1) &gt;=1:
+    CV.Circle(output, Point(markerCoordinates.Item1.Item1), 10, Scalar.Rgb(255, 0, 0), -1)
+    CV.Circle(output, Point(markerCoordinates.Item2.Item1), 10, Scalar.Rgb(255,99,71), -1) 
+    CV.Circle(output, Point(markerCoordinates.Item3.Item1), 10, Scalar.Rgb(255,127,80), -1)
+
+    CV.Circle(output, Point(markerCoordinates.Item1.Item2), 10, Scalar.Rgb(0, 255, 0), -1)
+    CV.Circle(output, Point(markerCoordinates.Item2.Item2), 10, Scalar.Rgb(99, 255,71), -1) 
+    CV.Circle(output, Point(markerCoordinates.Item3.Item2), 10, Scalar.Rgb(127, 255,80), -1)
+
+    CV.Circle(output, Point(markerCoordinates.Item1.Item3), 10, Scalar.Rgb(0, 0, 255), -1)
+    CV.Circle(output, Point(markerCoordinates.Item2.Item3), 10, Scalar.Rgb(99,71, 255), -1) 
+    CV.Circle(output, Point(markerCoordinates.Item3.Item3), 10, Scalar.Rgb(127,80, 255), -1)
+
+  return output</ipy:Script>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="ipy:PythonTransform">
+          <ipy:Name>DrawMarkers</ipy:Name>
+          <ipy:Description>Draws whiskers' base, centroid and tip on video
+
+</ipy:Description>
+          <ipy:Script>import clr
+#clr.AddReference("System.Core")
+clr.AddReference("OpenCV.Net")
+#from System import Tuple
+#from System.Linq import Enumerable
+from OpenCV.Net import *
+
+@returns(IplImage)
+def process(value):
+  image = value.Item2
+  markerCoordinates = value.Item1
+  #vSortMarkersList = list(Enumerable.OrderByDescending(markerCoordinates, lambda x:x.Item1.X))
+  output = image.Clone()
+  if markerCoordinates is not None:
+  #    if len(markerCoordinates.Item1) &gt;=1:
+    CV.Circle(output, Point(markerCoordinates.Item1.Item1), 10, Scalar.Rgb(255, 0, 0), -1)
+    CV.Circle(output, Point(markerCoordinates.Item2.Item1), 10, Scalar.Rgb(255,99,71), -1) 
+    CV.Circle(output, Point(markerCoordinates.Item3.Item1), 10, Scalar.Rgb(255,127,80), -1)
+
+    CV.Circle(output, Point(markerCoordinates.Item1.Item2), 10, Scalar.Rgb(0, 255, 0), -1)
+    CV.Circle(output, Point(markerCoordinates.Item2.Item2), 10, Scalar.Rgb(99, 255,71), -1) 
+    CV.Circle(output, Point(markerCoordinates.Item3.Item2), 10, Scalar.Rgb(127, 255,80), -1)
+
+    CV.Circle(output, Point(markerCoordinates.Item1.Item3), 10, Scalar.Rgb(0, 0, 255), -1)
+    CV.Circle(output, Point(markerCoordinates.Item2.Item3), 10, Scalar.Rgb(99,71, 255), -1) 
+    CV.Circle(output, Point(markerCoordinates.Item3.Item3), 10, Scalar.Rgb(127,80, 255), -1)
+
+  return output</ipy:Script>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
           <Combinator xsi:type="cv:BinaryRegionAnalysis" />
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="scr:PythonTransform">
-          <scr:Script>import clr
+        <Builder xsi:type="ipy:PythonTransform">
+          <ipy:Script>import clr
 clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 clr.AddReference("Bonsai.Vision")
@@ -243,7 +314,7 @@ def process(sortedRegions):
     thatBase = NaNPoint
     whiskerIndex = -1
     
-  return Tuple.Create(thatBase,whiskerIndex)</scr:Script>
+  return Tuple.Create(thatBase,whiskerIndex)</ipy:Script>
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
@@ -259,90 +330,12 @@ def process(sortedRegions):
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="scr:PythonTransform">
-          <scr:Name>DrawMarkers</scr:Name>
-          <scr:Description>Draws whiskers' base, centroid and tip on video
+        <Builder xsi:type="ipy:PythonTransform">
+          <ipy:Name>DrawMarkers</ipy:Name>
+          <ipy:Description>Draws whiskers' base, centroid and tip on video
 
-</scr:Description>
-          <scr:Script>import clr
-#clr.AddReference("System.Core")
-clr.AddReference("OpenCV.Net")
-#from System import Tuple
-#from System.Linq import Enumerable
-from OpenCV.Net import *
-
-@returns(IplImage)
-def process(value):
-  image = value.Item2
-  markerCoordinates = value.Item1
-  #vSortMarkersList = list(Enumerable.OrderByDescending(markerCoordinates, lambda x:x.Item1.X))
-  output = image.Clone()
-  if markerCoordinates is not None:
-    #print(type(markerCoordinates))
-  #    if len(markerCoordinates.Item1) &gt;=1:
-    CV.Circle(output, Point(markerCoordinates.Item1.Item1), 10, Scalar.Rgb(255, 0, 0), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item1), 10, Scalar.Rgb(255,99,71), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item1), 10, Scalar.Rgb(255,127,80), -1)
-
-    CV.Circle(output, Point(markerCoordinates.Item1.Item2), 10, Scalar.Rgb(0, 255, 0), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item2), 10, Scalar.Rgb(99, 255,71), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item2), 10, Scalar.Rgb(127, 255,80), -1)
-
-    CV.Circle(output, Point(markerCoordinates.Item1.Item3), 10, Scalar.Rgb(0, 0, 255), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item3), 10, Scalar.Rgb(99,71, 255), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item3), 10, Scalar.Rgb(127,80, 255), -1)
-
-  return output</scr:Script>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="scr:PythonTransform">
-          <scr:Name>DrawMarkers</scr:Name>
-          <scr:Description>Draws whiskers' base, centroid and tip on video
-
-</scr:Description>
-          <scr:Script>import clr
-#clr.AddReference("System.Core")
-clr.AddReference("OpenCV.Net")
-#from System import Tuple
-#from System.Linq import Enumerable
-from OpenCV.Net import *
-
-@returns(IplImage)
-def process(value):
-  image = value.Item2
-  markerCoordinates = value.Item1
-  #vSortMarkersList = list(Enumerable.OrderByDescending(markerCoordinates, lambda x:x.Item1.X))
-  output = image.Clone()
-  if markerCoordinates is not None:
-  #    if len(markerCoordinates.Item1) &gt;=1:
-    CV.Circle(output, Point(markerCoordinates.Item1.Item1), 10, Scalar.Rgb(255, 0, 0), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item1), 10, Scalar.Rgb(255,99,71), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item1), 10, Scalar.Rgb(255,127,80), -1)
-
-    CV.Circle(output, Point(markerCoordinates.Item1.Item2), 10, Scalar.Rgb(0, 255, 0), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item2), 10, Scalar.Rgb(99, 255,71), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item2), 10, Scalar.Rgb(127, 255,80), -1)
-
-    CV.Circle(output, Point(markerCoordinates.Item1.Item3), 10, Scalar.Rgb(0, 0, 255), -1)
-    CV.Circle(output, Point(markerCoordinates.Item2.Item3), 10, Scalar.Rgb(99,71, 255), -1) 
-    CV.Circle(output, Point(markerCoordinates.Item3.Item3), 10, Scalar.Rgb(127,80, 255), -1)
-
-  return output</scr:Script>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="rx:Zip" />
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="scr:PythonTransform">
-          <scr:Name>DrawMarkers</scr:Name>
-          <scr:Description>Draws whiskers' base, centroid and tip on video
-
-</scr:Description>
-          <scr:Script>import clr
+</ipy:Description>
+          <ipy:Script>import clr
 #clr.AddReference("System.Core")
 clr.AddReference("OpenCV.Net")
 #from System import Tuple
@@ -359,14 +352,14 @@ def process(value):
     CV.Rectangle(output, Point(markerCoordinates.Item1), Point(markerCoordinates.Item1), Scalar.Rgb(255,127,80), 10, 0, 0)
     #cv.Rectangle(img, pt1, pt2, color, thickness=1, lineType=8, shift=0) → None¶
     #CV.Circle(output, Point(markerCoordinates.Item1), 10, Scalar.Rgb(255, 0, 0), -1)
-  return output</scr:Script>
+  return output</ipy:Script>
         </Builder>
       </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
-      <Edge From="1" To="22" Label="Source2" />
+      <Edge From="1" To="19" Label="Source2" />
       <Edge From="1" To="25" Label="Source2" />
       <Edge From="2" To="3" Label="Source1" />
       <Edge From="2" To="5" Label="Source1" />
@@ -379,19 +372,19 @@ def process(value):
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
       <Edge From="11" To="12" Label="Source1" />
-      <Edge From="11" To="19" Label="Source1" />
+      <Edge From="11" To="22" Label="Source1" />
       <Edge From="12" To="13" Label="Source1" />
       <Edge From="13" To="14" Label="Source1" />
-      <Edge From="13" To="22" Label="Source1" />
+      <Edge From="13" To="19" Label="Source1" />
       <Edge From="14" To="18" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
       <Edge From="16" To="17" Label="Source1" />
       <Edge From="17" To="18" Label="Source2" />
       <Edge From="19" To="20" Label="Source1" />
-      <Edge From="20" To="21" Label="Source1" />
-      <Edge From="21" To="25" Label="Source1" />
+      <Edge From="19" To="21" Label="Source1" />
       <Edge From="22" To="23" Label="Source1" />
-      <Edge From="22" To="24" Label="Source1" />
+      <Edge From="23" To="24" Label="Source1" />
+      <Edge From="24" To="25" Label="Source1" />
       <Edge From="25" To="26" Label="Source1" />
     </Edges>
   </Workflow>

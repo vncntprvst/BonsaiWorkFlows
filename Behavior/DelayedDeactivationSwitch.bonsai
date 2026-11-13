@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0-preview">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:CameraCapture">
-          <q1:Index>0</q1:Index>
-          <q1:CaptureProperties />
+        <Combinator xsi:type="cv:CameraCapture">
+          <cv:Index>0</cv:Index>
+          <cv:CaptureProperties />
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Crop">
-          <q1:RegionOfInterest>
-            <q1:X>476</q1:X>
-            <q1:Y>68</q1:Y>
-            <q1:Width>131</q1:Width>
-            <q1:Height>143</q1:Height>
-          </q1:RegionOfInterest>
+        <Combinator xsi:type="cv:Crop">
+          <cv:RegionOfInterest>
+            <cv:X>476</cv:X>
+            <cv:Y>68</cv:Y>
+            <cv:Width>131</cv:Width>
+            <cv:Height>143</cv:Height>
+          </cv:RegionOfInterest>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Grayscale" />
+        <Combinator xsi:type="cv:Grayscale" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Threshold">
-          <q1:ThresholdValue>128</q1:ThresholdValue>
-          <q1:MaxValue>255</q1:MaxValue>
-          <q1:ThresholdType>BinaryInv</q1:ThresholdType>
+        <Combinator xsi:type="cv:Threshold">
+          <cv:ThresholdValue>128</cv:ThresholdValue>
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:ThresholdType>BinaryInv</cv:ThresholdType>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Sum" />
+        <Combinator xsi:type="dsp:Sum" />
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>Val0</Selector>
@@ -40,16 +40,21 @@
         </Operand>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="DistinctUntilChanged" />
+        <Combinator xsi:type="rx:DistinctUntilChanged" />
       </Expression>
-      <Expression xsi:type="CreateObservable">
+      <Expression xsi:type="rx:CreateObservable">
         <Name>StartTimer</Name>
         <Workflow>
           <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Timer">
+                <rx:DueTime>PT1S</rx:DueTime>
+              </Combinator>
+            </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="Condition">
+            <Expression xsi:type="rx:Condition">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
@@ -63,26 +68,20 @@
               </Workflow>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Timer">
-                <DueTime>PT1S</DueTime>
-                <Period>PT0S</Period>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="SubscribeWhen" />
+              <Combinator xsi:type="rx:SubscribeWhen" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="3" Label="Source2" />
-            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="0" To="3" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source2" />
             <Edge From="3" To="4" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Switch" />
+        <Combinator xsi:type="rx:Switch" />
       </Expression>
     </Nodes>
     <Edges>
@@ -97,17 +96,4 @@
       <Edge From="8" To="9" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Dsp.Sum, Bonsai.Dsp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.GreaterThanBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.DistinctUntilChanged, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.SubscribeWhen, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Switch, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.CameraCapture, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

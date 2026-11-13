@@ -1,10 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns="https://bonsai-rx.org/2018/workflow">
+<WorkflowBuilder Version="2.9.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core" xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython" xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions" xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
@@ -20,10 +15,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:Grayscale" />
       </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Size</Selector>
-      </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>FindHead</Name>
         <Workflow>
           <Nodes>
@@ -66,11 +58,14 @@
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Size</Selector>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>import clr
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>import clr
 clr.AddReference("OpenCV.Net")
 from OpenCV.Net import *
 from System import Array, Tuple, Single
@@ -126,9 +121,9 @@ def process(value):
     if maxheight &gt; 0:
       return Tuple.Create(body,head)
     else:
-      return Tuple.Create(Point2f(float.NaN,float.NaN),Point2f(float.NaN,float.NaN))</scr:Script>
+      return Tuple.Create(Point2f(float.NaN,float.NaN),Point2f(float.NaN,float.NaN))</ipy:Script>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>Dampening</Name>
         <Workflow>
           <Nodes>
@@ -145,12 +140,12 @@ def process(value):
               <Selector>X</Selector>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:ElementCountWindow">
+              <Combinator xsi:type="rx:WindowCount">
                 <rx:Count>10</rx:Count>
                 <rx:Skip>1</rx:Skip>
               </Combinator>
             </Expression>
-            <Expression xsi:type="SelectMany">
+            <Expression xsi:type="rx:SelectMany">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
@@ -171,12 +166,12 @@ def process(value):
               <Selector>Y</Selector>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:ElementCountWindow">
+              <Combinator xsi:type="rx:WindowCount">
                 <rx:Count>10</rx:Count>
                 <rx:Skip>1</rx:Skip>
               </Combinator>
             </Expression>
-            <Expression xsi:type="SelectMany">
+            <Expression xsi:type="rx:SelectMany">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
@@ -203,12 +198,12 @@ def process(value):
               <Selector>X</Selector>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:ElementCountWindow">
+              <Combinator xsi:type="rx:WindowCount">
                 <rx:Count>10</rx:Count>
                 <rx:Skip>1</rx:Skip>
               </Combinator>
             </Expression>
-            <Expression xsi:type="SelectMany">
+            <Expression xsi:type="rx:SelectMany">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
@@ -229,12 +224,12 @@ def process(value):
               <Selector>Y</Selector>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:ElementCountWindow">
+              <Combinator xsi:type="rx:WindowCount">
                 <rx:Count>10</rx:Count>
                 <rx:Skip>1</rx:Skip>
               </Combinator>
             </Expression>
-            <Expression xsi:type="SelectMany">
+            <Expression xsi:type="rx:SelectMany">
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="WorkflowInput">
@@ -264,9 +259,9 @@ def process(value):
           </Nodes>
           <Edges>
             <Edge From="0" To="19" Label="Source1" />
-            <Edge From="1" To="19" Label="Source2" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="1" To="10" Label="Source1" />
+            <Edge From="1" To="19" Label="Source2" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="2" To="6" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
@@ -290,15 +285,15 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>Rotation</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="scr:PythonTransform">
-              <scr:Script>import clr
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>import clr
 import math
 clr.AddReference("Bonsai.Vision")
 clr.AddReference("OpenCV.Net")
@@ -345,7 +340,7 @@ def process(value):
   else:
     result.Centroid = centroid
     result.Orientation = LBRegion.Orientation
-  return result</scr:Script>
+  return result</ipy:Script>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>new(
@@ -406,12 +401,12 @@ Orientation - Math.PI / 2.0 as rotation)</scr:Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
-      <Edge From="1" To="9" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
       <Edge From="1" To="3" Label="Source1" />
-      <Edge From="2" To="4" Label="Source2" />
-      <Edge From="3" To="6" Label="Source1" />
-      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="1" To="9" Label="Source1" />
+      <Edge From="2" To="4" Label="Source1" />
+      <Edge From="2" To="6" Label="Source1" />
+      <Edge From="3" To="4" Label="Source2" />
       <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="6" Label="Source2" />
       <Edge From="6" To="7" Label="Source1" />
